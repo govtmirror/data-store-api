@@ -1,0 +1,123 @@
+---
+swagger: '2.0'
+info:
+  version: 0.0.0
+  title: Datastore API
+  description: Yes this is a description
+# host: TBD.TBD.com
+basePath: /v1
+paths:
+  /awards/{FAIN}:
+    get:
+      summary: Gets a specific award by FAIN
+      description: Better description
+      parameters:
+        - $ref: '#/parameters/fain'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Award'
+        404:
+          $ref: '#/responses/Standard404ErrorResponse'
+        500:
+          $ref: '#/responses/Standard500ErrorResponse'
+  /awards/{FAIN}/subawards:
+    get:
+      summary: Gets all subawards for a specific award by FAIN
+      description: Returns an array of awards for which the given FAIN is the parent FAIN
+      parameters:
+        - $ref: '#/parameters/fain'
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              - $ref: '#/definitions/Award'
+        404:
+          $ref: '#/responses/Standard404ErrorResponse'
+        500:
+          $ref: '#/responses/Standard500ErrorResponse'
+  /awards/tas/{TAS Code}:
+    get:
+      summary: Gets all awards for a specific TAS
+      description: Maybe a detailed description
+      parameters:
+        - $ref: '#/parameters/tasCode'
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Award'
+        404:
+          description: Could not locate records for specified TAS code
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          $ref: '#/responses/Standard500ErrorResponse'
+
+# Parameters
+parameters:
+  pagc:
+    name: PAGC
+    in: path
+    required: true
+    description: Program source agency code
+    type: string
+  pacc:
+    name: PACC
+    in: path
+    required: true
+    description: Program source account code
+    type: string
+  fain:
+    name: FAIN
+    in: path
+    required: true
+    description: >
+                  The Federal Award Identification Number (FAIN)
+                  is the unique ID within the Federal agency for
+                   each (non-aggregate) financial assistance award.
+    type: integer
+  tasCode:
+    name: TAS Code
+    in: path
+    required: true
+    description: TAS Code description
+    type: string
+
+# Definitions
+definitions:
+  Award:
+    type: object
+    properties:
+      fain:
+        description: FAIN
+        type: integer
+      pagc:
+        description: Program source agency code
+        type: string
+      pacc:
+        description: Program source account code
+        type: string
+
+  Error:
+    properties:
+      code:
+        type: string
+      message:
+        type: string
+
+# Responses
+responses:
+  Standard500ErrorResponse:
+    description: An unexpected error occured.
+    schema:
+      $ref: '#/definitions/Error'
+  Standard404ErrorResponse:
+    description: Resource not found.
+    schema:
+      $ref: '#/definitions/Error'
