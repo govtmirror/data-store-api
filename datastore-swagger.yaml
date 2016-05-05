@@ -1,3 +1,14 @@
+# File C
+# TAS CODES
+# 8,9,10,11
+# 12,13,14
+# 16
+#
+# D1
+# 1,2,3,4
+# 5,6,7,8
+# 9,10,11,12-21
+# 23,25-38
 ---
 swagger: '2.0'
 info:
@@ -61,18 +72,6 @@ paths:
 
 # Parameters
 parameters:
-  pagc:
-    name: PAGC
-    in: path
-    required: true
-    description: Program source agency code
-    type: string
-  pacc:
-    name: PACC
-    in: path
-    required: true
-    description: Program source account code
-    type: string
   fain:
     name: FAIN
     in: path
@@ -95,14 +94,82 @@ definitions:
     type: object
     properties:
       fain:
-        description: FAIN
-        type: integer
-      pagc:
-        description: Program source agency code
+        description: >
+                        The Federal Award Identification Number (FAIN)
+                        is the unique ID within the Federal agency for
+                        each (non-aggregate) financial assistance award.
         type: string
-      pacc:
-        description: Program source account code
+      uri:
+        description: >
+                        Unique Record Identifier. An agency defined identifier
+                        that (when provided) is unique for every reported action.
         type: string
+      sainumber:
+        description: >
+                        A number assigned by state (as opposed to federal)
+                        review agencies to the award during the grant application process.
+        type: string
+      awardmodamendmentnumber:
+        description: >
+                        The identifier of an action being reported that
+                        indicates the specific subsequent change to the
+                        initial award.
+        type: string
+      actiondate:
+        description: >
+                        The date the action being reported was issued /
+                        signed by the Government or a binding agreement was reached.
+        type: string
+      actiontype:
+        description: >
+                        Description (and corresponding code) that provides
+                        information on any changes made to the Federal prime
+                        award. There are typically multiple actions for each award.
+        type: string
+      awarddescription:
+        description: >
+                        A brief description of the purpose of the award.
+        type: string
+      cfda_number:
+        description: >
+                        The number assigned to a Federal area of work
+                        in the Catalog of Federal Domestic Assistance.
+        type: string
+      cfda_title:
+        description: >
+                        Derived Field (from CFDA_Number). The title of the
+                        area of work under which the Federal award was
+                        funded in the Catalog of Federal Domestic Assistance.
+        type: string
+      totalfundingamount:
+        description: >
+                        Derived Field (from the sum of FederalActionObligation
+                        and NonFederalFundingAmount). The sum of the
+                        FederalActionObligation and the Non-Federal Funding Amount.
+        type: string
+      recordtype:
+        description: >
+                        Code indicating whether an action is an
+                        individual transaction or aggregated.
+        type: string
+      periodofperfstartdate:
+        description: >
+                        The calendar year, month, and day of the date on which,
+                        for the award referred to by the action being reported,
+                        awardee effort begins or the award is otherwise effective.
+        type: string
+      periodofperfcurrentenddate:
+        description: >
+                        The calendar year, month, and day of the current date
+                        on which, for the award referred to by the action being
+                        reported, awardee effort completes or the award is
+                        otherwise ended.  Administrative actions related to
+                        this award may continue to occur after this date.
+                        This date does not apply to procurement indefinite
+                        delivery vehicles under which definitive orders
+                        may be awarded.
+        type: string
+
 
   Error:
     properties:
