@@ -1,0 +1,465 @@
+---
+swagger: "2.0"
+info:
+  description: "Data Act Datastore API"
+  version: "0.0.0"
+  title: "Datastore API"
+basePath: "/v1"
+paths:
+  /awards/fain/{FAIN}:
+    get:
+      tags:
+      - "default_controller"
+      summary: "Gets a the detailed award by FAIN"
+      description: "Returns an award object with a high level of detail"
+      operationId: "controllers.default_controller.awards_fain_fain_get"
+      parameters:
+      - name: "FAIN"
+        in: "path"
+        description: "The FAIN code for the requested award"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/Award"
+        404:
+          description: "Resource not found."
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: "An unexpected error occured."
+          schema:
+            $ref: "#/definitions/Error"
+  /awards/piid/{PIID}:
+    get:
+      tags:
+      - "default_controller"
+      summary: "Gets the detailed award for a specific PIID"
+      description: "Returns an award object with a high level of detail"
+      operationId: "controllers.default_controller.awards_piid_piid_get"
+      parameters:
+      - name: "PIID"
+        in: "path"
+        description: "The PIID of the requested award"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/Award"
+        404:
+          description: "Resource not found."
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: "An unexpected error occured."
+          schema:
+            $ref: "#/definitions/Error"
+  /awards/uri/{URI}:
+    get:
+      tags:
+      - "default_controller"
+      summary: "Gets the detailed award for a specific URI"
+      description: "Returns an award object with a high level of detail"
+      operationId: "controllers.default_controller.awards_uri_uri_get"
+      parameters:
+      - name: "URI"
+        in: "path"
+        description: "The URI of the requested ward"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/Award"
+        404:
+          description: "Resource not found."
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: "An unexpected error occured."
+          schema:
+            $ref: "#/definitions/Error"
+  /awards?{qualifiers}:
+    get:
+      tags:
+      - "default_controller"
+      summary: "Returns all awards which match the specified qualifiers"
+      description: "Returns an array of award objects with a low level of detail"
+      operationId: "controllers.default_controller.awardsqualifiers_get"
+      parameters:
+      - name: "qualifiers"
+        in: "path"
+        description: "A set of qualifiers by which to filter the data.\n\nThe format\
+          \ is <FIELD>:<CONSTRAINT>:<CONSTRAINT PARAMETER>,\n<FIELD>:<CONSTRAINT>:<CONSTRAINT\
+          \ PARAMETER>, ...\n\nFor example if we wanted to find awards greater than\
+          \ $10,000\nfor an agency with identifier of 097, we could use:\n\nAgencyIdentifier:equals:097,TransactionObligatedAmount:greater:10000\n"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/SlimAwards"
+        404:
+          description: "Resource not found."
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: "An unexpected error occured."
+          schema:
+            $ref: "#/definitions/Error"
+definitions:
+  SlimAwards:
+    type: "array"
+    items:
+      $ref: "#/definitions/SlimAward"
+  SlimAward:
+    type: "object"
+    properties:
+      AgencyIdentifier:
+        type: "string"
+        description: "The agency code identifies the department or agency that is\
+          \ responsible for the account.\n"
+      BeginningPeriodOfAvailability:
+        type: "string"
+        description: "In annual and multi-year funds, the beginning period of availability\
+          \ identifies the first year of availability under law that an appropriation\
+          \ account may incur new obligations.\n"
+      EndingPeriodOfAvailability:
+        type: "string"
+        description: "In annual and multi-year funds, the end period of availability\
+          \ identifies the last year of funds availability under law that an appropriation\
+          \ account may incur new obligations.\n"
+      MainAccountCode:
+        type: "string"
+        description: "The main account code identifies the account in statute.\n"
+      SubAccountCode:
+        type: "string"
+        description: "This is a component of the TAS. Identifies a Treasury-defined\
+          \ subdivision of the main account. This field cannot be blank. Subaccount\
+          \ 000 indicates the Parent account.\n"
+      PIID:
+        type: "string"
+        description: "The unique identifier of the specific award being reported.\n"
+      ParentAwardId:
+        type: "string"
+        description: "The identifier of the procurement award under which the specific\
+          \ award is issued (such as a Federal Supply Schedule). Term currently applies\
+          \ to procurement actions only\n"
+      FAIN:
+        type: "string"
+        description: "The Federal Award Identification Number (FAIN) is the unique\
+          \ ID within the Federal agency for each (non-aggregate) financial assistance\
+          \ award.\n"
+      URI:
+        type: "string"
+        description: "Unique Record Identifier. An agency defined identifier that\
+          \ (when provided) is unique for every reported action.\n"
+      TransactionObligatedAmount:
+        type: "string"
+        description: "The definition for this element appears in Section 20 of OMB\
+          \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
+          \ Obligation means a binding agreement that will result in outlays, immediately\
+          \ or in the future. Budgetary resources must be available before obligations\
+          \ can be incurred legally.\n"
+      AwardType:
+        type: "string"
+        description: "Description (and corresponding code) that provides information\
+          \ to distinguish type of contract, grant, or loan and provides the user\
+          \ with more granularity into the method of delivery of the outcomes.\n"
+    description: "An object representing an award, with a low level of detail"
+  Award:
+    type: "object"
+    properties:
+      AllocationTransferAgencyIdentifier:
+        type: "string"
+        description: "The allocation agency identifies the department or agency that\
+          \ is receiving funds through an allocation (non-expenditure) transfer.\n"
+      AgencyIdentifier:
+        type: "string"
+        description: "The agency code identifies the department or agency that is\
+          \ responsible for the account.\n"
+      BeginningPeriodOfAvailability:
+        type: "string"
+        description: "In annual and multi-year funds, the beginning period of availability\
+          \ identifies the first year of availability under law that an appropriation\
+          \ account may incur new obligations.\n"
+      EndingPeriodOfAvailability:
+        type: "string"
+        description: "In annual and multi-year funds, the end period of availability\
+          \ identifies the last year of funds availability under law that an appropriation\
+          \ account may incur new obligations.\n"
+      AvailabilityTypeCode:
+        type: "string"
+        description: "In appropriations accounts, the availability type code identifies\
+          \ an unlimited period to incur new obligations; this is denoted by the letter\
+          \ \"X\".\n"
+      MainAccountCode:
+        type: "string"
+        description: "The main account code identifies the account in statute.\n"
+      SubAccountCode:
+        type: "string"
+        description: "This is a component of the TAS. Identifies a Treasury-defined\
+          \ subdivision of the main account. This field cannot be blank. Subaccount\
+          \ 000 indicates the Parent account.\n"
+      PIID:
+        type: "string"
+        description: "The unique identifier of the specific award being reported.\n"
+      ParentAwardId:
+        type: "string"
+        description: "The identifier of the procurement award under which the specific\
+          \ award is issued (such as a Federal Supply Schedule). Term currently applies\
+          \ to procurement actions only\n"
+      FAIN:
+        type: "string"
+        description: "The Federal Award Identification Number (FAIN) is the unique\
+          \ ID within the Federal agency for each (non-aggregate) financial assistance\
+          \ award.\n"
+      URI:
+        type: "string"
+        description: "Unique Record Identifier. An agency defined identifier that\
+          \ (when provided) is unique for every reported action.\n"
+      ProgramActivityName:
+        type: "string"
+        description: "The definition for this element appears in Section 200 of OMB\
+          \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
+          \ Name of a specific activity or project as listed in the program and financing\
+          \ schedules of the annual budget of the United States Government.\n"
+      ProgramActivityCode:
+        type: "string"
+        description: "The definition for this element appears in Section 200 of OMB\
+          \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
+          \ Code of a specific activity or project as listed in the program and financing\n\
+          \ schedules of the annual budget of the United States Government.\n"
+      ObjectClass:
+        type: "string"
+        description: "The definition for this element appears in Section 83 of OMB\
+          \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
+          \ Categories in a classification system that presents obligations by the\
+          \ items or services purchased by the Federal Government.\n"
+      TransactionObligatedAmount:
+        type: "string"
+        description: "The definition for this element appears in Section 20 of OMB\
+          \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
+          \ Obligation means a binding agreement that will result in outlays, immediately\
+          \ or in the future. Budgetary resources must be available before obligations\
+          \ can be incurred legally.\n"
+      AwardingSubTierAgencyCode:
+        type: "string"
+        description: "Identifier of the level 2 organization that awarded, executed\
+          \ or is otherwise responsible for the transaction.\n"
+      AwardModificationAmendmentNumber:
+        type: "string"
+        description: "The identifier of an action being reported that indicates the\
+          \ specific subsequent change to the initial award.\n"
+      AwardType:
+        type: "string"
+        description: "Description (and corresponding code) that provides information\
+          \ to distinguish type of contract, grant, or loan and provides the user\
+          \ with more granularity into the method of delivery of the outcomes.\n"
+      NorthAmericanIndustrialClassificationSystemCode:
+        type: "string"
+        description: "The identifier that represents the North American Industrial\
+          \ Classification System Code assigned to the solicitation and resulting\
+          \ award identifying the industry in which the contract requirements are\
+          \ normally performed.\n"
+      AwardeeOrRecipientUniqueIdentifier:
+        type: "string"
+        description: "The unique identification number for an awardee or recipient.\
+          \ Currently the identifier is the 9-digit number assigned by D&B referred\
+          \ to as the DUNS® number.\n"
+      AwardDescription:
+        type: "string"
+        description: "A brief description of the purpose of the award.\n"
+      PrimaryPlaceOfPerformanceZip4:
+        type: "string"
+        description: "United States ZIP code (five digits) concatenated with the additional\
+          \ +4 digits, identifying where the predominant performance of the award\
+          \ will be accomplished.\n"
+      PrimaryPlaceofPerformanceCongressionalDistrict:
+        type: "string"
+        description: "U.S. Congressional district where the predominant performance\
+          \ of the award will be accomplished.\n"
+      AwardeeOrRecipientLegalEntityName:
+        type: "string"
+        description: "The name of the awardee or recipient that relates to the unique\
+          \ identifier. For U.S. based companies, this name is what the business ordinarily\
+          \ files in formation documents with individual states (when required).\n"
+      LegalEntityCityName:
+        type: "string"
+        description: "Name of the city in which the awardee or recipient’s legal business\
+          \ address is located.\n"
+      LegalEntityStateCode:
+        type: "string"
+        description: "United States Postal Service (USPS) two-letter abbreviation\
+          \ for the state or territory in which the awardee or recipient’s legal business\
+          \ address is located. Identify States, the District of Columbia, territories\
+          \ (i.e., American Samoa, Guam, Northern Mariana Islands, Puerto Rico, U.S.\
+          \ Virgin Islands) and associated states (i.e., Republic of the Marshall\
+          \ Islands, the Federated States of Micronesia, and Palau) by their USPS\
+          \ two-letter abbreviation for the purposes of reporting. Report legal business\
+          \ address located in the Puerto Rico, Northern Mariana Islands, American\
+          \ Samoa, Guam, and U.S. Virgin Islands using USPS assigned state codes.\n"
+      LegalEntityZip4:
+        type: "string"
+        description: "USPS zoning code associated with the awardee or recipient’s\
+          \ legal business address. This is not a required data element for non-US\
+          \ addresses.\n"
+      LegalEntityCongressionalDistrict:
+        type: "string"
+        description: "The congressional district in which the awardee or recipient\
+          \ is located. This is not a required data element for non-U.S. addresses.\n"
+      LegalEntityAddressLine1:
+        type: "string"
+        description: "First line of awardee or recipient’s legal business address.\n"
+      LegalEntityAddressLine2:
+        type: "string"
+        description: "Second line of awardee or recipient’s legal business address.\n"
+      LegalEntityCountryCode:
+        type: "string"
+        description: "Code for the country in which the awardee or recipient is located,\
+          \ using the ISO 3166-1 Alpha-3 GENC Profile, less the codes listed for those\
+          \ territories and possessions of the United States already identified as\
+          \ “states.”\n"
+      PeriodOfPerformanceStartDate:
+        type: "string"
+        description: "The date on which, for the award referred to by the action being\
+          \ reported, awardee effort begins or the award is otherwise effective.\n"
+      PeriodOfPerformanceCurrentEndDate:
+        type: "string"
+        description: "The current date on which, for the award referred to by the\
+          \ action being reported, awardee effort completes or the award is otherwise\
+          \ ended. Administrative actions related to this award may continue to occur\
+          \ after this date. This date does not apply to procurement indefinite delivery\
+          \ vehicles under which definitive orders may be awarded.\n"
+      PeriodOfPerformancePotentialEndDate:
+        type: "string"
+        description: "For procurement, the date on which, for the award referred to\
+          \ by the action being reported if all potential pre-determined or pre-negotiated\
+          \ options were exercised, awardee effort is completed or the award is otherwise\
+          \ ended. Administrative actions related to this award may continue to occur\
+          \ after this date. This date does not apply to procurement indefinite delivery\
+          \ vehicles under which definitive orders may be awarded.\n"
+      ActionDate:
+        type: "string"
+        description: "The date the action being reported was issued / signed by the\
+          \ Government or a binding agreement was reached.\n"
+      FederalActionObligation:
+        type: "string"
+        description: "Amount of Federal Government’s obligation, de-obligation, or\
+          \ liability, in dollars, for an award transaction.\n"
+      CurrentTotalValueOfAward:
+        type: "string"
+        description: "Total amount obligated to date on a contract, including the\
+          \ base and exercised options.\n"
+      PotentialTotalValueOfAward:
+        type: "string"
+        description: "Total amount that could be obligated on a contract, if the base\
+          \ and all options are exercised.\n"
+      FundingSubTierAgencyCode:
+        type: "string"
+        description: "Total amount that could be obligated on a contract, if the base\
+          \ and all options are exercised.\n"
+      FundingOfficeCode:
+        type: "string"
+        description: "Identifier of the level n organization that provided the preponderance\
+          \ of the funds obligated by this transaction.\n"
+      AwardingOfficeCode:
+        type: "string"
+        description: "Identifier of the level n organization that awarded, executed\
+          \ or is otherwise responsible for the transaction.\n"
+      ReferencedIDVAgencyIdentifier:
+        type: "string"
+        description: "Identifier used to link agency in FPDS-NG to referenced IDV\
+          \ information. Definition (if more than one field): The identifier of the\
+          \ procurement award under which the specific award is issued, such as a\
+          \ Federal Supply Schedule. This data element currently applies to procurement\
+          \ actions only.\n"
+      VendorDoingAsBusinessName:
+        type: "string"
+        description: "The doing as business name of the contractor address.\n"
+      VendorAddressLine3:
+        type: "string"
+        description: "The third line of the street address for a contractor.\n"
+      VendorPhoneNumber:
+        type: "string"
+        description: "The phone number of the contractor.\n"
+      VendorFaxNumber:
+        type: "string"
+        description: "The fax number of the contractor\n"
+      MultipleorSingleAwardIDV:
+        type: "string"
+        description: "Indicates whether the contract is one of many that resulted\
+          \ from a single solicitation, all of the contracts are for the same or similar\
+          \ items, and contracting officers are 'True to compare their requirements\
+          \ with the offerings under more than one contract or are 'True to acquire\
+          \ the requirement competitively among the awardees. BPA \"Multiple or Single\
+          \ Award IDV\" value does not pull the \"Multiple or Single Award IDV\" value\
+          \ of the referenced FSS to the BPA. The \"Multiple or Single Award IDV\"\
+          \ value shall be 'True and selected by the user for all BPA bases created.\n"
+      TypeofIDC:
+        type: "string"
+        description: "Indicates whether the contract is one of many that resulted\
+          \ from a single solicitation, all of the contracts are for the same or similar\
+          \ items, and contracting officers are 'True to compare their requirements\
+          \ with the offerings under more than one contract or are 'True to acquire\
+          \ the requirement competitively among the awardees. BPA \"Multiple or Single\
+          \ Award IDV\" value does not pull the \"Multiple or Single Award IDV\" value\
+          \ of the referenced FSS to the BPA. The \"Multiple or Single Award IDV\"\
+          \ value shall be 'True and selected by the user for all BPA bases created.\n"
+      IDV Type:
+        type: "string"
+        description: "The type of Indefinite Delivery Vehicle being (IDV) loaded by\
+          \ this transaction. IDV Types include Government-Wide Acquisition Contract\
+          \ (GWAC), Multi-Agency Contract, Other Indefinite Delivery Contract (IDC),\
+          \ Federal Supply Schedule (FSS), Basic Ordering Agreement (BOA), and Blanket\
+          \ Purchase Agreements (BPA).\n"
+    description: "An object representing an award, with a high level of detail"
+  Error:
+    properties:
+      code:
+        type: "string"
+      message:
+        type: "string"
+parameters:
+  fain:
+    name: "FAIN"
+    in: "path"
+    description: "The FAIN code for the requested award"
+    required: true
+    type: "integer"
+  piid:
+    name: "PIID"
+    in: "path"
+    description: "The PIID of the requested award"
+    required: true
+    type: "string"
+  uri:
+    name: "URI"
+    in: "path"
+    description: "The URI of the requested ward"
+    required: true
+    type: "string"
+  qualifiers:
+    name: "qualifiers"
+    in: "path"
+    description: "A set of qualifiers by which to filter the data.\n\nThe format is\
+      \ <FIELD>:<CONSTRAINT>:<CONSTRAINT PARAMETER>,\n<FIELD>:<CONSTRAINT>:<CONSTRAINT\
+      \ PARAMETER>, ...\n\nFor example if we wanted to find awards greater than $10,000\n\
+      for an agency with identifier of 097, we could use:\n\nAgencyIdentifier:equals:097,TransactionObligatedAmount:greater:10000\n"
+    required: true
+    type: "string"
+responses:
+  Standard500ErrorResponse:
+    description: "An unexpected error occured."
+    schema:
+      $ref: "#/definitions/Error"
+  Standard404ErrorResponse:
+    description: "Resource not found."
+    schema:
+      $ref: "#/definitions/Error"
