@@ -7,7 +7,7 @@ info:
 # host: TBD.TBD.com
 basePath: /v1
 paths:
-  /awards?{qualifiers}:
+  /awards/{qualifiers}:
     get:
       summary: Returns all awards which match the specified qualifiers
       description: Returns an array of award objects with a low level of detail
@@ -22,7 +22,7 @@ paths:
           $ref: '#/responses/Standard404ErrorResponse'
         500:
           $ref: '#/responses/Standard500ErrorResponse'
-  /awards/fain/{FAIN}:
+  /award/fain/{FAIN}:
     get:
       summary: Gets a the detailed award by FAIN
       description: Returns an award object with a high level of detail
@@ -37,7 +37,7 @@ paths:
           $ref: '#/responses/Standard404ErrorResponse'
         500:
           $ref: '#/responses/Standard500ErrorResponse'
-  /awards/uri/{URI}:
+  /award/uri/{URI}:
     get:
       summary: Gets the detailed award for a specific URI
       description: Returns an award object with a high level of detail
@@ -52,7 +52,7 @@ paths:
           $ref: '#/responses/Standard404ErrorResponse'
         500:
           $ref: '#/responses/Standard500ErrorResponse'
-  /awards/piid/{PIID}:
+  /award/piid/{PIID}:
     get:
       summary: Gets the detailed award for a specific PIID
       description: Returns an award object with a high level of detail

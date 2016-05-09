@@ -6,13 +6,13 @@ info:
   title: "Datastore API"
 basePath: "/v1"
 paths:
-  /awards/fain/{FAIN}:
+  /award/fain/{FAIN}:
     get:
       tags:
       - "default_controller"
       summary: "Gets a the detailed award by FAIN"
       description: "Returns an award object with a high level of detail"
-      operationId: "controllers.default_controller.awards_fain_fain_get"
+      operationId: "controllers.default_controller.award_fain_fain_get"
       parameters:
       - name: "FAIN"
         in: "path"
@@ -32,13 +32,13 @@ paths:
           description: "An unexpected error occured."
           schema:
             $ref: "#/definitions/Error"
-  /awards/piid/{PIID}:
+  /award/piid/{PIID}:
     get:
       tags:
       - "default_controller"
       summary: "Gets the detailed award for a specific PIID"
       description: "Returns an award object with a high level of detail"
-      operationId: "controllers.default_controller.awards_piid_piid_get"
+      operationId: "controllers.default_controller.award_piid_piid_get"
       parameters:
       - name: "PIID"
         in: "path"
@@ -58,13 +58,13 @@ paths:
           description: "An unexpected error occured."
           schema:
             $ref: "#/definitions/Error"
-  /awards/uri/{URI}:
+  /award/uri/{URI}:
     get:
       tags:
       - "default_controller"
       summary: "Gets the detailed award for a specific URI"
       description: "Returns an award object with a high level of detail"
-      operationId: "controllers.default_controller.awards_uri_uri_get"
+      operationId: "controllers.default_controller.award_uri_uri_get"
       parameters:
       - name: "URI"
         in: "path"
@@ -84,13 +84,13 @@ paths:
           description: "An unexpected error occured."
           schema:
             $ref: "#/definitions/Error"
-  /awards?{qualifiers}:
+  /awards/{qualifiers}:
     get:
       tags:
       - "default_controller"
       summary: "Returns all awards which match the specified qualifiers"
       description: "Returns an array of award objects with a low level of detail"
-      operationId: "controllers.default_controller.awardsqualifiers_get"
+      operationId: "controllers.default_controller.awards_qualifiers_get"
       parameters:
       - name: "qualifiers"
         in: "path"
