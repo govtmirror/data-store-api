@@ -7,7 +7,45 @@ info:
 # host: TBD.TBD.com
 basePath: /v1
 paths:
+  /awards:
+    post:
+      summary: Returns all awards which match specified qualifiers with a high level of detail
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: >
+                          A json object representing a set of qualifiers
+          schema:
+            $ref: '#/definitions/postqualifiers'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Awards'
+        404:
+          $ref: '#/responses/Standard404ErrorResponse'
+        500:
+          $ref: '#/responses/Standard500ErrorResponse'
   /awards/{qualifiers}:
+    get:
+      summary: Returns all awards which match the specified qualifiers
+      description: Returns an array of award objects with a high level of detail
+      parameters:
+        - $ref: '#/parameters/qualifiers'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Awards'
+        404:
+          $ref: '#/responses/Standard404ErrorResponse'
+        500:
+          $ref: '#/responses/Standard500ErrorResponse'
+  /awards/slim/{qualifiers}:
     get:
       summary: Returns all awards which match the specified qualifiers
       description: Returns an array of award objects with a low level of detail
@@ -95,6 +133,7 @@ parameters:
     required: true
     description: |
                     A set of qualifiers by which to filter the data.
+                    If you are using multiple filters, it is recommended to use the POST version of this endpoint.
 
                     The format is FIELD:CONSTRAINT:CONSTRAINT PARAMETER,
                     FIELD:CONSTRAINT:CONSTRAINT PARAMETER, ...
@@ -106,6 +145,29 @@ parameters:
 
 # Definitions
 definitions:
+  postqualifiers:
+    type: object
+    properties:
+      fieldname:
+        type: string
+        description: The field name to which the filter applies
+        example: TransactionObligatedAmount
+      filter:
+        type: object
+        description: A filter, comprised of an operation and value
+        properties:
+          operation:
+            description: An operation to perform a comparison on the field value
+            type: string
+            example: greater
+          value:
+            description: The value to use in the operation comparison
+            type: string
+            example: 3500
+  Awards:
+    type: array
+    items:
+      $ref: '#/definitions/Award'
   SlimAwards:
     type: array
     items:
