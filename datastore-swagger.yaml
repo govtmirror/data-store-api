@@ -96,8 +96,8 @@ parameters:
     description: |
                     A set of qualifiers by which to filter the data.
 
-                    The format is <FIELD>:<CONSTRAINT>:<CONSTRAINT PARAMETER>,
-                    <FIELD>:<CONSTRAINT>:<CONSTRAINT PARAMETER>, ...
+                    The format is FIELD:CONSTRAINT:CONSTRAINT PARAMETER,
+                    FIELD:CONSTRAINT:CONSTRAINT PARAMETER, ...
 
                     For example if we wanted to find awards greater than $10,000
                     for an agency with identifier of 097, we could use:

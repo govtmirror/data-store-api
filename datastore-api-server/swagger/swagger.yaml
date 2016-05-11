@@ -95,8 +95,8 @@ paths:
       - name: "qualifiers"
         in: "path"
         description: "A set of qualifiers by which to filter the data.\n\nThe format\
-          \ is <FIELD>:<CONSTRAINT>:<CONSTRAINT PARAMETER>,\n<FIELD>:<CONSTRAINT>:<CONSTRAINT\
-          \ PARAMETER>, ...\n\nFor example if we wanted to find awards greater than\
+          \ is FIELD:CONSTRAINT:CONSTRAINT PARAMETER,\nFIELD:CONSTRAINT:CONSTRAINT\
+          \ PARAMETER, ...\n\nFor example if we wanted to find awards greater than\
           \ $10,000\nfor an agency with identifier of 097, we could use:\n\nAgencyIdentifier:equals:097,TransactionObligatedAmount:greater:10000\n"
         required: true
         type: "string"
