@@ -9,6 +9,8 @@ basePath: /v1
 paths:
   /awards:
     post:
+      tags:
+        - awards
       summary: Returns all awards which match specified qualifiers with a high level of detail
       consumes:
         - application/json
@@ -32,6 +34,8 @@ paths:
           $ref: '#/responses/Standard500ErrorResponse'
   /awards/{qualifiers}:
     get:
+      tags:
+        - awards
       summary: Returns all awards which match the specified qualifiers
       description: Returns an array of award objects with a high level of detail
       parameters:
@@ -47,6 +51,8 @@ paths:
           $ref: '#/responses/Standard500ErrorResponse'
   /awards/slim/{qualifiers}:
     get:
+      tags:
+        - awards
       summary: Returns all awards which match the specified qualifiers
       description: Returns an array of award objects with a low level of detail
       parameters:
@@ -62,6 +68,8 @@ paths:
           $ref: '#/responses/Standard500ErrorResponse'
   /award/fain/{FAIN}:
     get:
+      tags:
+        - awards
       summary: Gets a the detailed award by FAIN
       description: Returns an award object with a high level of detail
       parameters:
@@ -77,6 +85,8 @@ paths:
           $ref: '#/responses/Standard500ErrorResponse'
   /award/uri/{URI}:
     get:
+      tags:
+        - awards
       summary: Gets the detailed award for a specific URI
       description: Returns an award object with a high level of detail
       parameters:
@@ -92,6 +102,8 @@ paths:
           $ref: '#/responses/Standard500ErrorResponse'
   /award/piid/{PIID}:
     get:
+      tags:
+        - awards
       summary: Gets the detailed award for a specific PIID
       description: Returns an award object with a high level of detail
       parameters:
@@ -567,6 +579,199 @@ definitions:
                         Ordering Agreement (BOA), and Blanket Purchase Agreements (BPA).
         type: string
 
+  Account:
+    properties:
+      AdjustmentsToUnobligatedBalanceBroughtForward_CPE:
+        description: >
+                        The definition for this element appears in Appendix F
+                        of OMB Circular A-11 issued June 2015; a brief summary
+                        from A-11 appears below. Changes to unpaid obligations
+                        that occurred in a prior fiscal year and that were not
+                        recorded in the unpaid obligations as of October 1 of
+                        the current fiscal year.
+        type: number
+      AgencyIdentifier:
+        description: >
+                        The agency code identifies the department or agency
+                        that is responsible for the account.
+        type: string
+      AllocationTransferAgencyIdentifier:
+        description: >
+                        The allocation agency identifies the department or
+                        agency that is receiving funds through an allocation
+                        (non-expenditure) transfer.
+        type: string
+      AvailabilityTypeCode:
+        description: >
+                        In appropriations accounts, the availability type code
+                        identifies an unlimited period to incur new obligations;
+                        this is denoted by the letter "X".
+        type: string
+      BeginningPeriodOfAvailability:
+        description: >
+                        In annual and multi-year funds, the beginning period of
+                        availability identifies the first year of availability
+                        under law that an appropriation account may incur new
+                        obligations.
+        type: string
+      BorrowingAuthorityAmountTotal_CPE:
+        description: >
+                        The definition for this element appears in Section 20
+                        of OMB Circular A-11 issued June 2015; a brief summary
+                        from A-11 appears below. Borrowing authority is a type
+                        of budget authority that permits obligations and outlays
+                        to be financed by borrowing.
+        type: number
+      BudgetAuthorityAppropriatedAmount_CPE:
+        description: >
+                        The definition for this element appears in Section 20 of
+                        OMB Circular A-11 issued June 2015; a brief summary from
+                        A-11 appears below. Appropriation means a provision of
+                        law (not necessarily in an appropriations act)
+                        authorizing the expenditure of funds for a given
+                        purpose. Usually, but not always, an appropriation
+                        provides budget authority.
+        type: number
+      BudgetAuthorityAvailableAmountTotal_CPE:
+        description: >
+                        The total amount of all obligation budget authority
+                        including unobligated balances carried forward,
+                        adjustments to unobligated balances carried forward,
+                        appropriated amounts, and other budgetary resources,
+                        as of the reported date.
+        type: number
+      BudgetAuthorityUnobligatedBalanceBroughtForward_FYB:
+        description: >
+                        The definition for this element appears in Appendix F
+                        of OMB Circular A-11 issued June 2015; a brief summary
+                        from A-11 appears below. For unexpired accounts: Amount
+                        of unobligated balance of appropriations or other
+                        budgetary resources carried forward from the preceding
+                        year and available for obligation without new action by
+                        Congress. For expired accounts: Amount of expired
+                        unobligated balances available for upward adjustments
+                        of obligations.
+        type: number
+      ContractAuthorityAmountTotal_CPE:
+        description: >
+                        The definition for this element appears in Section 20 of
+                        OMB Circular A-11 issued June 2015; a brief summary from
+                        A-11 appears below. Contract authority is a type of
+                        budget authority that permits you to incur obligations
+                        in advance of an appropriation, offsetting collections,
+                        or receipts to make outlays to liquidate the obligations.
+                        Typically, the Congress provides contract authority in
+                        an authorizing statute to allow you to incur obligations
+                        in anticipation of the collection of receipts or
+                        offsetting collections that will be used to liquidate the obligations.
+        type: number
+      DeobligationsRecoveriesRefundsByTAS_CPE:
+        description: >
+                        The amount of downward adjustments to obligations and
+                        outlays resulting from deobligations, recoveries, or
+                        refunds collected, summarized at the TAS level. The
+                        adjustments are to the obligations and outlays which
+                        were made in a prior year.
+        type: number
+      EndingPeriodOfAvailability:
+        description: >
+                        In annual and multi-year funds, the end period of
+                        availability identifies the last year of funds
+                        availability under law that an appropriation account
+                        may incur new obligations.
+        type: string
+      GrossOutlayAmountByTAS_CPE:
+        description: >
+                        The definition for this element appears in Section 20 of
+                        OMB Circular A-11 issued June 2015; a brief summary from
+                        A-11 appears below. Payments made to liquidate an
+                        obligation (other than the repayment of debt principal
+                        or other disbursements that are means of financing
+                        transactions). Outlays generally are equal to cash
+                        disbursements but also are recorded for cash-equivalent
+                        transactions, such as the issuance of debentures to pay
+                        insurance claims, and in a few cases are recorded on an
+                        accrual basis such as interest on public issues of the
+                        public debt. Outlays are the measure of Government spending.
+        type: number
+      MainAccountCode:
+        description: >
+                        The main account code identifies the account in statute.
+        type: string
+      ObligationsIncurredTotalByTAS_CPE:
+        description: >
+                        The definition for this element appears in Appendix F
+                        of OMB Circular A-11 issued June 2015; a brief summary
+                        from A-11 appears below. For unexpired accounts: Amount
+                        of obligations incurred from the beginning of the current
+                        fiscal year to the end of the reporting period, net of
+                        refunds received that pertain to obligations incurred
+                        in the current year. Include upward adjustments of prior
+                        obligations. For expired accounts: Amount of upward
+                        adjustments of obligations previously incurred. Upward
+                        adjustments are limited by the amount available for
+                        adjustments. No new obligations may be incurred against
+                        expired or canceled accounts.
+        type: number
+      OtherBudgetaryResourcesAmount_CPE:
+        description: >
+                        The definition for this element appears in Section 20 of
+                        OMB Circular A-11 issued June 2015; a brief summary from
+                        A-11 appears below. New borrowing authority, contract
+                        authority, and spending authority from offsetting
+                        collections provided by Congress in an appropriations
+                        act or other legislation, or unobligated balances of
+                        budgetary resources made available in previous
+                        legislation, to incur obligations and to make outlays.
+        type: number
+      SpendingAuthorityfromOffsettingCollectionsAmountTotal_CPE:
+        description: >
+                        The definition for this element appears in Section 20
+                        of OMB Circular A-11 issued June 2015; a brief summary
+                        from A-11 appears below. Spending authority from
+                        offsetting collections is a type of budget authority
+                        that permits obligations and outlays to be financed
+                        by offsetting collections. Offsetting collections mean
+                        payments to the Government that, by law, are credited
+                        directly to expenditure accounts and deducted from gross
+                        budget authority and outlays of the expenditure account,
+                        rather than added to receipts. Usually, they are
+                        authorized to be spent for the purposes of the account
+                        without further action by Congress. They usually result
+                        from business-like transactions with the public,
+                        including payments from the public in exchange for
+                        goods and services, reimbursements for damages, and
+                        gifts or donations of money to the Government and from
+                        intragovernmental transactions with other Government
+                        accounts. The authority to spend offsetting collections
+                        is a form of budget authority.
+        type: number
+      StatusOfBudgetaryResourcesTotal_CPE:
+        description: >
+                        This element addresses the status of budgetary resources
+                        and includes the total of obligated and unobligated
+                        balances, at the reported date. The value should equal
+                        the Budget Authority Available Amount Total for the
+                        TAS at Current Period End.
+        type: number
+      SubAccountCode:
+        description: >
+                        This is a component of the TAS. Identifies a
+                        Treasury-defined subdivision of the main account. This
+                        field cannot be blank. Subaccount 000 indicates the
+                        Parent account.
+        type: string
+      UnobligatedBalance_CPE:
+        description: >
+                        The definition for this element appears in Section 20 of
+                        OMB Circular A-11 issued June 2015; a brief summary from
+                        A-11 appears below. Unobligated balance means the
+                        cumulative amount of budget authority that remains
+                        available for obligation under law in unexpired
+                        accounts. The term "expired balances available for
+                        adjustment only" refers to unobligated amounts in
+                        expired accounts.
+        type: number
   Error:
     properties:
       code:

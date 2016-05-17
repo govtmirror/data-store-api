@@ -9,7 +9,7 @@ paths:
   /award/fain/{FAIN}:
     get:
       tags:
-      - "default_controller"
+      - "awards"
       summary: "Gets a the detailed award by FAIN"
       description: "Returns an award object with a high level of detail"
       operationId: "controllers.default_controller.award_fain_fain_get"
@@ -32,10 +32,12 @@ paths:
           description: "An unexpected error occured."
           schema:
             $ref: "#/definitions/Error"
+      x-tags:
+      - tag: "awards"
   /award/piid/{PIID}:
     get:
       tags:
-      - "default_controller"
+      - "awards"
       summary: "Gets the detailed award for a specific PIID"
       description: "Returns an award object with a high level of detail"
       operationId: "controllers.default_controller.award_piid_piid_get"
@@ -58,10 +60,12 @@ paths:
           description: "An unexpected error occured."
           schema:
             $ref: "#/definitions/Error"
+      x-tags:
+      - tag: "awards"
   /award/uri/{URI}:
     get:
       tags:
-      - "default_controller"
+      - "awards"
       summary: "Gets the detailed award for a specific URI"
       description: "Returns an award object with a high level of detail"
       operationId: "controllers.default_controller.award_uri_uri_get"
@@ -84,10 +88,12 @@ paths:
           description: "An unexpected error occured."
           schema:
             $ref: "#/definitions/Error"
+      x-tags:
+      - tag: "awards"
   /awards:
     post:
       tags:
-      - "default_controller"
+      - "awards"
       summary: "Returns all awards which match specified qualifiers with a high level\
         \ of detail"
       operationId: "controllers.default_controller.awards_post"
@@ -115,10 +121,12 @@ paths:
           description: "An unexpected error occured."
           schema:
             $ref: "#/definitions/Error"
+      x-tags:
+      - tag: "awards"
   /awards/slim/{qualifiers}:
     get:
       tags:
-      - "default_controller"
+      - "awards"
       summary: "Returns all awards which match the specified qualifiers"
       description: "Returns an array of award objects with a low level of detail"
       operationId: "controllers.default_controller.awards_slim_qualifiers_get"
@@ -145,10 +153,12 @@ paths:
           description: "An unexpected error occured."
           schema:
             $ref: "#/definitions/Error"
+      x-tags:
+      - tag: "awards"
   /awards/{qualifiers}:
     get:
       tags:
-      - "default_controller"
+      - "awards"
       summary: "Returns all awards which match the specified qualifiers"
       description: "Returns an array of award objects with a high level of detail"
       operationId: "controllers.default_controller.awards_qualifiers_get"
@@ -175,6 +185,8 @@ paths:
           description: "An unexpected error occured."
           schema:
             $ref: "#/definitions/Error"
+      x-tags:
+      - tag: "awards"
 definitions:
   postqualifiers:
     type: "object"
