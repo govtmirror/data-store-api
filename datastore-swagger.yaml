@@ -7,6 +7,22 @@ info:
 # host: TBD.TBD.com
 basePath: /v1
 paths:
+  # Financial Endpoints
+  /financial/account/{MAC}:
+    get:
+      summary: Returns a financial account which matches the given main account code
+      parameters:
+        - $ref: '#/parameters/mainaccountcode'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Account'
+        404:
+          $ref: '#/responses/Standard404ErrorResponse'
+        500:
+          $ref: '#/responses/Standard500ErrorResponse'
+  # Award Endpoints
   /awards:
     post:
       tags:
@@ -120,6 +136,12 @@ paths:
 
 # Parameters
 parameters:
+  mainaccountcode:
+    name: MAC
+    in: path
+    required: true
+    description: The main account code for the requested account
+    type: string
   fain:
     name: FAIN
     in: path
