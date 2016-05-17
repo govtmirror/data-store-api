@@ -24,21 +24,6 @@ def get_mock_financial_account():
         "BeginningPeriodOfAvailability": "string"
     }
 
-def get_mock_slim_award():
-    return {
-        "AgencyIdentifier": "string",
-        "BeginningPeriodOfAvailability": "string",
-        "EndingPeriodOfAvailability": "string",
-        "MainAccountCode": "string",
-        "SubAccountCode": "string",
-        "PIID": "string",
-        "ParentAwardId": "string",
-        "FAIN": "string",
-        "URI": "string",
-        "TransactionObligatedAmount": "string",
-        "AwardType": "string"
-    }
-
 def get_mock_award():
     return {
         "VendorFaxNumber": "string",
@@ -104,11 +89,8 @@ def award_uri_uri_get(URI):
 def awards_post(body):
     return flask.jsonify({ "results": [get_mock_award(), get_mock_award()]})
 
-def awards_qualifiers_get(qualifiers):
-    return flask.jsonify({ "results": [get_mock_award(), get_mock_award()]})
-
-def awards_slim_qualifiers_get(qualifiers):
-    return flask.jsonify({ "results": [get_mock_slim_award(), get_mock_slim_award()]})
-
 def financial_account_mac_get(MAC):
     return flask.jsonify({ "results": get_mock_financial_account()})
+
+def financial_accounts_post(body):
+    return flask.jsonify({ "results": [get_mock_financial_account(), get_mock_financial_account()]})
