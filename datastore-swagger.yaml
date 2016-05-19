@@ -8,6 +8,47 @@ info:
 basePath: /v1
 paths:
   # Financial Endpoints
+  /financial/activity/{PAC}:
+    get:
+      tags:
+        - financial
+      summary: Returns a program activity which matches the given activity code
+      parameters:
+        - $ref: '#/parameters/programactivitycode'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Activity'
+        404:
+          $ref: '#/responses/Standard404ErrorResponse'
+        500:
+          $ref: '#/responses/Standard500ErrorResponse'
+  /financial/activities/:
+    post:
+      tags:
+        - financial
+      summary: Returns all program activities which match specified qualifiers with a high level of detail
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: >
+                          A json object representing a set of qualifiers
+          schema:
+            $ref: '#/definitions/postqualifiers'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Activities'
+        404:
+          $ref: '#/responses/Standard404ErrorResponse'
+        500:
+          $ref: '#/responses/Standard500ErrorResponse'
   /financial/account/{MAC}:
     get:
       tags:
@@ -129,6 +170,12 @@ paths:
 
 # Parameters
 parameters:
+  programactivitycode:
+    name: PAC
+    in: path
+    required: true
+    description: The program activity code of the requested activity
+    type: string
   mainaccountcode:
     name: MAC
     in: path
@@ -153,7 +200,7 @@ parameters:
     required: true
     description: The URI of the requested ward
     type: string
-    
+
 # Definitions
 definitions:
   postqualifiers:
@@ -162,7 +209,7 @@ definitions:
       fieldname:
         type: string
         description: The field name to which the filter applies
-        example: TransactionObligatedAmount
+        example: AgencyIdentifier
       filter:
         type: object
         description: A filter, comprised of an operation and value
@@ -170,15 +217,19 @@ definitions:
           operation:
             description: An operation to perform a comparison on the field value
             type: string
-            example: greater
+            example: equals
           value:
             description: The value to use in the operation comparison
             type: string
-            example: 3500
+            example: "097"
   Accounts:
     type: array
     items:
       $ref: '#/definitions/Account'
+  Activities:
+    type: array
+    items:
+      $ref: '#/definitions/Activity'
   Awards:
     type: array
     items:
@@ -507,6 +558,7 @@ definitions:
         type: string
 
   Account:
+    description: Represents an appropriation account
     properties:
       AdjustmentsToUnobligatedBalanceBroughtForward_CPE:
         description: >
@@ -699,6 +751,216 @@ definitions:
                         adjustment only" refers to unobligated amounts in
                         expired accounts.
         type: number
+  Activity:
+    description: Represents a program activity
+    properties:
+      AgencyIdentifier:
+        description: >
+                        The agency code identifies the department or agency that
+                        is responsible for the account.
+        type: string
+      AllocationTransferAgencyIdentifier:
+        description: >
+                        The allocation agency identifies the department or
+                        agency that is receiving funds through an allocation
+                        (non-expenditure) transfer.
+        type: string
+      AvailabilityTypeCode:
+        description: >
+                        In appropriations accounts, the availability type code
+                        identifies an unlimited period to incur new obligations;
+                        this is denoted by the letter "X".
+        type: string
+      BeginningPeriodOfAvailability:
+        description: >
+                        In annual and multi-year funds, the beginning period of
+                        availability identifies the first year of availability
+                        under law that an appropriation account may incur new
+                        obligations.
+        type: string
+      ByDirectReimbursableFundingSource:
+        description: >
+                        Holds an attribute flag which specifies that the funding
+                        source of the associated data value is either a Direct
+                        or Reimbursable Funding Source.
+        type: string
+      DeobligationsRecoveriesRefundsdOfPriorYearByProgramObjectClass_CPE:
+        description: >
+                        The amount of downward adjustments to obligations and
+                        outlays incurred resulting from deobligations, recoveries,
+                        or refunds collected, at the TAS / Program Activity /
+                        Object Class level. The adjustments are to the obligations
+                        and outlays which were made in a prior year.
+        type: number
+      EndingPeriodOfAvailability:
+        description: >
+                        In annual and multi-year funds, the end period of
+                        availability identifies the last year of funds
+                        availability under law that an appropriation account
+                        may incur new obligations.
+        type: string
+      GrossOutlayAmountByProgramObjectClass_CPE:
+        description: >
+                        The definition for this element appears in Section 20 of
+                        OMB Circular A-11 issued June 2015; a brief summary from
+                        A-11 appears below. Payments made to liquidate an
+                        obligation (other than the repayment of debt principal
+                        or other disbursements that are "means of financing"
+                        transactions). Outlays generally are equal to cash
+                        disbursements but also are recorded for cash-equivalent
+                        transactions, such as the issuance of debentures to pay
+                        insurance claims, and in a few cases are recorded on an
+                        accrual basis such as interest on public issues of the
+                        public debt. Outlays are the measure of Government spending.
+        type: number
+      GrossOutlayAmountByProgramObjectClass_FYB:
+        description: >
+                        The definition for this element appears in Section 20 of
+                        OMB Circular A-11 issued June 2015; a brief summary from
+                        A-11 appears below. Payments made to liquidate an
+                        obligation (other than the repayment of debt principal
+                        or other disbursements that are "means of financing"
+                        transactions). Outlays generally are equal to cash
+                        disbursements but also are recorded for cash-equivalent
+                        transactions, such as the issuance of debentures to pay
+                        insurance claims, and in a few cases are recorded on an
+                        accrual basis such as interest on public issues of the
+                        public debt. Outlays are the measure of Government spending.
+        type: number
+      GrossOutlaysDeliveredOrdersPaidTotal_CPE:
+        description: >
+                        The definition for this element appears in Section 20 of
+                        OMB Circular A-11 issued June 2015; a brief summary from
+                        A-11 appears below. Payments made to liquidate an obligation
+                        (other than the repayment of debt principal or other
+                        disbursements that are �means of financing� transactions).
+                        Outlays generally are equal to cash disbursements but
+                        also are recorded for cash-equivalent transactions, such
+                        as the issuance of debentures to pay insurance claims,
+                        and in a few cases are recorded on an accrual basis such
+                        as interest on public issues of the public debt. Outlays
+                        are the measure of Government spending.
+        type: number
+      GrossOutlaysDeliveredOrdersPaidTotal_FYB:
+        description: >
+                        The definition for this element appears in Section 20 of
+                        OMB Circular A-11 issued June 2015; a brief summary from
+                        A-11 appears below. Payments made to liquidate an
+                        obligation (other than the repayment of debt principal
+                        or other disbursements that are "means of financing"
+                        transactions). Outlays generally are equal to cash
+                        disbursements but also are recorded for cash-equivalent
+                        transactions, such as the issuance of debentures to pay
+                        insurance claims, and in a few cases are recorded on an
+                        accrual basis such as interest on public issues of the
+                        public debt. Outlays are the measure of Government spending.
+        type: number
+      GrossOutlaysUndeliveredOrdersPrepaidTotal_CPE:
+        description: >
+                        The definition for this element appears in Section 20 of
+                        OMB Circular A-11 issued June 2015; a brief summary from
+                        A-11 appears below. Payments made to liquidate an
+                        obligation (other than the repayment of debt principal
+                        or other disbursements that are "means of financing"
+                        transactions). Outlays generally are equal to cash
+                        disbursements but also are recorded for cash-equivalent
+                        transactions, such as the issuance of debentures to pay
+                        insurance claims, and in a few cases are recorded on an
+                        accrual basis such as interest on public issues of the
+                        public debt. Outlays are the measure of Government spending.
+        type: number
+      GrossOutlaysUndeliveredOrdersPrepaidTotal_FYB:
+        description: >
+                        The definition for this element appears in Section 20 of
+                        OMB Circular A-11 issued June 2015; a brief summary from
+                        A-11 appears below. Payments made to liquidate an
+                        obligation (other than the repayment of debt principal
+                        or other disbursements that are "means of financing"
+                        transactions). Outlays generally are equal to cash
+                        disbursements but also are recorded for cash-equivalent
+                        transactions, such as the issuance of debentures to pay
+                        insurance claims, and in a few cases are recorded on an
+                        accrual basis such as interest on public issues of the
+                        public debt. Outlays are the measure of Government spending.
+        type: number
+      MainAccountCode:
+        description: >
+                        The main account code identifies the account in statute.
+        type: string
+      ObjectClass:
+        description: >
+                        The definition for this element appears in Section 83 of
+                        OMB Circular A-11 issued June 2015; a brief summary from
+                        A-11 appears below. Categories in a classification
+                        system that presents obligations by the items or services
+                        purchased by the Federal Government.
+        type: string
+      ObligationsDeliveredOrdersUnpaidTotal_CPE:
+        description: >
+                        The definition for this element appears in Section 20 of
+                        OMB Circular A-11 issued June 2015; a brief summary from
+                        A-11 appears below. A legally binding agreement that
+                        will result in outlays, immediately or in the future.
+        type: number
+      ObligationsDeliveredOrdersUnpaidTotal_FYB:
+        description: >
+                        The definition for this element appears in Section 20 of
+                        OMB Circular A-11 issued June 2015; a brief summary from
+                        A-11 appears below. A legally binding agreement that will
+                        result in outlays, immediately or in the future.
+        type: number
+      ObligationsIncurredByProgramObjectClass_CPE:
+        description: >
+                        The definition for this element appears in Appendix F of
+                        OMB Circular A-11 issued June 2015; a brief summary from
+                        A-11 appears below. For unexpired accounts: Amount of
+                        obligations incurred from the beginning of the current
+                        fiscal year to the end of the reporting period, net of
+                        refunds received that pertain to obligations incurred
+                        in the current year. Include upward adjustments of prior
+                        obligations. For expired accounts: Amount of upward
+                        adjustments of obligations previously incurred. Upward
+                        adjustments are limited by the amount available for
+                        adjustments. No new obligations may be incurred against
+                        expired or canceled accounts.
+        type: number
+      ObligationsUndeliveredOrdersUnpaidTotal_CPE:
+        description: >
+                        The definition for this element appears in Section 20 of
+                        OMB Circular A-11 issued June 2015; a brief summary from
+                        A-11 appears below. A legally binding agreement that
+                        will result in outlays, immediately or in the future.
+        type: number
+      ObligationsUndeliveredOrdersUnpaidTotal_FYB:
+        description: >
+                        The definition for this element appears in Section 20 of
+                        OMB Circular A-11 issued June 2015; a brief summary from
+                        A-11 appears below. A legally binding agreement that
+                        will result in outlays, immediately or in the future.
+        type: number
+      ProgramActivityCode:
+        description: >
+                        The definition for this element appears in Section 200
+                        of OMB Circular A-11 issued June 2015; a brief summary
+                        from A-11 appears below. Code of a specific activity or
+                        project as listed in the program and financing schedules
+                        of the annual budget of the United States Government.
+        type: string
+      ProgramActivityName:
+        description: >
+                        The definition for this element appears in Section 200
+                        of OMB Circular A-11 issued June 2015; a brief summary
+                        from A-11 appears below. Name of a specific activity or
+                        project as listed in the program and financing schedules
+                        of the annual budget of the United States Government.
+        type: string
+      SubAccountCode:
+        description: >
+                        This is a component of the TAS. Identifies a
+                        Treasury-defined subdivision of the main account.
+                        This field cannot be blank. Subaccount 000 indicates
+                        the Parent account.
+        type: string
   Error:
     properties:
       code:

@@ -183,13 +183,73 @@ paths:
             $ref: "#/definitions/Error"
       x-tags:
       - tag: "financial"
+  /financial/activities/:
+    post:
+      tags:
+      - "financial"
+      summary: "Returns all program activities which match specified qualifiers with\
+        \ a high level of detail"
+      operationId: "controllers.default_controller.financial_activities_post"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "A json object representing a set of qualifiers\n"
+        required: false
+        schema:
+          $ref: "#/definitions/postqualifiers"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/Activities"
+        404:
+          description: "Resource not found."
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: "An unexpected error occured."
+          schema:
+            $ref: "#/definitions/Error"
+      x-tags:
+      - tag: "financial"
+  /financial/activity/{PAC}:
+    get:
+      tags:
+      - "financial"
+      summary: "Returns a program activity which matches the given activity code"
+      operationId: "controllers.default_controller.financial_activity_pac_get"
+      parameters:
+      - name: "PAC"
+        in: "path"
+        description: "The program activity code of the requested activity"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/Activity"
+        404:
+          description: "Resource not found."
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: "An unexpected error occured."
+          schema:
+            $ref: "#/definitions/Error"
+      x-tags:
+      - tag: "financial"
 definitions:
   postqualifiers:
     type: "object"
     properties:
       fieldname:
         type: "string"
-        example: "TransactionObligatedAmount"
+        example: "AgencyIdentifier"
         description: "The field name to which the filter applies"
       filter:
         $ref: "#/definitions/postqualifiers_filter"
@@ -197,6 +257,10 @@ definitions:
     type: "array"
     items:
       $ref: "#/definitions/Account"
+  Activities:
+    type: "array"
+    items:
+      $ref: "#/definitions/Activity"
   Awards:
     type: "array"
     items:
@@ -592,6 +656,171 @@ definitions:
           \ remains available for obligation under law in unexpired accounts. The\
           \ term \"expired balances available for adjustment only\" refers to unobligated\
           \ amounts in expired accounts.\n"
+    description: "Represents an appropriation account"
+  Activity:
+    properties:
+      AgencyIdentifier:
+        type: "string"
+        description: "The agency code identifies the department or agency that is\
+          \ responsible for the account.\n"
+      AllocationTransferAgencyIdentifier:
+        type: "string"
+        description: "The allocation agency identifies the department or agency that\
+          \ is receiving funds through an allocation (non-expenditure) transfer.\n"
+      AvailabilityTypeCode:
+        type: "string"
+        description: "In appropriations accounts, the availability type code identifies\
+          \ an unlimited period to incur new obligations; this is denoted by the letter\
+          \ \"X\".\n"
+      BeginningPeriodOfAvailability:
+        type: "string"
+        description: "In annual and multi-year funds, the beginning period of availability\
+          \ identifies the first year of availability under law that an appropriation\
+          \ account may incur new obligations.\n"
+      ByDirectReimbursableFundingSource:
+        type: "string"
+        description: "Holds an attribute flag which specifies that the funding source\
+          \ of the associated data value is either a Direct or Reimbursable Funding\
+          \ Source.\n"
+      DeobligationsRecoveriesRefundsdOfPriorYearByProgramObjectClass_CPE:
+        type: "number"
+        description: "The amount of downward adjustments to obligations and outlays\
+          \ incurred resulting from deobligations, recoveries, or refunds collected,\
+          \ at the TAS / Program Activity / Object Class level. The adjustments are\
+          \ to the obligations and outlays which were made in a prior year.\n"
+      EndingPeriodOfAvailability:
+        type: "string"
+        description: "In annual and multi-year funds, the end period of availability\
+          \ identifies the last year of funds availability under law that an appropriation\
+          \ account may incur new obligations.\n"
+      GrossOutlayAmountByProgramObjectClass_CPE:
+        type: "number"
+        description: "The definition for this element appears in Section 20 of OMB\
+          \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
+          \ Payments made to liquidate an obligation (other than the repayment of\
+          \ debt principal or other disbursements that are \"means of financing\"\
+          \ transactions). Outlays generally are equal to cash disbursements but also\
+          \ are recorded for cash-equivalent transactions, such as the issuance of\
+          \ debentures to pay insurance claims, and in a few cases are recorded on\
+          \ an accrual basis such as interest on public issues of the public debt.\
+          \ Outlays are the measure of Government spending.\n"
+      GrossOutlayAmountByProgramObjectClass_FYB:
+        type: "number"
+        description: "The definition for this element appears in Section 20 of OMB\
+          \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
+          \ Payments made to liquidate an obligation (other than the repayment of\
+          \ debt principal or other disbursements that are \"means of financing\"\
+          \ transactions). Outlays generally are equal to cash disbursements but also\
+          \ are recorded for cash-equivalent transactions, such as the issuance of\
+          \ debentures to pay insurance claims, and in a few cases are recorded on\
+          \ an accrual basis such as interest on public issues of the public debt.\
+          \ Outlays are the measure of Government spending.\n"
+      GrossOutlaysDeliveredOrdersPaidTotal_CPE:
+        type: "number"
+        description: "The definition for this element appears in Section 20 of OMB\
+          \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
+          \ Payments made to liquidate an obligation (other than the repayment of\
+          \ debt principal or other disbursements that are �means of financing� transactions).\
+          \ Outlays generally are equal to cash disbursements but also are recorded\
+          \ for cash-equivalent transactions, such as the issuance of debentures to\
+          \ pay insurance claims, and in a few cases are recorded on an accrual basis\
+          \ such as interest on public issues of the public debt. Outlays are the\
+          \ measure of Government spending.\n"
+      GrossOutlaysDeliveredOrdersPaidTotal_FYB:
+        type: "number"
+        description: "The definition for this element appears in Section 20 of OMB\
+          \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
+          \ Payments made to liquidate an obligation (other than the repayment of\
+          \ debt principal or other disbursements that are \"means of financing\"\
+          \ transactions). Outlays generally are equal to cash disbursements but also\
+          \ are recorded for cash-equivalent transactions, such as the issuance of\
+          \ debentures to pay insurance claims, and in a few cases are recorded on\
+          \ an accrual basis such as interest on public issues of the public debt.\
+          \ Outlays are the measure of Government spending.\n"
+      GrossOutlaysUndeliveredOrdersPrepaidTotal_CPE:
+        type: "number"
+        description: "The definition for this element appears in Section 20 of OMB\
+          \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
+          \ Payments made to liquidate an obligation (other than the repayment of\
+          \ debt principal or other disbursements that are \"means of financing\"\
+          \ transactions). Outlays generally are equal to cash disbursements but also\
+          \ are recorded for cash-equivalent transactions, such as the issuance of\
+          \ debentures to pay insurance claims, and in a few cases are recorded on\
+          \ an accrual basis such as interest on public issues of the public debt.\
+          \ Outlays are the measure of Government spending.\n"
+      GrossOutlaysUndeliveredOrdersPrepaidTotal_FYB:
+        type: "number"
+        description: "The definition for this element appears in Section 20 of OMB\
+          \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
+          \ Payments made to liquidate an obligation (other than the repayment of\
+          \ debt principal or other disbursements that are \"means of financing\"\
+          \ transactions). Outlays generally are equal to cash disbursements but also\
+          \ are recorded for cash-equivalent transactions, such as the issuance of\
+          \ debentures to pay insurance claims, and in a few cases are recorded on\
+          \ an accrual basis such as interest on public issues of the public debt.\
+          \ Outlays are the measure of Government spending.\n"
+      MainAccountCode:
+        type: "string"
+        description: "The main account code identifies the account in statute.\n"
+      ObjectClass:
+        type: "string"
+        description: "The definition for this element appears in Section 83 of OMB\
+          \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
+          \ Categories in a classification system that presents obligations by the\
+          \ items or services purchased by the Federal Government.\n"
+      ObligationsDeliveredOrdersUnpaidTotal_CPE:
+        type: "number"
+        description: "The definition for this element appears in Section 20 of OMB\
+          \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
+          \ A legally binding agreement that will result in outlays, immediately or\
+          \ in the future.\n"
+      ObligationsDeliveredOrdersUnpaidTotal_FYB:
+        type: "number"
+        description: "The definition for this element appears in Section 20 of OMB\
+          \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
+          \ A legally binding agreement that will result in outlays, immediately or\
+          \ in the future.\n"
+      ObligationsIncurredByProgramObjectClass_CPE:
+        type: "number"
+        description: "The definition for this element appears in Appendix F of OMB\
+          \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
+          \ For unexpired accounts: Amount of obligations incurred from the beginning\
+          \ of the current fiscal year to the end of the reporting period, net of\
+          \ refunds received that pertain to obligations incurred in the current year.\
+          \ Include upward adjustments of prior obligations. For expired accounts:\
+          \ Amount of upward adjustments of obligations previously incurred. Upward\
+          \ adjustments are limited by the amount available for adjustments. No new\
+          \ obligations may be incurred against expired or canceled accounts.\n"
+      ObligationsUndeliveredOrdersUnpaidTotal_CPE:
+        type: "number"
+        description: "The definition for this element appears in Section 20 of OMB\
+          \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
+          \ A legally binding agreement that will result in outlays, immediately or\
+          \ in the future.\n"
+      ObligationsUndeliveredOrdersUnpaidTotal_FYB:
+        type: "number"
+        description: "The definition for this element appears in Section 20 of OMB\
+          \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
+          \ A legally binding agreement that will result in outlays, immediately or\
+          \ in the future.\n"
+      ProgramActivityCode:
+        type: "string"
+        description: "The definition for this element appears in Section 200 of OMB\
+          \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
+          \ Code of a specific activity or project as listed in the program and financing\
+          \ schedules of the annual budget of the United States Government.\n"
+      ProgramActivityName:
+        type: "string"
+        description: "The definition for this element appears in Section 200 of OMB\
+          \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
+          \ Name of a specific activity or project as listed in the program and financing\
+          \ schedules of the annual budget of the United States Government.\n"
+      SubAccountCode:
+        type: "string"
+        description: "This is a component of the TAS. Identifies a Treasury-defined\
+          \ subdivision of the main account. This field cannot be blank. Subaccount\
+          \ 000 indicates the Parent account.\n"
+    description: "Represents a program activity"
   Error:
     properties:
       code:
@@ -602,14 +831,20 @@ definitions:
     properties:
       operation:
         type: "string"
-        example: "greater"
+        example: "equals"
         description: "An operation to perform a comparison on the field value"
       value:
         type: "string"
-        example: "3500"
+        example: "097"
         description: "The value to use in the operation comparison"
     description: "A filter, comprised of an operation and value"
 parameters:
+  programactivitycode:
+    name: "PAC"
+    in: "path"
+    description: "The program activity code of the requested activity"
+    required: true
+    type: "string"
   mainaccountcode:
     name: "MAC"
     in: "path"
