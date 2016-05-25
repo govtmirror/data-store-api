@@ -556,7 +556,6 @@ definitions:
                         Contract (IDC), Federal Supply Schedule (FSS), Basic
                         Ordering Agreement (BOA), and Blanket Purchase Agreements (BPA).
         type: string
-
   Account:
     description: Represents an appropriation account
     properties:
@@ -569,23 +568,27 @@ definitions:
                         recorded in the unpaid obligations as of October 1 of
                         the current fiscal year.
         type: number
+        example: -3500.00
       AgencyIdentifier:
         description: >
                         The agency code identifies the department or agency
                         that is responsible for the account.
         type: string
+        example: "097"
       AllocationTransferAgencyIdentifier:
         description: >
                         The allocation agency identifies the department or
                         agency that is receiving funds through an allocation
                         (non-expenditure) transfer.
         type: string
+        example: "020"
       AvailabilityTypeCode:
         description: >
                         In appropriations accounts, the availability type code
                         identifies an unlimited period to incur new obligations;
                         this is denoted by the letter "X".
         type: string
+        example: "X"
       BeginningPeriodOfAvailability:
         description: >
                         In annual and multi-year funds, the beginning period of
@@ -593,6 +596,7 @@ definitions:
                         under law that an appropriation account may incur new
                         obligations.
         type: string
+        example: "2014"
       BorrowingAuthorityAmountTotal_CPE:
         description: >
                         The definition for this element appears in Section 20
@@ -601,6 +605,7 @@ definitions:
                         of budget authority that permits obligations and outlays
                         to be financed by borrowing.
         type: number
+        example: 3500.00
       BudgetAuthorityAppropriatedAmount_CPE:
         description: >
                         The definition for this element appears in Section 20 of
@@ -611,6 +616,7 @@ definitions:
                         purpose. Usually, but not always, an appropriation
                         provides budget authority.
         type: number
+        example: 3500.00
       BudgetAuthorityAvailableAmountTotal_CPE:
         description: >
                         The total amount of all obligation budget authority
@@ -619,6 +625,7 @@ definitions:
                         appropriated amounts, and other budgetary resources,
                         as of the reported date.
         type: number
+        example: 3500.00
       BudgetAuthorityUnobligatedBalanceBroughtForward_FYB:
         description: >
                         The definition for this element appears in Appendix F
@@ -631,6 +638,7 @@ definitions:
                         unobligated balances available for upward adjustments
                         of obligations.
         type: number
+        example: 3500.00
       ContractAuthorityAmountTotal_CPE:
         description: >
                         The definition for this element appears in Section 20 of
@@ -644,6 +652,7 @@ definitions:
                         in anticipation of the collection of receipts or
                         offsetting collections that will be used to liquidate the obligations.
         type: number
+        example: 3500.00
       DeobligationsRecoveriesRefundsByTAS_CPE:
         description: >
                         The amount of downward adjustments to obligations and
@@ -652,6 +661,7 @@ definitions:
                         adjustments are to the obligations and outlays which
                         were made in a prior year.
         type: number
+        example: 3500.00
       EndingPeriodOfAvailability:
         description: >
                         In annual and multi-year funds, the end period of
@@ -659,6 +669,7 @@ definitions:
                         availability under law that an appropriation account
                         may incur new obligations.
         type: string
+        example: "2015"
       GrossOutlayAmountByTAS_CPE:
         description: >
                         The definition for this element appears in Section 20 of
@@ -673,10 +684,12 @@ definitions:
                         accrual basis such as interest on public issues of the
                         public debt. Outlays are the measure of Government spending.
         type: number
+        example: -3500.00
       MainAccountCode:
         description: >
                         The main account code identifies the account in statute.
         type: string
+        example: "5531"
       ObligationsIncurredTotalByTAS_CPE:
         description: >
                         The definition for this element appears in Appendix F
@@ -692,6 +705,7 @@ definitions:
                         adjustments. No new obligations may be incurred against
                         expired or canceled accounts.
         type: number
+        example: 3500.00
       OtherBudgetaryResourcesAmount_CPE:
         description: >
                         The definition for this element appears in Section 20 of
@@ -703,6 +717,7 @@ definitions:
                         budgetary resources made available in previous
                         legislation, to incur obligations and to make outlays.
         type: number
+        example: 3500.00
       SpendingAuthorityfromOffsettingCollectionsAmountTotal_CPE:
         description: >
                         The definition for this element appears in Section 20
@@ -725,6 +740,7 @@ definitions:
                         accounts. The authority to spend offsetting collections
                         is a form of budget authority.
         type: number
+        example: 3500.00
       StatusOfBudgetaryResourcesTotal_CPE:
         description: >
                         This element addresses the status of budgetary resources
@@ -733,6 +749,7 @@ definitions:
                         the Budget Authority Available Amount Total for the
                         TAS at Current Period End.
         type: number
+        example: 3500.00
       SubAccountCode:
         description: >
                         This is a component of the TAS. Identifies a
@@ -740,6 +757,7 @@ definitions:
                         field cannot be blank. Subaccount 000 indicates the
                         Parent account.
         type: string
+        example: "000"
       UnobligatedBalance_CPE:
         description: >
                         The definition for this element appears in Section 20 of
@@ -751,6 +769,7 @@ definitions:
                         adjustment only" refers to unobligated amounts in
                         expired accounts.
         type: number
+        example: 3500.00
   Activity:
     description: Represents a program activity
     properties:
@@ -759,18 +778,21 @@ definitions:
                         The agency code identifies the department or agency that
                         is responsible for the account.
         type: string
+        example: "097"
       AllocationTransferAgencyIdentifier:
         description: >
                         The allocation agency identifies the department or
                         agency that is receiving funds through an allocation
                         (non-expenditure) transfer.
         type: string
+        example: "020"
       AvailabilityTypeCode:
         description: >
                         In appropriations accounts, the availability type code
                         identifies an unlimited period to incur new obligations;
                         this is denoted by the letter "X".
         type: string
+        example: "X"
       BeginningPeriodOfAvailability:
         description: >
                         In annual and multi-year funds, the beginning period of
@@ -778,12 +800,14 @@ definitions:
                         under law that an appropriation account may incur new
                         obligations.
         type: string
+        example: "2014"
       ByDirectReimbursableFundingSource:
         description: >
                         Holds an attribute flag which specifies that the funding
                         source of the associated data value is either a Direct
                         or Reimbursable Funding Source.
         type: string
+        example: "R"
       DeobligationsRecoveriesRefundsdOfPriorYearByProgramObjectClass_CPE:
         description: >
                         The amount of downward adjustments to obligations and
@@ -792,6 +816,7 @@ definitions:
                         Object Class level. The adjustments are to the obligations
                         and outlays which were made in a prior year.
         type: number
+        example: 3500.00
       EndingPeriodOfAvailability:
         description: >
                         In annual and multi-year funds, the end period of
@@ -799,6 +824,7 @@ definitions:
                         availability under law that an appropriation account
                         may incur new obligations.
         type: string
+        example: "2015"
       GrossOutlayAmountByProgramObjectClass_CPE:
         description: >
                         The definition for this element appears in Section 20 of
@@ -813,6 +839,7 @@ definitions:
                         accrual basis such as interest on public issues of the
                         public debt. Outlays are the measure of Government spending.
         type: number
+        example: -4500.00
       GrossOutlayAmountByProgramObjectClass_FYB:
         description: >
                         The definition for this element appears in Section 20 of
@@ -827,6 +854,7 @@ definitions:
                         accrual basis such as interest on public issues of the
                         public debt. Outlays are the measure of Government spending.
         type: number
+        example: -4500.00
       GrossOutlaysDeliveredOrdersPaidTotal_CPE:
         description: >
                         The definition for this element appears in Section 20 of
@@ -841,6 +869,7 @@ definitions:
                         as interest on public issues of the public debt. Outlays
                         are the measure of Government spending.
         type: number
+        example: -4500.00
       GrossOutlaysDeliveredOrdersPaidTotal_FYB:
         description: >
                         The definition for this element appears in Section 20 of
@@ -855,6 +884,7 @@ definitions:
                         accrual basis such as interest on public issues of the
                         public debt. Outlays are the measure of Government spending.
         type: number
+        example: -4500.00
       GrossOutlaysUndeliveredOrdersPrepaidTotal_CPE:
         description: >
                         The definition for this element appears in Section 20 of
@@ -869,6 +899,7 @@ definitions:
                         accrual basis such as interest on public issues of the
                         public debt. Outlays are the measure of Government spending.
         type: number
+        example: -4500.00
       GrossOutlaysUndeliveredOrdersPrepaidTotal_FYB:
         description: >
                         The definition for this element appears in Section 20 of
@@ -883,10 +914,12 @@ definitions:
                         accrual basis such as interest on public issues of the
                         public debt. Outlays are the measure of Government spending.
         type: number
+        example: -4500.00
       MainAccountCode:
         description: >
                         The main account code identifies the account in statute.
         type: string
+        example: "1552"
       ObjectClass:
         description: >
                         The definition for this element appears in Section 83 of
@@ -895,6 +928,7 @@ definitions:
                         system that presents obligations by the items or services
                         purchased by the Federal Government.
         type: string
+        example: "254"
       ObligationsDeliveredOrdersUnpaidTotal_CPE:
         description: >
                         The definition for this element appears in Section 20 of
@@ -902,6 +936,7 @@ definitions:
                         A-11 appears below. A legally binding agreement that
                         will result in outlays, immediately or in the future.
         type: number
+        example: -4500.00
       ObligationsDeliveredOrdersUnpaidTotal_FYB:
         description: >
                         The definition for this element appears in Section 20 of
@@ -909,6 +944,7 @@ definitions:
                         A-11 appears below. A legally binding agreement that will
                         result in outlays, immediately or in the future.
         type: number
+        example: -4500.00
       ObligationsIncurredByProgramObjectClass_CPE:
         description: >
                         The definition for this element appears in Appendix F of
@@ -924,6 +960,7 @@ definitions:
                         adjustments. No new obligations may be incurred against
                         expired or canceled accounts.
         type: number
+        example: -3500.00
       ObligationsUndeliveredOrdersUnpaidTotal_CPE:
         description: >
                         The definition for this element appears in Section 20 of
@@ -931,6 +968,7 @@ definitions:
                         A-11 appears below. A legally binding agreement that
                         will result in outlays, immediately or in the future.
         type: number
+        example: -4500.00
       ObligationsUndeliveredOrdersUnpaidTotal_FYB:
         description: >
                         The definition for this element appears in Section 20 of
@@ -938,6 +976,7 @@ definitions:
                         A-11 appears below. A legally binding agreement that
                         will result in outlays, immediately or in the future.
         type: number
+        example: -4500.00
       ProgramActivityCode:
         description: >
                         The definition for this element appears in Section 200
@@ -946,6 +985,7 @@ definitions:
                         project as listed in the program and financing schedules
                         of the annual budget of the United States Government.
         type: string
+        example: "0002"
       ProgramActivityName:
         description: >
                         The definition for this element appears in Section 200
@@ -954,6 +994,7 @@ definitions:
                         project as listed in the program and financing schedules
                         of the annual budget of the United States Government.
         type: string
+        example: "Preschool Grants"
       SubAccountCode:
         description: >
                         This is a component of the TAS. Identifies a
@@ -961,6 +1002,7 @@ definitions:
                         This field cannot be blank. Subaccount 000 indicates
                         the Parent account.
         type: string
+        example: "000"
   Error:
     properties:
       code:
