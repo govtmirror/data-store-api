@@ -1,18 +1,54 @@
 import flask
 
-def get_mock_slim_award():
+def get_mock_program_activity():
     return {
+        "ByDirectReimbursableFundingSource": "string",
+        "AllocationTransferAgencyIdentifier": "string",
+        "ProgramActivityCode": "string",
+        "ProgramActivityName": "string",
+        "ObligationsDeliveredOrdersUnpaidTotal_FYB": 0,
+        "GrossOutlaysUndeliveredOrdersPrepaidTotal_CPE": 0,
+        "GrossOutlaysDeliveredOrdersPaidTotal_FYB": 0,
+        "GrossOutlaysDeliveredOrdersPaidTotal_CPE": 0,
         "AgencyIdentifier": "string",
-        "BeginningPeriodOfAvailability": "string",
+        "ObligationsUndeliveredOrdersUnpaidTotal_FYB": 0,
+        "GrossOutlayAmountByProgramObjectClass_CPE": 0,
+        "ObligationsUndeliveredOrdersUnpaidTotal_CPE": 0,
+        "DeobligationsRecoveriesRefundsdOfPriorYearByProgramObjectClass_CPE": 0,
         "EndingPeriodOfAvailability": "string",
-        "MainAccountCode": "string",
+        "ObjectClass": "string",
         "SubAccountCode": "string",
-        "PIID": "string",
-        "ParentAwardId": "string",
-        "FAIN": "string",
-        "URI": "string",
-        "TransactionObligatedAmount": "string",
-        "AwardType": "string"
+        "ObligationsDeliveredOrdersUnpaidTotal_CPE": 0,
+        "AvailabilityTypeCode": "string",
+        "BeginningPeriodOfAvailability": "string",
+        "MainAccountCode": "string",
+        "GrossOutlayAmountByProgramObjectClass_FYB": 0,
+        "ObligationsIncurredByProgramObjectClass_CPE": 0,
+        "GrossOutlaysUndeliveredOrdersPrepaidTotal_FYB": 0
+    }
+
+def get_mock_financial_account():
+    return {
+        "ObligationsIncurredTotalByTAS_CPE": 0,
+        "ContractAuthorityAmountTotal_CPE": 0,
+        "AllocationTransferAgencyIdentifier": "string",
+        "BudgetAuthorityUnobligatedBalanceBroughtForward_FYB": 0,
+        "GrossOutlayAmountByTAS_CPE": 0,
+        "BudgetAuthorityAvailableAmountTotal_CPE": 0,
+        "AvailabilityTypeCode": "string",
+        "AgencyIdentifier": "string",
+        "DeobligationsRecoveriesRefundsByTAS_CPE": 0,
+        "BorrowingAuthorityAmountTotal_CPE": 0,
+        "AdjustmentsToUnobligatedBalanceBroughtForward_CPE": 0,
+        "SpendingAuthorityfromOffsettingCollectionsAmountTotal_CPE": 0,
+        "EndingPeriodOfAvailability": "string",
+        "SubAccountCode": "string",
+        "StatusOfBudgetaryResourcesTotal_CPE": 0,
+        "BudgetAuthorityAppropriatedAmount_CPE": 0,
+        "OtherBudgetaryResourcesAmount_CPE": 0,
+        "UnobligatedBalance_CPE": 0,
+        "MainAccountCode": "string",
+        "BeginningPeriodOfAvailability": "string"
     }
 
 def get_mock_award():
@@ -80,8 +116,14 @@ def award_uri_uri_get(URI):
 def awards_post(body):
     return flask.jsonify({ "results": [get_mock_award(), get_mock_award()]})
 
-def awards_qualifiers_get(qualifiers):
-    return flask.jsonify({ "results": [get_mock_award(), get_mock_award()]})
+def financial_account_mac_get(MAC):
+    return flask.jsonify({ "results": get_mock_financial_account()})
 
-def awards_slim_qualifiers_get(qualifiers):
-    return flask.jsonify({ "results": [get_mock_slim_award(), get_mock_slim_award()]})
+def financial_accounts_post(body):
+    return flask.jsonify({ "results": [get_mock_financial_account(), get_mock_financial_account()]})
+
+def financial_activities_post(body):
+    return flask.jsonify({ "results": [get_mock_program_activity(), get_mock_program_activity()]})
+
+def financial_activity_pac_get(PAC):
+    return flask.jsonify({ "results": get_mock_program_activity()})
