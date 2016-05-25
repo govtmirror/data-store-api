@@ -6,4 +6,4 @@ Please note the default branch is _dev_, rather than _master_, as all pull reque
 * _dev_ branch holds the latest tested and reviewed code from the current sprint
 * _staging_ branch is pulled automatically by the API's server and deployed
 
-All other branches should ideally follow the naming convention of _*JIRA STORY*-breif summary_
+All other branches should ideally follow the naming convention of _*JIRA STORY*-brief summary_, e.g. DS-80-financial-endpoints
