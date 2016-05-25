@@ -204,24 +204,25 @@ parameters:
 # Definitions
 definitions:
   postqualifiers:
+    type: array
+    items:
+      $ref: '#/definitions/filter'
+  filter:
     type: object
+    description: A filter, comprised of an operation and value
     properties:
+      operation:
+        description: An operation to perform a comparison on the field value
+        type: string
+        example: equals
+      value:
+        description: The value to use in the operation comparison
+        type: string
+        example: "097"
       fieldname:
         type: string
         description: The field name to which the filter applies
         example: AgencyIdentifier
-      filter:
-        type: object
-        description: A filter, comprised of an operation and value
-        properties:
-          operation:
-            description: An operation to perform a comparison on the field value
-            type: string
-            example: equals
-          value:
-            description: The value to use in the operation comparison
-            type: string
-            example: "097"
   Accounts:
     type: array
     items:
@@ -244,11 +245,13 @@ definitions:
                         or agency that is receiving funds through an
                         allocation (non-expenditure) transfer.
         type: string
+        example: "020"
       AgencyIdentifier:
         description: >
                         The agency code identifies the department or
                         agency that is responsible for the account.
         type: string
+        example: "097"
       BeginningPeriodOfAvailability:
         description: >
                         In annual and multi-year funds, the beginning
@@ -256,6 +259,7 @@ definitions:
                         of availability under law that an appropriation
                         account may incur new obligations.
         type: string
+        example: "2014"
       EndingPeriodOfAvailability:
         description: >
                         In annual and multi-year funds, the end period
@@ -263,16 +267,19 @@ definitions:
                         availability under law that an appropriation account
                         may incur new obligations.
         type: string
+        example: "2015"
       AvailabilityTypeCode:
         description: >
                         In appropriations accounts, the availability type code
                         identifies an unlimited period to incur new obligations;
                         this is denoted by the letter "X".
         type: string
+        example: "X"
       MainAccountCode:
         description: >
                         The main account code identifies the account in statute.
         type: string
+        example: "1552"
       SubAccountCode:
         description: >
                         This is a component of the TAS. Identifies a
@@ -280,6 +287,7 @@ definitions:
                         This field cannot be blank. Subaccount 000 indicates
                         the Parent account.
         type: string
+        example: "000"
       PIID:
         description: >
                         The unique identifier of the specific award being reported.
@@ -296,11 +304,13 @@ definitions:
                         is the unique ID within the Federal agency for
                         each (non-aggregate) financial assistance award.
         type: string
+        example: "123456798"
       URI:
         description: >
                         Unique Record Identifier. An agency defined identifier
                         that (when provided) is unique for every reported action.
         type: string
+        example: "12-34-56-78-90-AS-DF-AB-XZ-YW"
       ProgramActivityName:
         description: >
                         The definition for this element appears in Section 200
@@ -309,6 +319,7 @@ definitions:
                         project as listed in the program and financing
                         schedules of the annual budget of the United States Government.
         type: string
+        example: "Preschool Grants"
       ProgramActivityCode:
         description: >
                         The definition for this element appears in Section 200
@@ -317,6 +328,7 @@ definitions:
                         project as listed in the program and financing
                          schedules of the annual budget of the United States Government.
         type: string
+        example: "0002"
       ObjectClass:
         description: >
                         The definition for this element appears in Section 83
@@ -324,7 +336,8 @@ definitions:
                         from A-11 appears below. Categories in a classification
                         system that presents obligations by the items or
                         services purchased by the Federal Government.
-        type: string
+        type: number
+        example: 254
       TransactionObligatedAmount:
         description: >
                         The definition for this element appears in Section 20
@@ -333,7 +346,8 @@ definitions:
                         agreement that will result in outlays, immediately or
                         in the future. Budgetary resources must be available
                         before obligations can be incurred legally.
-        type: string
+        type: number
+        example: 3500.00
       AwardingSubTierAgencyCode:
         description: >
                         Identifier of the level 2 organization that awarded,
