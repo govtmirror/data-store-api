@@ -270,32 +270,39 @@ definitions:
     properties:
       AllocationTransferAgencyIdentifier:
         type: "string"
+        example: "020"
         description: "The allocation agency identifies the department or agency that\
           \ is receiving funds through an allocation (non-expenditure) transfer.\n"
       AgencyIdentifier:
         type: "string"
+        example: "097"
         description: "The agency code identifies the department or agency that is\
           \ responsible for the account.\n"
       BeginningPeriodOfAvailability:
         type: "string"
+        example: "2014"
         description: "In annual and multi-year funds, the beginning period of availability\
           \ identifies the first year of availability under law that an appropriation\
           \ account may incur new obligations.\n"
       EndingPeriodOfAvailability:
         type: "string"
+        example: "2015"
         description: "In annual and multi-year funds, the end period of availability\
           \ identifies the last year of funds availability under law that an appropriation\
           \ account may incur new obligations.\n"
       AvailabilityTypeCode:
         type: "string"
+        example: "X"
         description: "In appropriations accounts, the availability type code identifies\
           \ an unlimited period to incur new obligations; this is denoted by the letter\
           \ \"X\".\n"
       MainAccountCode:
         type: "string"
+        example: "1552"
         description: "The main account code identifies the account in statute.\n"
       SubAccountCode:
         type: "string"
+        example: "000"
         description: "This is a component of the TAS. Identifies a Treasury-defined\
           \ subdivision of the main account. This field cannot be blank. Subaccount\
           \ 000 indicates the Parent account.\n"
@@ -309,33 +316,39 @@ definitions:
           \ to procurement actions only\n"
       FAIN:
         type: "string"
+        example: "123456798"
         description: "The Federal Award Identification Number (FAIN) is the unique\
           \ ID within the Federal agency for each (non-aggregate) financial assistance\
           \ award.\n"
       URI:
         type: "string"
+        example: "12-34-56-78-90-AS-DF-AB-XZ-YW"
         description: "Unique Record Identifier. An agency defined identifier that\
           \ (when provided) is unique for every reported action.\n"
       ProgramActivityName:
         type: "string"
+        example: "Preschool Grants"
         description: "The definition for this element appears in Section 200 of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ Name of a specific activity or project as listed in the program and financing\
           \ schedules of the annual budget of the United States Government.\n"
       ProgramActivityCode:
         type: "string"
+        example: "0002"
         description: "The definition for this element appears in Section 200 of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ Code of a specific activity or project as listed in the program and financing\n\
           \ schedules of the annual budget of the United States Government.\n"
       ObjectClass:
-        type: "string"
+        type: "number"
+        example: 254
         description: "The definition for this element appears in Section 83 of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ Categories in a classification system that presents obligations by the\
           \ items or services purchased by the Federal Government.\n"
       TransactionObligatedAmount:
-        type: "string"
+        type: "number"
+        example: 3500
         description: "The definition for this element appears in Section 20 of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ Obligation means a binding agreement that will result in outlays, immediately\
@@ -516,6 +529,7 @@ definitions:
     properties:
       AdjustmentsToUnobligatedBalanceBroughtForward_CPE:
         type: "number"
+        example: -3500
         description: "The definition for this element appears in Appendix F of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ Changes to unpaid obligations that occurred in a prior fiscal year and\
@@ -523,30 +537,36 @@ definitions:
           \ current fiscal year.\n"
       AgencyIdentifier:
         type: "string"
+        example: "097"
         description: "The agency code identifies the department or agency that is\
           \ responsible for the account.\n"
       AllocationTransferAgencyIdentifier:
         type: "string"
+        example: "020"
         description: "The allocation agency identifies the department or agency that\
           \ is receiving funds through an allocation (non-expenditure) transfer.\n"
       AvailabilityTypeCode:
         type: "string"
+        example: "X"
         description: "In appropriations accounts, the availability type code identifies\
           \ an unlimited period to incur new obligations; this is denoted by the letter\
           \ \"X\".\n"
       BeginningPeriodOfAvailability:
         type: "string"
+        example: "2014"
         description: "In annual and multi-year funds, the beginning period of availability\
           \ identifies the first year of availability under law that an appropriation\
           \ account may incur new obligations.\n"
       BorrowingAuthorityAmountTotal_CPE:
         type: "number"
+        example: 3500
         description: "The definition for this element appears in Section 20 of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ Borrowing authority is a type of budget authority that permits obligations\
           \ and outlays to be financed by borrowing.\n"
       BudgetAuthorityAppropriatedAmount_CPE:
         type: "number"
+        example: 3500
         description: "The definition for this element appears in Section 20 of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ Appropriation means a provision of law (not necessarily in an appropriations\
@@ -554,12 +574,14 @@ definitions:
           \ but not always, an appropriation provides budget authority.\n"
       BudgetAuthorityAvailableAmountTotal_CPE:
         type: "number"
+        example: 3500
         description: "The total amount of all obligation budget authority including\
           \ unobligated balances carried forward, adjustments to unobligated balances\
           \ carried forward, appropriated amounts, and other budgetary resources,\
           \ as of the reported date.\n"
       BudgetAuthorityUnobligatedBalanceBroughtForward_FYB:
         type: "number"
+        example: 3500
         description: "The definition for this element appears in Appendix F of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ For unexpired accounts: Amount of unobligated balance of appropriations\
@@ -569,6 +591,7 @@ definitions:
           \ of obligations.\n"
       ContractAuthorityAmountTotal_CPE:
         type: "number"
+        example: 3500
         description: "The definition for this element appears in Section 20 of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ Contract authority is a type of budget authority that permits you to incur\
@@ -579,17 +602,20 @@ definitions:
           \ or offsetting collections that will be used to liquidate the obligations.\n"
       DeobligationsRecoveriesRefundsByTAS_CPE:
         type: "number"
+        example: 3500
         description: "The amount of downward adjustments to obligations and outlays\
           \ resulting from deobligations, recoveries, or refunds collected, summarized\
           \ at the TAS level. The adjustments are to the obligations and outlays which\
           \ were made in a prior year.\n"
       EndingPeriodOfAvailability:
         type: "string"
+        example: "2015"
         description: "In annual and multi-year funds, the end period of availability\
           \ identifies the last year of funds availability under law that an appropriation\
           \ account may incur new obligations.\n"
       GrossOutlayAmountByTAS_CPE:
         type: "number"
+        example: -3500
         description: "The definition for this element appears in Section 20 of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ Payments made to liquidate an obligation (other than the repayment of\
@@ -601,9 +627,11 @@ definitions:
           \ measure of Government spending.\n"
       MainAccountCode:
         type: "string"
+        example: "5531"
         description: "The main account code identifies the account in statute.\n"
       ObligationsIncurredTotalByTAS_CPE:
         type: "number"
+        example: 3500
         description: "The definition for this element appears in Appendix F of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ For unexpired accounts: Amount of obligations incurred from the beginning\
@@ -615,6 +643,7 @@ definitions:
           \ obligations may be incurred against expired or canceled accounts.\n"
       OtherBudgetaryResourcesAmount_CPE:
         type: "number"
+        example: 3500
         description: "The definition for this element appears in Section 20 of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ New borrowing authority, contract authority, and spending authority from\
@@ -623,6 +652,7 @@ definitions:
           \ available in previous legislation, to incur obligations and to make outlays.\n"
       SpendingAuthorityfromOffsettingCollectionsAmountTotal_CPE:
         type: "number"
+        example: 3500
         description: "The definition for this element appears in Section 20 of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ Spending authority from offsetting collections is a type of budget authority\
@@ -639,17 +669,20 @@ definitions:
           \ collections is a form of budget authority.\n"
       StatusOfBudgetaryResourcesTotal_CPE:
         type: "number"
+        example: 3500
         description: "This element addresses the status of budgetary resources and\
           \ includes the total of obligated and unobligated balances, at the reported\
           \ date. The value should equal the Budget Authority Available Amount Total\
           \ for the TAS at Current Period End.\n"
       SubAccountCode:
         type: "string"
+        example: "000"
         description: "This is a component of the TAS. Identifies a Treasury-defined\
           \ subdivision of the main account. This field cannot be blank. Subaccount\
           \ 000 indicates the Parent account.\n"
       UnobligatedBalance_CPE:
         type: "number"
+        example: 3500
         description: "The definition for this element appears in Section 20 of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ Unobligated balance means the cumulative amount of budget authority that\
@@ -661,40 +694,48 @@ definitions:
     properties:
       AgencyIdentifier:
         type: "string"
+        example: "097"
         description: "The agency code identifies the department or agency that is\
           \ responsible for the account.\n"
       AllocationTransferAgencyIdentifier:
         type: "string"
+        example: "020"
         description: "The allocation agency identifies the department or agency that\
           \ is receiving funds through an allocation (non-expenditure) transfer.\n"
       AvailabilityTypeCode:
         type: "string"
+        example: "X"
         description: "In appropriations accounts, the availability type code identifies\
           \ an unlimited period to incur new obligations; this is denoted by the letter\
           \ \"X\".\n"
       BeginningPeriodOfAvailability:
         type: "string"
+        example: "2014"
         description: "In annual and multi-year funds, the beginning period of availability\
           \ identifies the first year of availability under law that an appropriation\
           \ account may incur new obligations.\n"
       ByDirectReimbursableFundingSource:
         type: "string"
+        example: "R"
         description: "Holds an attribute flag which specifies that the funding source\
           \ of the associated data value is either a Direct or Reimbursable Funding\
           \ Source.\n"
       DeobligationsRecoveriesRefundsdOfPriorYearByProgramObjectClass_CPE:
         type: "number"
+        example: 3500
         description: "The amount of downward adjustments to obligations and outlays\
           \ incurred resulting from deobligations, recoveries, or refunds collected,\
           \ at the TAS / Program Activity / Object Class level. The adjustments are\
           \ to the obligations and outlays which were made in a prior year.\n"
       EndingPeriodOfAvailability:
         type: "string"
+        example: "2015"
         description: "In annual and multi-year funds, the end period of availability\
           \ identifies the last year of funds availability under law that an appropriation\
           \ account may incur new obligations.\n"
       GrossOutlayAmountByProgramObjectClass_CPE:
         type: "number"
+        example: -4500
         description: "The definition for this element appears in Section 20 of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ Payments made to liquidate an obligation (other than the repayment of\
@@ -706,6 +747,7 @@ definitions:
           \ Outlays are the measure of Government spending.\n"
       GrossOutlayAmountByProgramObjectClass_FYB:
         type: "number"
+        example: -4500
         description: "The definition for this element appears in Section 20 of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ Payments made to liquidate an obligation (other than the repayment of\
@@ -717,6 +759,7 @@ definitions:
           \ Outlays are the measure of Government spending.\n"
       GrossOutlaysDeliveredOrdersPaidTotal_CPE:
         type: "number"
+        example: -4500
         description: "The definition for this element appears in Section 20 of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ Payments made to liquidate an obligation (other than the repayment of\
@@ -728,6 +771,7 @@ definitions:
           \ measure of Government spending.\n"
       GrossOutlaysDeliveredOrdersPaidTotal_FYB:
         type: "number"
+        example: -4500
         description: "The definition for this element appears in Section 20 of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ Payments made to liquidate an obligation (other than the repayment of\
@@ -739,6 +783,7 @@ definitions:
           \ Outlays are the measure of Government spending.\n"
       GrossOutlaysUndeliveredOrdersPrepaidTotal_CPE:
         type: "number"
+        example: -4500
         description: "The definition for this element appears in Section 20 of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ Payments made to liquidate an obligation (other than the repayment of\
@@ -750,6 +795,7 @@ definitions:
           \ Outlays are the measure of Government spending.\n"
       GrossOutlaysUndeliveredOrdersPrepaidTotal_FYB:
         type: "number"
+        example: -4500
         description: "The definition for this element appears in Section 20 of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ Payments made to liquidate an obligation (other than the repayment of\
@@ -761,27 +807,32 @@ definitions:
           \ Outlays are the measure of Government spending.\n"
       MainAccountCode:
         type: "string"
+        example: "1552"
         description: "The main account code identifies the account in statute.\n"
       ObjectClass:
         type: "string"
+        example: "254"
         description: "The definition for this element appears in Section 83 of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ Categories in a classification system that presents obligations by the\
           \ items or services purchased by the Federal Government.\n"
       ObligationsDeliveredOrdersUnpaidTotal_CPE:
         type: "number"
+        example: -4500
         description: "The definition for this element appears in Section 20 of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ A legally binding agreement that will result in outlays, immediately or\
           \ in the future.\n"
       ObligationsDeliveredOrdersUnpaidTotal_FYB:
         type: "number"
+        example: -4500
         description: "The definition for this element appears in Section 20 of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ A legally binding agreement that will result in outlays, immediately or\
           \ in the future.\n"
       ObligationsIncurredByProgramObjectClass_CPE:
         type: "number"
+        example: -3500
         description: "The definition for this element appears in Appendix F of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ For unexpired accounts: Amount of obligations incurred from the beginning\
@@ -793,30 +844,35 @@ definitions:
           \ obligations may be incurred against expired or canceled accounts.\n"
       ObligationsUndeliveredOrdersUnpaidTotal_CPE:
         type: "number"
+        example: -4500
         description: "The definition for this element appears in Section 20 of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ A legally binding agreement that will result in outlays, immediately or\
           \ in the future.\n"
       ObligationsUndeliveredOrdersUnpaidTotal_FYB:
         type: "number"
+        example: -4500
         description: "The definition for this element appears in Section 20 of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ A legally binding agreement that will result in outlays, immediately or\
           \ in the future.\n"
       ProgramActivityCode:
         type: "string"
+        example: "0002"
         description: "The definition for this element appears in Section 200 of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ Code of a specific activity or project as listed in the program and financing\
           \ schedules of the annual budget of the United States Government.\n"
       ProgramActivityName:
         type: "string"
+        example: "Preschool Grants"
         description: "The definition for this element appears in Section 200 of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ Name of a specific activity or project as listed in the program and financing\
           \ schedules of the annual budget of the United States Government.\n"
       SubAccountCode:
         type: "string"
+        example: "000"
         description: "This is a component of the TAS. Identifies a Treasury-defined\
           \ subdivision of the main account. This field cannot be blank. Subaccount\
           \ 000 indicates the Parent account.\n"
