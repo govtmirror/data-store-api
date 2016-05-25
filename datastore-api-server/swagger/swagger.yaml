@@ -245,14 +245,25 @@ paths:
       - tag: "financial"
 definitions:
   postqualifiers:
+    type: "array"
+    items:
+      $ref: "#/definitions/filter"
+  filter:
     type: "object"
     properties:
+      operation:
+        type: "string"
+        example: "equals"
+        description: "An operation to perform a comparison on the field value"
+      value:
+        type: "string"
+        example: "097"
+        description: "The value to use in the operation comparison"
       fieldname:
         type: "string"
         example: "AgencyIdentifier"
         description: "The field name to which the filter applies"
-      filter:
-        $ref: "#/definitions/postqualifiers_filter"
+    description: "A filter, comprised of an operation and value"
   Accounts:
     type: "array"
     items:
@@ -883,17 +894,6 @@ definitions:
         type: "string"
       message:
         type: "string"
-  postqualifiers_filter:
-    properties:
-      operation:
-        type: "string"
-        example: "equals"
-        description: "An operation to perform a comparison on the field value"
-      value:
-        type: "string"
-        example: "097"
-        description: "The value to use in the operation comparison"
-    description: "A filter, comprised of an operation and value"
 parameters:
   programactivitycode:
     name: "PAC"
