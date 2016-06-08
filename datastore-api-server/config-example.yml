@@ -1,0 +1,16 @@
+#########################################
+### Sample Data Act API Configuration ###
+#########################################
+
+
+api:
+    # This is the data for the data store location
+    data_store:
+      # Where the data store is located, excluding protocol
+      url: ec2-something-nice.aws.com
+      port: 5432
+      # The name of the database to connect to
+      database: data_store
+      # Username and password
+      user: root
+      password: password
