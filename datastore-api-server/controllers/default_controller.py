@@ -1,87 +1,133 @@
+from sqlalchemy import *
+import yaml
 import flask
 
-def get_mock_slim_award():
-    return {
-        "AgencyIdentifier": "string",
-        "BeginningPeriodOfAvailability": "string",
-        "EndingPeriodOfAvailability": "string",
-        "MainAccountCode": "string",
-        "SubAccountCode": "string",
-        "PIID": "string",
-        "ParentAwardId": "string",
-        "FAIN": "string",
-        "URI": "string",
-        "TransactionObligatedAmount": "string",
-        "AwardType": "string"
-    }
+# This code needs some heavy refactoring
 
-def get_mock_award():
-    return {
-        "VendorFaxNumber": "string",
-        "LegalEntityCityName": "string",
-        "LegalEntityZip4": "string",
-        "ParentAwardId": "string",
-        "AgencyIdentifier": "string",
-        "LegalEntityStateCode": "string",
-        "URI": "string",
-        "CurrentTotalValueOfAward": "string",
-        "IDV Type": "string",
-        "PIID": "string",
-        "ObjectClass": "string",
-        "NorthAmericanIndustrialClassificationSystemCode": "string",
-        "SubAccountCode": "string",
-        "TransactionObligatedAmount": "string",
-        "LegalEntityCountryCode": "string",
-        "PrimaryPlaceOfPerformanceZip4": "string",
-        "PeriodOfPerformanceStartDate": "string",
-        "AwardDescription": "string",
-        "ReferencedIDVAgencyIdentifier": "string",
-        "AwardingOfficeCode": "string",
-        "ActionDate": "string",
-        "AwardingSubTierAgencyCode": "string",
-        "AwardModificationAmendmentNumber": "string",
-        "PotentialTotalValueOfAward": "string",
-        "AllocationTransferAgencyIdentifier": "string",
-        "AwardType": "string",
-        "ProgramActivityCode": "string",
-        "PrimaryPlaceofPerformanceCongressionalDistrict": "string",
-        "PeriodOfPerformanceCurrentEndDate": "string",
-        "ProgramActivityName": "string",
-        "AvailabilityTypeCode": "string",
-        "MainAccountCode": "string",
-        "LegalEntityCongressionalDistrict": "string",
-        "AwardeeOrRecipientUniqueIdentifier": "string",
-        "FAIN": "string",
-        "AwardeeOrRecipientLegalEntityName": "string",
-        "FundingOfficeCode": "string",
-        "VendorPhoneNumber": "string",
-        "FederalActionObligation": "string",
-        "PeriodOfPerformancePotentialEndDate": "string",
-        "FundingSubTierAgencyCode": "string",
-        "EndingPeriodOfAvailability": "string",
-        "VendorDoingAsBusinessName": "string",
-        "BeginningPeriodOfAvailability": "string",
-        "LegalEntityAddressLine2": "string",
-        "LegalEntityAddressLine1": "string",
-        "VendorAddressLine3": "string",
-        "TypeofIDC": "string",
-        "MultipleorSingleAwardIDV": "string"
-    }
+_EXCLUDED_COLUMNS = ("create date",
+                     "update date",
+                     "username",
+                     "awards_data_id",
+                     "financial_accounts_id")
+
+_OPERATORS = {
+    "equals": "=",
+    "greater than": ">",
+    "less than": "<",
+}
+
+class DatastoreDB:
+    _dbinstance = None
+    def __init__(self):
+        DatastoreDB._dbinstance = self
+        print "Creating datastore database connection..."
+        with open('config.yml', 'r') as stream:
+            try:
+                config = yaml.load(stream)['api']
+            except yaml.YAMLError as exc:
+                print(exc)
+
+        datastore_string =  ( 'postgresql://' + config['data_store']['user'] +
+                              ':' + config['data_store']['password'] +
+                              '@' + config['data_store']['url'] +
+                              ':' + str(config['data_store']['port']) +
+                              '/' + config['data_store']['database'])
+
+        self.engine = create_engine(datastore_string, echo=True)
+        print "Done"
+
+    @staticmethod
+    def get_instance():
+        if DatastoreDB._dbinstance == None:
+            DatastoreDB._dbinstance = DatastoreDB()
+        return DatastoreDB._dbinstance
+
+    # Parameters is an array of n [[FIELD, OPERATOR, VALUE]]
+    # Operators are guaranteed to go through the global array
+    def query_awards(self, parameters):
+        sql = "SELECT * FROM awards_data"
+        if len(parameters) == 0:
+            sql = sql + " LIMIT 1000" # Maybe change this later
+        for parameter in parameters:
+            # Construct an array of parameters for tuple construction later
+            params = []
+            operatorExpressions = []
+            for param in parameter:
+                params.append(param[2])
+                operatorExpressions.append("\"" + param[0] + "\" " + param[1] + " %s")
+            if len(parameter) > 0:
+                # Create a where clause that we can fill with a tuple
+                sql = sql + " WHERE " + " AND ".join(operatorExpressions)
+            print params
+        result = self.engine.execute(sql, tuple(params))
+        return [row2dict(row) for row in result]
+
+    # Parameters is an array of n [[FIELD, OPERATOR, VALUE]]
+    # Operators are guaranteed to go through the global array
+    def query_financials(self, parameters):
+        sql = "SELECT * FROM financial_accounts"
+        if len(parameters) == 0:
+            sql = sql + " LIMIT 1000" # Maybe change this later
+        for parameter in parameters:
+            # Construct an array of parameters for tuple construction later
+            params = []
+            operatorExpressions = []
+            for param in parameter:
+                params.append(param[2])
+                operatorExpressions.append("\"" + param[0] + "\" " + param[1] + " %s")
+            if len(parameter) > 0:
+                # Create a where clause that we can fill with a tuple
+                sql = sql + " WHERE " + " AND ".join(operatorExpressions)
+            print params
+        result = self.engine.execute(sql, tuple(params))
+        return [row2dict(row) for row in result]
+
+def row2dict(row):
+    d = {}
+    for item in row.items():
+        if item[0] in _EXCLUDED_COLUMNS: continue
+        d[item[0]] = item[1]
+    return d
 
 def award_fain_fain_get(FAIN):
-    return flask.jsonify({ "results": get_mock_award()})
+    whereclause = [["FAIN", "=", str(FAIN)]]
+    return flask.jsonify({ "results": DatastoreDB.get_instance().query_awards([whereclause])})
 
 def award_piid_piid_get(PIID):
-    return flask.jsonify({ "results": get_mock_award()})
+    whereclause = [["PIID", "=", str(PIID)]]
+    return flask.jsonify({ "results": DatastoreDB.get_instance().query_awards([whereclause])})
 
 def award_uri_uri_get(URI):
-    return flask.jsonify({ "results": get_mock_award() })
+    whereclause = [["URI", "=", str(URI)]]
+    return flask.jsonify({ "results": DatastoreDB.get_instance().query_awards([whereclause])})
 
 def awards_post(body):
-    return flask.jsonify({ "results": [get_mock_award(), get_mock_award()]})
+    whereclauses = []
+    for clause in body:
+        if not clause['operation'] in _OPERATORS.keys():
+            raise Exception("Operation " + clause['operation'] + " not recognized")
+        whereclauses.append([clause['fieldname'], _OPERATORS[clause['operation']], clause['value']])
+    return flask.jsonify({ "results": DatastoreDB.get_instance().query_awards([whereclauses])})
 
-def awards_qualifiers_get(qualifiers):
-    return flask.jsonify({ "results": [get_mock_award(), get_mock_award()]})
+def financial_account_mac_get(MAC):
+    whereclause = [["MainAccountCode", "=", str(MAC)]]
+    return flask.jsonify({ "results": DatastoreDB.get_instance().query_financials([whereclause])})
 
-def awards_slim_qualifiers_get(qualifiers):
-    return flask.jsonify({ "results": [get_mock_slim_award(), get_mock_slim_award()]})
+def financial_accounts_post(body):
+    whereclauses = []
+    for clause in body:
+        if not clause['operation'] in _OPERATORS.keys():
+            raise Exception("Operation " + clause['operation'] + " not recognized")
+        whereclauses.append([clause['fieldname'], _OPERATORS[clause['operation']], clause['value']])
+    return flask.jsonify({ "results": DatastoreDB.get_instance().query_financials([whereclauses])})
+
+def financial_activities_post(body):
+    whereclauses = []
+    for clause in body:
+        if not clause['operation'] in _OPERATORS.keys():
+            raise Exception("Operation " + clause['operation'] + " not recognized")
+        whereclauses.append([clause['fieldname'], _OPERATORS[clause['operation']], clause['value']])
+    return flask.jsonify({ "results": DatastoreDB.get_instance().query_financials([whereclauses])})
+
+def financial_activity_pac_get(PAC):
+    raise Exception('PAC not currently available')
