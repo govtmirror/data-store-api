@@ -204,9 +204,20 @@ parameters:
 # Definitions
 definitions:
   postqualifiers:
-    type: array
-    items:
-      $ref: '#/definitions/filter'
+    type: object
+    properties:
+      columns:
+        type: array
+        items:
+          $ref: '#/definitions/column'
+      filters:
+        type: array
+        items:
+          $ref: '#/definitions/filter'
+  column:
+    type: string
+    description: A field to select. Special options 'complete' and 'basic'.
+    example: AgencyIdentifier
   filter:
     type: object
     description: A filter, comprised of an operation and value
