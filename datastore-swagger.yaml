@@ -8,22 +8,6 @@ info:
 basePath: /v1
 paths:
   # Financial Endpoints
-  /financial/activity/{PAC}:
-    get:
-      tags:
-        - financial
-      summary: Returns a program activity which matches the given activity code
-      parameters:
-        - $ref: '#/parameters/programactivitycode'
-      responses:
-        200:
-          description: OK
-          schema:
-            $ref: '#/definitions/Activity'
-        404:
-          $ref: '#/responses/Standard404ErrorResponse'
-        500:
-          $ref: '#/responses/Standard500ErrorResponse'
   /financial/activities/:
     post:
       tags:
@@ -45,22 +29,6 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/Activities'
-        404:
-          $ref: '#/responses/Standard404ErrorResponse'
-        500:
-          $ref: '#/responses/Standard500ErrorResponse'
-  /financial/account/{MAC}:
-    get:
-      tags:
-        - financial
-      summary: Returns a financial account which matches the given main account code
-      parameters:
-        - $ref: '#/parameters/mainaccountcode'
-      responses:
-        200:
-          description: OK
-          schema:
-            $ref: '#/definitions/Account'
         404:
           $ref: '#/responses/Standard404ErrorResponse'
         500:
@@ -170,18 +138,6 @@ paths:
 
 # Parameters
 parameters:
-  programactivitycode:
-    name: PAC
-    in: path
-    required: true
-    description: The program activity code of the requested activity
-    type: string
-  mainaccountcode:
-    name: MAC
-    in: path
-    required: true
-    description: The main account code for the requested account
-    type: string
   fain:
     name: FAIN
     in: path

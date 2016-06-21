@@ -175,18 +175,6 @@ def awards_post(body):
                             "count": len(results),
                             "results": results})
 
-def financial_account_mac_get(MAC):
-    parameters = {
-        "columns": ["*"],
-        "filters": [["MainAccountCode", "=", str(MAC)]]
-    }
-    results = DatastoreDB.get_instance().query_financials(parameters)
-    query = results[0]
-    results = results[1]
-    return flask.jsonify({  "query": query,
-                            "count": len(results),
-                            "results": results})
-
 def financial_accounts_post(body):
     parameters = construct_parameter_object(body)
     results = DatastoreDB.get_instance().query_financials(parameters)
@@ -204,6 +192,3 @@ def financial_activities_post(body):
     return flask.jsonify({  "query": query,
                             "count": len(results),
                             "results": results})
-
-def financial_activity_pac_get(PAC):
-    raise Exception('PAC not currently available')
