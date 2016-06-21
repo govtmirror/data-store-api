@@ -245,9 +245,20 @@ paths:
       - tag: "financial"
 definitions:
   postqualifiers:
-    type: "array"
-    items:
-      $ref: "#/definitions/filter"
+    type: "object"
+    properties:
+      columns:
+        type: "array"
+        items:
+          $ref: "#/definitions/column"
+      filters:
+        type: "array"
+        items:
+          $ref: "#/definitions/filter"
+  column:
+    type: "string"
+    description: "A field to select. Special options 'complete' and 'basic'."
+    example: "AgencyIdentifier"
   filter:
     type: "object"
     properties:
@@ -352,14 +363,14 @@ definitions:
           \ schedules of the annual budget of the United States Government.\n"
       ObjectClass:
         type: "number"
-        example: 254
+        example: 254.0
         description: "The definition for this element appears in Section 83 of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ Categories in a classification system that presents obligations by the\
           \ items or services purchased by the Federal Government.\n"
       TransactionObligatedAmount:
         type: "number"
-        example: 3500
+        example: 3500.0
         description: "The definition for this element appears in Section 20 of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ Obligation means a binding agreement that will result in outlays, immediately\
@@ -540,7 +551,7 @@ definitions:
     properties:
       AdjustmentsToUnobligatedBalanceBroughtForward_CPE:
         type: "number"
-        example: -3500
+        example: -3500.0
         description: "The definition for this element appears in Appendix F of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ Changes to unpaid obligations that occurred in a prior fiscal year and\
@@ -570,14 +581,14 @@ definitions:
           \ account may incur new obligations.\n"
       BorrowingAuthorityAmountTotal_CPE:
         type: "number"
-        example: 3500
+        example: 3500.0
         description: "The definition for this element appears in Section 20 of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ Borrowing authority is a type of budget authority that permits obligations\
           \ and outlays to be financed by borrowing.\n"
       BudgetAuthorityAppropriatedAmount_CPE:
         type: "number"
-        example: 3500
+        example: 3500.0
         description: "The definition for this element appears in Section 20 of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ Appropriation means a provision of law (not necessarily in an appropriations\
@@ -585,14 +596,14 @@ definitions:
           \ but not always, an appropriation provides budget authority.\n"
       BudgetAuthorityAvailableAmountTotal_CPE:
         type: "number"
-        example: 3500
+        example: 3500.0
         description: "The total amount of all obligation budget authority including\
           \ unobligated balances carried forward, adjustments to unobligated balances\
           \ carried forward, appropriated amounts, and other budgetary resources,\
           \ as of the reported date.\n"
       BudgetAuthorityUnobligatedBalanceBroughtForward_FYB:
         type: "number"
-        example: 3500
+        example: 3500.0
         description: "The definition for this element appears in Appendix F of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ For unexpired accounts: Amount of unobligated balance of appropriations\
@@ -602,7 +613,7 @@ definitions:
           \ of obligations.\n"
       ContractAuthorityAmountTotal_CPE:
         type: "number"
-        example: 3500
+        example: 3500.0
         description: "The definition for this element appears in Section 20 of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ Contract authority is a type of budget authority that permits you to incur\
@@ -613,7 +624,7 @@ definitions:
           \ or offsetting collections that will be used to liquidate the obligations.\n"
       DeobligationsRecoveriesRefundsByTAS_CPE:
         type: "number"
-        example: 3500
+        example: 3500.0
         description: "The amount of downward adjustments to obligations and outlays\
           \ resulting from deobligations, recoveries, or refunds collected, summarized\
           \ at the TAS level. The adjustments are to the obligations and outlays which\
@@ -626,7 +637,7 @@ definitions:
           \ account may incur new obligations.\n"
       GrossOutlayAmountByTAS_CPE:
         type: "number"
-        example: -3500
+        example: -3500.0
         description: "The definition for this element appears in Section 20 of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ Payments made to liquidate an obligation (other than the repayment of\
@@ -642,7 +653,7 @@ definitions:
         description: "The main account code identifies the account in statute.\n"
       ObligationsIncurredTotalByTAS_CPE:
         type: "number"
-        example: 3500
+        example: 3500.0
         description: "The definition for this element appears in Appendix F of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ For unexpired accounts: Amount of obligations incurred from the beginning\
@@ -654,7 +665,7 @@ definitions:
           \ obligations may be incurred against expired or canceled accounts.\n"
       OtherBudgetaryResourcesAmount_CPE:
         type: "number"
-        example: 3500
+        example: 3500.0
         description: "The definition for this element appears in Section 20 of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ New borrowing authority, contract authority, and spending authority from\
@@ -663,7 +674,7 @@ definitions:
           \ available in previous legislation, to incur obligations and to make outlays.\n"
       SpendingAuthorityfromOffsettingCollectionsAmountTotal_CPE:
         type: "number"
-        example: 3500
+        example: 3500.0
         description: "The definition for this element appears in Section 20 of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ Spending authority from offsetting collections is a type of budget authority\
@@ -680,7 +691,7 @@ definitions:
           \ collections is a form of budget authority.\n"
       StatusOfBudgetaryResourcesTotal_CPE:
         type: "number"
-        example: 3500
+        example: 3500.0
         description: "This element addresses the status of budgetary resources and\
           \ includes the total of obligated and unobligated balances, at the reported\
           \ date. The value should equal the Budget Authority Available Amount Total\
@@ -693,7 +704,7 @@ definitions:
           \ 000 indicates the Parent account.\n"
       UnobligatedBalance_CPE:
         type: "number"
-        example: 3500
+        example: 3500.0
         description: "The definition for this element appears in Section 20 of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ Unobligated balance means the cumulative amount of budget authority that\
@@ -733,7 +744,7 @@ definitions:
           \ Source.\n"
       DeobligationsRecoveriesRefundsdOfPriorYearByProgramObjectClass_CPE:
         type: "number"
-        example: 3500
+        example: 3500.0
         description: "The amount of downward adjustments to obligations and outlays\
           \ incurred resulting from deobligations, recoveries, or refunds collected,\
           \ at the TAS / Program Activity / Object Class level. The adjustments are\
@@ -746,7 +757,7 @@ definitions:
           \ account may incur new obligations.\n"
       GrossOutlayAmountByProgramObjectClass_CPE:
         type: "number"
-        example: -4500
+        example: -4500.0
         description: "The definition for this element appears in Section 20 of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ Payments made to liquidate an obligation (other than the repayment of\
@@ -758,7 +769,7 @@ definitions:
           \ Outlays are the measure of Government spending.\n"
       GrossOutlayAmountByProgramObjectClass_FYB:
         type: "number"
-        example: -4500
+        example: -4500.0
         description: "The definition for this element appears in Section 20 of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ Payments made to liquidate an obligation (other than the repayment of\
@@ -770,7 +781,7 @@ definitions:
           \ Outlays are the measure of Government spending.\n"
       GrossOutlaysDeliveredOrdersPaidTotal_CPE:
         type: "number"
-        example: -4500
+        example: -4500.0
         description: "The definition for this element appears in Section 20 of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ Payments made to liquidate an obligation (other than the repayment of\
@@ -782,7 +793,7 @@ definitions:
           \ measure of Government spending.\n"
       GrossOutlaysDeliveredOrdersPaidTotal_FYB:
         type: "number"
-        example: -4500
+        example: -4500.0
         description: "The definition for this element appears in Section 20 of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ Payments made to liquidate an obligation (other than the repayment of\
@@ -794,7 +805,7 @@ definitions:
           \ Outlays are the measure of Government spending.\n"
       GrossOutlaysUndeliveredOrdersPrepaidTotal_CPE:
         type: "number"
-        example: -4500
+        example: -4500.0
         description: "The definition for this element appears in Section 20 of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ Payments made to liquidate an obligation (other than the repayment of\
@@ -806,7 +817,7 @@ definitions:
           \ Outlays are the measure of Government spending.\n"
       GrossOutlaysUndeliveredOrdersPrepaidTotal_FYB:
         type: "number"
-        example: -4500
+        example: -4500.0
         description: "The definition for this element appears in Section 20 of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ Payments made to liquidate an obligation (other than the repayment of\
@@ -829,21 +840,21 @@ definitions:
           \ items or services purchased by the Federal Government.\n"
       ObligationsDeliveredOrdersUnpaidTotal_CPE:
         type: "number"
-        example: -4500
+        example: -4500.0
         description: "The definition for this element appears in Section 20 of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ A legally binding agreement that will result in outlays, immediately or\
           \ in the future.\n"
       ObligationsDeliveredOrdersUnpaidTotal_FYB:
         type: "number"
-        example: -4500
+        example: -4500.0
         description: "The definition for this element appears in Section 20 of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ A legally binding agreement that will result in outlays, immediately or\
           \ in the future.\n"
       ObligationsIncurredByProgramObjectClass_CPE:
         type: "number"
-        example: -3500
+        example: -3500.0
         description: "The definition for this element appears in Appendix F of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ For unexpired accounts: Amount of obligations incurred from the beginning\
@@ -855,14 +866,14 @@ definitions:
           \ obligations may be incurred against expired or canceled accounts.\n"
       ObligationsUndeliveredOrdersUnpaidTotal_CPE:
         type: "number"
-        example: -4500
+        example: -4500.0
         description: "The definition for this element appears in Section 20 of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ A legally binding agreement that will result in outlays, immediately or\
           \ in the future.\n"
       ObligationsUndeliveredOrdersUnpaidTotal_FYB:
         type: "number"
-        example: -4500
+        example: -4500.0
         description: "The definition for this element appears in Section 20 of OMB\
           \ Circular A-11 issued June 2015; a brief summary from A-11 appears below.\
           \ A legally binding agreement that will result in outlays, immediately or\
