@@ -15,6 +15,17 @@ _SHORTCUT_COLUMNS = {
     "basic": []
 }
 
+_AWARD_RESPONSE_MAP = {
+    "AgencyIdentifier": "SomeGroupA",
+    "PIID": "SomeGroupB"
+}
+
+_FINANCIAL_RESPONSE_MAP = {
+    "AgencyIdentifier": "SomeGroupA",
+    "MainAccountCode": "SomeGroupB",
+    "StatusOfBudgetaryResourcesTotal_CPE": "SomeGroupB"
+}
+
 _OPERATORS = {
     "equals": "=",
     "greater than": ">",
@@ -69,17 +80,19 @@ class DatastoreDB:
         return self.query(parameters,
                          DatastoreDB.get_instance().award_columns,
                          DatastoreDB.get_instance().award_columns_lower,
+                         _AWARD_RESPONSE_MAP,
                          "awards_data")
 
     def query_financials(self, parameters):
                 return self.query(parameters,
                                  DatastoreDB.get_instance().financial_columns,
                                  DatastoreDB.get_instance().financial_columns_lower,
+                                 _FINANCIAL_RESPONSE_MAP,
                                  "financial_accounts")
 
     # Parameters is an array of n [[FIELD, OPERATOR, VALUE]]
     # Operators are guaranteed to go through the global array
-    def query(self, parameters, column_array, column_array_lower, table_name):
+    def query(self, parameters, column_array, column_array_lower, responseMap, table_name):
         query = parameters
         columns = []
         for col in parameters["columns"]:
@@ -105,7 +118,8 @@ class DatastoreDB:
             # Create a where clause that we can fill with a tuple
             sql = sql + " WHERE " + " AND ".join(operatorExpressions)
         result = self.engine.execute(sql, tuple(sqlparams))
-        return (query, [row2dict(row) for row in result])
+        dictresponse = [mapResponse(row2dict(row), responseMap) for row in result]
+        return (query, dictresponse)
 
 def row2dict(row):
     d = {}
@@ -114,9 +128,27 @@ def row2dict(row):
         d[item[0]] = item[1]
     return d
 
+# Dict response should be what is returned as a list element from the query()
+# function, a dictionar of attribute:values. responseMap should be a either
+# _AWARD_RESPONSE_MAP or _FINANCIAL_RESPONSE_MAP
+def mapResponse(dictresponse, responseMap):
+    newResponse = {}
+    for key in dictresponse:
+        # If we have that key in our response map, place it in the corresponding
+        # grouping
+        if key in responseMap:
+            if responseMap[key] not in newResponse:
+                # If the grouping dict isn't in our response yet, put it there
+                newResponse[responseMap[key]] = {}
+            newResponse[responseMap[key]][key] = dictresponse[key]
+        else:
+            # Otherwise, just drop it straight back in the response
+            newResponse[key] = dictresponse[key]
+    return newResponse
+
 def construct_parameter_object(body):
     filters = []
-    columns = ["*"]
+    columns = ["complete"]
     if "columns" in body:
         columns = body["columns"]
     if "filters" in body:
@@ -132,7 +164,7 @@ def construct_parameter_object(body):
 
 def award_fain_fain_get(FAIN):
     parameters = {
-        "columns": ["*"],
+        "columns": ["complete"],
         "filters": [["FAIN", "=", str(FAIN)]]
     }
     results = DatastoreDB.get_instance().query_awards(parameters)
@@ -144,7 +176,7 @@ def award_fain_fain_get(FAIN):
 
 def award_piid_piid_get(PIID):
     parameters = {
-        "columns": ["*"],
+        "columns": ["complete"],
         "filters": [["PIID", "=", str(PIID)]]
     }
     results = DatastoreDB.get_instance().query_awards(parameters)
@@ -156,7 +188,7 @@ def award_piid_piid_get(PIID):
 
 def award_uri_uri_get(URI):
     parameters = {
-        "columns": ["*"],
+        "columns": ["complete"],
         "filters": [["URI", "=", str(URI)]]
     }
     results = DatastoreDB.get_instance().query_awards(parameters)
