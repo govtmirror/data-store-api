@@ -123,33 +123,6 @@ paths:
             $ref: "#/definitions/Error"
       x-tags:
       - tag: "awards"
-  /financial/account/{MAC}:
-    get:
-      tags:
-      - "financial"
-      summary: "Returns a financial account which matches the given main account code"
-      operationId: "controllers.default_controller.financial_account_mac_get"
-      parameters:
-      - name: "MAC"
-        in: "path"
-        description: "The main account code for the requested account"
-        required: true
-        type: "string"
-      responses:
-        200:
-          description: "OK"
-          schema:
-            $ref: "#/definitions/Account"
-        404:
-          description: "Resource not found."
-          schema:
-            $ref: "#/definitions/Error"
-        500:
-          description: "An unexpected error occured."
-          schema:
-            $ref: "#/definitions/Error"
-      x-tags:
-      - tag: "financial"
   /financial/accounts/:
     post:
       tags:
@@ -206,33 +179,6 @@ paths:
           description: "OK"
           schema:
             $ref: "#/definitions/Activities"
-        404:
-          description: "Resource not found."
-          schema:
-            $ref: "#/definitions/Error"
-        500:
-          description: "An unexpected error occured."
-          schema:
-            $ref: "#/definitions/Error"
-      x-tags:
-      - tag: "financial"
-  /financial/activity/{PAC}:
-    get:
-      tags:
-      - "financial"
-      summary: "Returns a program activity which matches the given activity code"
-      operationId: "controllers.default_controller.financial_activity_pac_get"
-      parameters:
-      - name: "PAC"
-        in: "path"
-        description: "The program activity code of the requested activity"
-        required: true
-        type: "string"
-      responses:
-        200:
-          description: "OK"
-          schema:
-            $ref: "#/definitions/Activity"
         404:
           description: "Resource not found."
           schema:
@@ -906,18 +852,6 @@ definitions:
       message:
         type: "string"
 parameters:
-  programactivitycode:
-    name: "PAC"
-    in: "path"
-    description: "The program activity code of the requested activity"
-    required: true
-    type: "string"
-  mainaccountcode:
-    name: "MAC"
-    in: "path"
-    description: "The main account code for the requested account"
-    required: true
-    type: "string"
   fain:
     name: "FAIN"
     in: "path"
