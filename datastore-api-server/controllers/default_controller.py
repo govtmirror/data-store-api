@@ -65,9 +65,38 @@ _AWARD_RESPONSE_MAP = {
 }
 
 _FINANCIAL_RESPONSE_MAP = {
-    "AgencyIdentifier": "SomeGroupA",
-    "MainAccountCode": "SomeGroupB",
-    "StatusOfBudgetaryResourcesTotal_CPE": "SomeGroupB"
+    "BudgetAuthorityUnobligatedBalanceBroughtForward_FYB": "budget_authority",
+    "AdjustmentsToUnobligatedBalanceBroughtForward_CPE": "budget_authority",
+    "BudgetAuthorityAppropriatedAmount_CPE": "budget_authority",
+    "OtherBudgetaryResourcesAmount_CPE": "budget_authority",
+    "BudgetAuthorityAvailableAmountTotal_CPE": "budget_authority",
+    "ObligationsIncurredTotalByTAS_CPE": "budgetary_resources",
+    "GrossOutlayAmountByTAS_CPE": "budgetary_resources",
+    "ContractAuthorityAmountTotal_CPE": "budget_authority",
+    "BorrowingAuthorityAmountTotal_CPE": "budget_authority",
+    "SpendingAuthorityfromOffsettingCollectionsAmountTotal_CPE": "budget_authority",
+    "StatusOfBudgetaryResourcesTotal_CPE": "budgetary_resources",
+    "AllocationTransferAgencyIdentifier": "tas",
+    "AvailabilityTypeCode": "tas",
+    "EndingPeriodOfAvailability": "tas",
+    "BeginningPeriodOfAvailability": "tas",
+    "AgencyIdentifier": "tas",
+    "SubAccountCode": "tas",
+    "MainAccountCode": "tas",
+    "DeobligationsRecoveriesRefundsByTAS_CPE": "budgetary_resources",
+    "UnobligatedBalance_CPE": "budgetary_resources",
+    "DeobligationsRecoveriesRefundsdOfPriorYearByProgramObjectClass_CPE": "obligations_incurred",
+    "GrossOutlayAmountByProgramObjectClass_CPE": "gross_outlays",
+    "GrossOutlayAmountByProgramObjectClass_FYB": "gross_outlays",
+    "GrossOutlaysDeliveredOrdersPaidTotal_FYB": "gross_outlays",
+    "GrossOutlaysDeliveredOrdersPaidTotal_CPE": "gross_outlays",
+    "GrossOutlaysUndeliveredOrdersPrepaidTotal_CPE": "gross_outlays",
+    "GrossOutlaysUndeliveredOrdersPrepaidTotal_FYB": "gross_outlays",
+    "ObligationsDeliveredOrdersUnpaidTotal_FYB": "obligations_incurred",
+    "ObligationsDeliveredOrdersUnpaidTotal_CPE": "obligations_incurred",
+    "ObligationsIncurredByProgramObjectClass_CPE": "obligations_incurred",
+    "ObligationsUndeliveredOrdersUnpaidTotal_FYB": "obligations_incurred",
+    "ObligationsUndeliveredOrdersUnpaidTotal_CPE": "obligations_incurred"
 }
 
 _OPERATORS = {
