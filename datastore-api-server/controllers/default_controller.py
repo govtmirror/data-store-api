@@ -12,7 +12,31 @@ _EXCLUDED_COLUMNS = ("create date",
 
 _SHORTCUT_COLUMNS = {
     "complete": ["*"],
-    "basic": []
+    "basic": [  "AwardeeOrRecipientUniqueIdentifier",
+                "AwardeeOrRecipientLegalEntityName",
+                "LegalEntityAddressLine1",
+                "LegalEntityAddressLine2",
+                "LegalEntityStateCode",
+                "LegalEntityCountryCode",
+                "FAIN",
+                "URI",
+                "PIID",
+                "AwardModificationAmendmentNumber",
+                "ParentAwardId",
+                "AwardDescription",
+                "ActionDate",
+                "AgencyIdentifier",
+                "AwardingSubTierAgencyCode",
+                "FundingSubTierAgencyCode",
+                "PeriodOfPerformanceStartDate",
+                "PeriodOfPerformanceCurrentEndDate",
+                "PeriodOfPerformancePotentialEndDate",
+                "AwardType",
+                "PrimaryPlaceofPerformanceCongressionalDistrict",
+                "FederalActionObligation",
+                "CurrentTotalValueOfAward",
+                "TransactionObligatedAmount"
+            ]
 }
 
 _AWARD_RESPONSE_MAP = {
@@ -170,7 +194,14 @@ class DatastoreDB:
         columns = []
         for col in parameters["columns"]:
             if col in _SHORTCUT_COLUMNS:
-                columns = columns + _SHORTCUT_COLUMNS[col]
+                if col == "complete":
+                    columns = columns + _SHORTCUT_COLUMNS[col]
+                else:
+                    # If a field is in the shortcut, we must verify it exists
+                    # in the requested table
+                    intersection = list(set.intersection(set(_SHORTCUT_COLUMNS[col]), set(column_array)))
+                    for column in intersection:
+                        columns.append("\"" + column + "\"")
             else:
                 try:
                     index = column_array_lower.index(col.lower())
