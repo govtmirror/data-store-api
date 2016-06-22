@@ -10,6 +10,119 @@ _EXCLUDED_COLUMNS = ("create date",
                      "awards_data_id",
                      "financial_accounts_id")
 
+_SHORTCUT_COLUMNS = {
+    "complete": ["*"],
+    "basic": [  "AwardeeOrRecipientUniqueIdentifier",
+                "AwardeeOrRecipientLegalEntityName",
+                "LegalEntityAddressLine1",
+                "LegalEntityAddressLine2",
+                "LegalEntityStateCode",
+                "LegalEntityCountryCode",
+                "FAIN",
+                "URI",
+                "PIID",
+                "AwardModificationAmendmentNumber",
+                "ParentAwardId",
+                "AwardDescription",
+                "ActionDate",
+                "AgencyIdentifier",
+                "AwardingSubTierAgencyCode",
+                "FundingSubTierAgencyCode",
+                "PeriodOfPerformanceStartDate",
+                "PeriodOfPerformanceCurrentEndDate",
+                "PeriodOfPerformancePotentialEndDate",
+                "AwardType",
+                "PrimaryPlaceofPerformanceCongressionalDistrict",
+                "FederalActionObligation",
+                "CurrentTotalValueOfAward",
+                "TransactionObligatedAmount"
+            ]
+}
+
+_AWARD_RESPONSE_MAP = {
+    "VendorFaxNumber": "recipient_info",
+    "LegalEntityCityName": "recipient_info",
+    "LegalEntityZip4": "recipient_info",
+    "ParentAwardId": "linking_procurement",
+    "AgencyIdentifier": "tas",
+    "LegalEntityStateCode": "recipient_info",
+    "URI": "linking_financial_assistance",
+    "CurrentTotalValueOfAward": "award_action",
+    "IDV Type": "indirect_delivery_vehicle_specific_charactersitcs",
+    "PIID": "linking_procurement",
+    "NorthAmericanIndustrialClassificationSystemCode": "award_type",
+    "SubAccountCode": "tas",
+    "TransactionObligatedAmount": "transaction_obligated_amount",
+    "LegalEntityCountryCode": "recipient_info",
+    "PrimaryPlaceOfPerformanceZip4": "place_of_performance",
+    "PeriodOfPerformanceStartDate": "award_dates",
+    "AwardDescription": "award_info",
+    "ReferencedIDVAgencyIdentifier": "indirect_delivery_vehicle_specific_charactersitcs",
+    "AwardingOfficeCode": "awarding_agency",
+    "ActionDate": "award_action",
+    "AwardingSubTierAgencyCode": "awarding_agency",
+    "AwardModificationAmendmentNumber": "award_modification",
+    "PotentialTotalValueOfAward": "award_action",
+    "AllocationTransferAgencyIdentifier": "tas",
+    "AwardType": "award_action",
+    "PrimaryPlaceofPerformanceCongressionalDistrict": "place_of_performance",
+    "PeriodOfPerformanceCurrentEndDate": "award_dates",
+    "AvailabilityTypeCode": "tas",
+    "MainAccountCode": "tas",
+    "LegalEntityCongressionalDistrict": "recipient_info",
+    "AwardeeOrRecipientUniqueIdentifier": "award_recipient",
+    "FAIN": "linking_financial_assistance",
+    "AwardeeOrRecipientLegalEntityName": "award_recipient",
+    "FundingOfficeCode": "funding_agency",
+    "VendorPhoneNumber": "recipient_info",
+    "FederalActionObligation": "award_action",
+    "PeriodOfPerformancePotentialEndDate": "award_dates",
+    "FundingSubTierAgencyCode": "funding_agency",
+    "EndingPeriodOfAvailability": "tas",
+    "VendorDoingAsBusinessName": "award_recipient",
+    "BeginningPeriodOfAvailability": "tas",
+    "LegalEntityAddressLine2": "recipient_info",
+    "LegalEntityAddressLine1": "recipient_info",
+    "VendorAddressLine3": "recipient_info",
+    "TypeofIDC": "indirect_delivery_vehicle_specific_charactersitcs",
+    "MultipleorSingleAwardIDV": "indirect_delivery_vehicle_specific_charactersitcs"
+}
+
+_FINANCIAL_RESPONSE_MAP = {
+    "BudgetAuthorityUnobligatedBalanceBroughtForward_FYB": "budget_authority",
+    "AdjustmentsToUnobligatedBalanceBroughtForward_CPE": "budget_authority",
+    "BudgetAuthorityAppropriatedAmount_CPE": "budget_authority",
+    "OtherBudgetaryResourcesAmount_CPE": "budget_authority",
+    "BudgetAuthorityAvailableAmountTotal_CPE": "budget_authority",
+    "ObligationsIncurredTotalByTAS_CPE": "budgetary_resources",
+    "GrossOutlayAmountByTAS_CPE": "budgetary_resources",
+    "ContractAuthorityAmountTotal_CPE": "budget_authority",
+    "BorrowingAuthorityAmountTotal_CPE": "budget_authority",
+    "SpendingAuthorityfromOffsettingCollectionsAmountTotal_CPE": "budget_authority",
+    "StatusOfBudgetaryResourcesTotal_CPE": "budgetary_resources",
+    "AllocationTransferAgencyIdentifier": "tas",
+    "AvailabilityTypeCode": "tas",
+    "EndingPeriodOfAvailability": "tas",
+    "BeginningPeriodOfAvailability": "tas",
+    "AgencyIdentifier": "tas",
+    "SubAccountCode": "tas",
+    "MainAccountCode": "tas",
+    "DeobligationsRecoveriesRefundsByTAS_CPE": "budgetary_resources",
+    "UnobligatedBalance_CPE": "budgetary_resources",
+    "DeobligationsRecoveriesRefundsdOfPriorYearByProgramObjectClass_CPE": "obligations_incurred",
+    "GrossOutlayAmountByProgramObjectClass_CPE": "gross_outlays",
+    "GrossOutlayAmountByProgramObjectClass_FYB": "gross_outlays",
+    "GrossOutlaysDeliveredOrdersPaidTotal_FYB": "gross_outlays",
+    "GrossOutlaysDeliveredOrdersPaidTotal_CPE": "gross_outlays",
+    "GrossOutlaysUndeliveredOrdersPrepaidTotal_CPE": "gross_outlays",
+    "GrossOutlaysUndeliveredOrdersPrepaidTotal_FYB": "gross_outlays",
+    "ObligationsDeliveredOrdersUnpaidTotal_FYB": "obligations_incurred",
+    "ObligationsDeliveredOrdersUnpaidTotal_CPE": "obligations_incurred",
+    "ObligationsIncurredByProgramObjectClass_CPE": "obligations_incurred",
+    "ObligationsUndeliveredOrdersUnpaidTotal_FYB": "obligations_incurred",
+    "ObligationsUndeliveredOrdersUnpaidTotal_CPE": "obligations_incurred"
+}
+
 _OPERATORS = {
     "equals": "=",
     "greater than": ">",
@@ -34,6 +147,24 @@ class DatastoreDB:
                               '/' + config['data_store']['database'])
 
         self.engine = create_engine(datastore_string, echo=True)
+
+        print "Database connection established, acquiring available columns"
+        sql = text('SELECT column_name FROM information_schema.columns WHERE table_name=\'awards_data\'')
+        result = self.engine.execute(sql)
+        self.award_columns = []
+        for row in result:
+            if row[0] not in _EXCLUDED_COLUMNS:
+                self.award_columns.append(row[0])
+        self.award_columns_lower = [item.lower() for item in self.award_columns]
+
+        sql = text('SELECT column_name FROM information_schema.columns WHERE table_name=\'financial_accounts\'')
+        result = self.engine.execute(sql)
+        self.financial_columns = []
+        for row in result:
+            if row[0] not in _EXCLUDED_COLUMNS:
+                self.financial_columns.append(row[0])
+        self.financial_columns_lower = [item.lower() for item in self.financial_columns]
+
         print "Done"
 
     @staticmethod
@@ -42,45 +173,57 @@ class DatastoreDB:
             DatastoreDB._dbinstance = DatastoreDB()
         return DatastoreDB._dbinstance
 
-    # Parameters is an array of n [[FIELD, OPERATOR, VALUE]]
-    # Operators are guaranteed to go through the global array
     def query_awards(self, parameters):
-        sql = "SELECT * FROM awards_data"
-        if len(parameters) == 0:
-            sql = sql + " LIMIT 1000" # Maybe change this later
-        for parameter in parameters:
-            # Construct an array of parameters for tuple construction later
-            params = []
-            operatorExpressions = []
-            for param in parameter:
-                params.append(param[2])
-                operatorExpressions.append("\"" + param[0] + "\" " + param[1] + " %s")
-            if len(parameter) > 0:
-                # Create a where clause that we can fill with a tuple
-                sql = sql + " WHERE " + " AND ".join(operatorExpressions)
-            print params
-        result = self.engine.execute(sql, tuple(params))
-        return [row2dict(row) for row in result]
+        return self.query(parameters,
+                         DatastoreDB.get_instance().award_columns,
+                         DatastoreDB.get_instance().award_columns_lower,
+                         _AWARD_RESPONSE_MAP,
+                         "awards_data")
+
+    def query_financials(self, parameters):
+                return self.query(parameters,
+                                 DatastoreDB.get_instance().financial_columns,
+                                 DatastoreDB.get_instance().financial_columns_lower,
+                                 _FINANCIAL_RESPONSE_MAP,
+                                 "financial_accounts")
 
     # Parameters is an array of n [[FIELD, OPERATOR, VALUE]]
     # Operators are guaranteed to go through the global array
-    def query_financials(self, parameters):
-        sql = "SELECT * FROM financial_accounts"
-        if len(parameters) == 0:
+    def query(self, parameters, column_array, column_array_lower, responseMap, table_name):
+        query = parameters
+        columns = []
+        for col in parameters["columns"]:
+            if col in _SHORTCUT_COLUMNS:
+                if col == "complete":
+                    columns = columns + _SHORTCUT_COLUMNS[col]
+                else:
+                    # If a field is in the shortcut, we must verify it exists
+                    # in the requested table
+                    intersection = list(set.intersection(set(_SHORTCUT_COLUMNS[col]), set(column_array)))
+                    for column in intersection:
+                        columns.append("\"" + column + "\"")
+            else:
+                try:
+                    index = column_array_lower.index(col.lower())
+                    columns.append("\"" + column_array[index] + "\"")
+                except ValueError:
+                    raise Exception(col + " was not found in the list of available fields\n" +
+                                    "Current available fields are: " + "\n\t".join(column_array))
+        sql = "SELECT " + ",".join(columns) + " FROM " + table_name
+        sqlparams = []
+        if len(parameters["filters"]) == 0:
             sql = sql + " LIMIT 1000" # Maybe change this later
-        for parameter in parameters:
-            # Construct an array of parameters for tuple construction later
-            params = []
-            operatorExpressions = []
-            for param in parameter:
-                params.append(param[2])
-                operatorExpressions.append("\"" + param[0] + "\" " + param[1] + " %s")
-            if len(parameter) > 0:
-                # Create a where clause that we can fill with a tuple
-                sql = sql + " WHERE " + " AND ".join(operatorExpressions)
-            print params
-        result = self.engine.execute(sql, tuple(params))
-        return [row2dict(row) for row in result]
+        else:
+            for parameter in parameters["filters"]:
+                # Construct an array of parameters for tuple construction later
+                operatorExpressions = []
+                sqlparams.append(parameter[2])
+                operatorExpressions.append("\"" + parameter[0] + "\" " + parameter[1] + " %s")
+            # Create a where clause that we can fill with a tuple
+            sql = sql + " WHERE " + " AND ".join(operatorExpressions)
+        result = self.engine.execute(sql, tuple(sqlparams))
+        dictresponse = [mapResponse(row2dict(row), responseMap) for row in result]
+        return (query, dictresponse)
 
 def row2dict(row):
     d = {}
@@ -89,45 +232,99 @@ def row2dict(row):
         d[item[0]] = item[1]
     return d
 
+# Dict response should be what is returned as a list element from the query()
+# function, a dictionar of attribute:values. responseMap should be a either
+# _AWARD_RESPONSE_MAP or _FINANCIAL_RESPONSE_MAP
+def mapResponse(dictresponse, responseMap):
+    newResponse = {}
+    for key in dictresponse:
+        # If we have that key in our response map, place it in the corresponding
+        # grouping
+        if key in responseMap:
+            if responseMap[key] not in newResponse:
+                # If the grouping dict isn't in our response yet, put it there
+                newResponse[responseMap[key]] = {}
+            newResponse[responseMap[key]][key] = dictresponse[key]
+        else:
+            # Otherwise, just drop it straight back in the response
+            newResponse[key] = dictresponse[key]
+    return newResponse
+
+def construct_parameter_object(body):
+    filters = []
+    columns = ["complete"]
+    if "columns" in body:
+        columns = body["columns"]
+    if "filters" in body:
+        for clause in body["filters"]:
+            if not clause['operation'] in _OPERATORS.keys():
+                raise Exception("Operation " + clause['operation'] + " not recognized")
+            filters.append([clause['fieldname'], _OPERATORS[clause['operation']], clause['value']])
+    parameters = {
+        "columns": columns,
+        "filters": filters
+    }
+    return parameters
+
 def award_fain_fain_get(FAIN):
-    whereclause = [["FAIN", "=", str(FAIN)]]
-    return flask.jsonify({ "results": DatastoreDB.get_instance().query_awards([whereclause])})
+    parameters = {
+        "columns": ["complete"],
+        "filters": [["FAIN", "=", str(FAIN)]]
+    }
+    results = DatastoreDB.get_instance().query_awards(parameters)
+    query = results[0]
+    results = results[1]
+    return flask.jsonify({  "query": query,
+                            "count": len(results),
+                            "results": results})
 
 def award_piid_piid_get(PIID):
-    whereclause = [["PIID", "=", str(PIID)]]
-    return flask.jsonify({ "results": DatastoreDB.get_instance().query_awards([whereclause])})
+    parameters = {
+        "columns": ["complete"],
+        "filters": [["PIID", "=", str(PIID)]]
+    }
+    results = DatastoreDB.get_instance().query_awards(parameters)
+    query = results[0]
+    results = results[1]
+    return flask.jsonify({  "query": query,
+                            "count": len(results),
+                            "results": results})
 
 def award_uri_uri_get(URI):
-    whereclause = [["URI", "=", str(URI)]]
-    return flask.jsonify({ "results": DatastoreDB.get_instance().query_awards([whereclause])})
+    parameters = {
+        "columns": ["complete"],
+        "filters": [["URI", "=", str(URI)]]
+    }
+    results = DatastoreDB.get_instance().query_awards(parameters)
+    query = results[0]
+    results = results[1]
+    return flask.jsonify({  "query": query,
+                            "count": len(results),
+                            "results": results})
 
 def awards_post(body):
-    whereclauses = []
-    for clause in body:
-        if not clause['operation'] in _OPERATORS.keys():
-            raise Exception("Operation " + clause['operation'] + " not recognized")
-        whereclauses.append([clause['fieldname'], _OPERATORS[clause['operation']], clause['value']])
-    return flask.jsonify({ "results": DatastoreDB.get_instance().query_awards([whereclauses])})
-
-def financial_account_mac_get(MAC):
-    whereclause = [["MainAccountCode", "=", str(MAC)]]
-    return flask.jsonify({ "results": DatastoreDB.get_instance().query_financials([whereclause])})
+    parameters = construct_parameter_object(body)
+    results = DatastoreDB.get_instance().query_awards(parameters)
+    query = results[0]
+    results = results[1]
+    return flask.jsonify({  "query": query,
+                            "count": len(results),
+                            "results": results})
 
 def financial_accounts_post(body):
-    whereclauses = []
-    for clause in body:
-        if not clause['operation'] in _OPERATORS.keys():
-            raise Exception("Operation " + clause['operation'] + " not recognized")
-        whereclauses.append([clause['fieldname'], _OPERATORS[clause['operation']], clause['value']])
-    return flask.jsonify({ "results": DatastoreDB.get_instance().query_financials([whereclauses])})
+    parameters = construct_parameter_object(body)
+    results = DatastoreDB.get_instance().query_financials(parameters)
+    query = results[0]
+    results = results[1]
+    return flask.jsonify({  "query": query,
+                            "count": len(results),
+                            "results": results})
 
 def financial_activities_post(body):
-    whereclauses = []
-    for clause in body:
-        if not clause['operation'] in _OPERATORS.keys():
-            raise Exception("Operation " + clause['operation'] + " not recognized")
-        whereclauses.append([clause['fieldname'], _OPERATORS[clause['operation']], clause['value']])
-    return flask.jsonify({ "results": DatastoreDB.get_instance().query_financials([whereclauses])})
-
-def financial_activity_pac_get(PAC):
-    raise Exception('PAC not currently available')
+    parameters = construct_parameter_object(body)
+    results = DatastoreDB.get_instance().query_financials(parameters)
+    query = results[0]
+    results = results[1]
+    return flask.jsonify({  "query": query,
+                            "count": len(results),
+                            "results": results})
