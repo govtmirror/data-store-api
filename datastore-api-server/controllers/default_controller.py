@@ -211,9 +211,7 @@ class DatastoreDB:
                                     "Current available fields are: " + "\n\t".join(column_array))
         sql = "SELECT " + ",".join(columns) + " FROM " + table_name
         sqlparams = []
-        if len(parameters["filters"]) == 0:
-            sql = sql + " LIMIT 1000" # Maybe change this later
-        else:
+        if len(parameters["filters"]) > 0:
             for parameter in parameters["filters"]:
                 # Construct an array of parameters for tuple construction later
                 operatorExpressions = []
@@ -221,6 +219,12 @@ class DatastoreDB:
                 operatorExpressions.append("\"" + parameter[0] + "\" " + parameter[1] + " %s")
             # Create a where clause that we can fill with a tuple
             sql = sql + " WHERE " + " AND ".join(operatorExpressions)
+        # Pagination
+        limit = parameters["page_length"]
+        offset = (parameters["page"] - 1) * limit
+        sql = sql + " OFFSET %s LIMIT %s" % (offset, limit)
+
+        # Query
         result = self.engine.execute(sql, tuple(sqlparams))
         dictresponse = [mapResponse(row2dict(row), responseMap) for row in result]
         return (query, dictresponse)
@@ -253,6 +257,9 @@ def mapResponse(dictresponse, responseMap):
 def construct_parameter_object(body):
     filters = []
     columns = ["complete"]
+    page = 1
+    page_length = 1000
+
     if "columns" in body:
         columns = body["columns"]
     if "filters" in body:
@@ -260,16 +267,24 @@ def construct_parameter_object(body):
             if not clause['operation'] in _OPERATORS.keys():
                 raise Exception("Operation " + clause['operation'] + " not recognized")
             filters.append([clause['fieldname'], _OPERATORS[clause['operation']], clause['value']])
+    if "page" in body:
+        page = max(1, int(body["page"]))
+    if "page_length" in body:
+        page_length = min(1000, int(body["page_length"]))
     parameters = {
         "columns": columns,
-        "filters": filters
+        "filters": filters,
+        "page": page,
+        "page_length": page_length
     }
     return parameters
 
 def award_fain_fain_get(FAIN):
     parameters = {
         "columns": ["complete"],
-        "filters": [["FAIN", "=", str(FAIN)]]
+        "filters": [["FAIN", "=", str(FAIN)]],
+        "page": 1,
+        "page_length": 1000
     }
     results = DatastoreDB.get_instance().query_awards(parameters)
     query = results[0]
@@ -281,7 +296,9 @@ def award_fain_fain_get(FAIN):
 def award_piid_piid_get(PIID):
     parameters = {
         "columns": ["complete"],
-        "filters": [["PIID", "=", str(PIID)]]
+        "filters": [["PIID", "=", str(PIID)]],
+        "page": 1,
+        "page_length": 1000
     }
     results = DatastoreDB.get_instance().query_awards(parameters)
     query = results[0]
@@ -293,7 +310,9 @@ def award_piid_piid_get(PIID):
 def award_uri_uri_get(URI):
     parameters = {
         "columns": ["complete"],
-        "filters": [["URI", "=", str(URI)]]
+        "filters": [["URI", "=", str(URI)]],
+        "page": 1,
+        "page_length": 1000
     }
     results = DatastoreDB.get_instance().query_awards(parameters)
     query = results[0]
