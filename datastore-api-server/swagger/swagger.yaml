@@ -193,6 +193,16 @@ definitions:
   postqualifiers:
     type: "object"
     properties:
+      page:
+        type: "number"
+        example: 1.0
+        description: "The page of the results to display. Valid greater than zero.\
+          \ Optional."
+      page_length:
+        type: "number"
+        example: 1000.0
+        description: "The length of a page in the restuls. Default is 1000, valid\
+          \ 1-1000. Optional."
       columns:
         type: "array"
         items:
