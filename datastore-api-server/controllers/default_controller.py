@@ -628,6 +628,35 @@ def awards_post(body):
                             "count": len(results),
                             "results": results})
 
+def financial_accounts_object_class_get(ObjectClass):
+    parameters = {
+        "columns": ["complete"],
+        "filters": [["ObjectClass", "=", str(ObjectClass)]],
+        "page": 1,
+        "page_length": 1000
+    }
+    results = DatastoreDB.get_instance().query_financials(parameters)
+    query = results[0]
+    results = results[1]
+    return flask.jsonify({  "query": query,
+                            "count": len(results),
+                            "results": results})
+
+def financial_activites_main_account_code_get(MainAccountCode):
+    parameters = {
+        "columns": ["complete"],
+        "filters": [["MainAccountCode", "=", str(MainAccountCode)]],
+        "page": 1,
+        "page_length": 1000
+    }
+    results = DatastoreDB.get_instance().query_financials(parameters)
+    query = results[0]
+    results = results[1]
+    return flask.jsonify({  "query": query,
+                            "count": len(results),
+                            "results": results})
+
+
 def financial_accounts_post(body):
     parameters = construct_parameter_object(body)
     results = DatastoreDB.get_instance().query_financials(parameters)

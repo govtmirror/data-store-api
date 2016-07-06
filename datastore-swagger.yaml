@@ -33,6 +33,48 @@ paths:
           $ref: '#/responses/Standard404ErrorResponse'
         500:
           $ref: '#/responses/Standard500ErrorResponse'
+  /financial/activites/{MainAccountCode}:
+    get:
+      tags:
+        - financial
+      summary: Gets financial activites by MAC
+      description: Returns an array of Activities matching the MAC
+      parameters:
+        - name: MainAccountCode
+          in: path
+          required: true
+          description: The MainAccountCode to search by
+          type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Activities'
+        404:
+          $ref: '#/responses/Standard404ErrorResponse'
+        500:
+          $ref: '#/responses/Standard500ErrorResponse'
+  /financial/accounts/{ObjectClass}:
+    get:
+      tags:
+        - financial
+      summary: Gets financial accounts by ObjectClass
+      description: Returns an array of accounts matching the ObjectClass
+      parameters:
+        - name: ObjectClass
+          in: path
+          required: true
+          description: The ObjectClass to search by
+          type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Accounts'
+        404:
+          $ref: '#/responses/Standard404ErrorResponse'
+        500:
+          $ref: '#/responses/Standard500ErrorResponse'
   /financial/accounts/:
     post:
       tags:
