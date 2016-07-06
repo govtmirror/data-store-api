@@ -156,6 +156,62 @@ paths:
             $ref: "#/definitions/Error"
       x-tags:
       - tag: "financial"
+  /financial/accounts/{ObjectClass}:
+    get:
+      tags:
+      - "financial"
+      summary: "Gets financial accounts by ObjectClass"
+      description: "Returns an array of accounts matching the ObjectClass"
+      operationId: "controllers.default_controller.financial_accounts_object_class_get"
+      parameters:
+      - name: "ObjectClass"
+        in: "path"
+        description: "The ObjectClass to search by"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/Accounts"
+        404:
+          description: "Resource not found."
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: "An unexpected error occured."
+          schema:
+            $ref: "#/definitions/Error"
+      x-tags:
+      - tag: "financial"
+  /financial/activites/{MainAccountCode}:
+    get:
+      tags:
+      - "financial"
+      summary: "Gets financial activites by MAC"
+      description: "Returns an array of Activities matching the MAC"
+      operationId: "controllers.default_controller.financial_activites_main_account_code_get"
+      parameters:
+      - name: "MainAccountCode"
+        in: "path"
+        description: "The MainAccountCode to search by"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/Activities"
+        404:
+          description: "Resource not found."
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: "An unexpected error occured."
+          schema:
+            $ref: "#/definitions/Error"
+      x-tags:
+      - tag: "financial"
   /financial/activities/:
     post:
       tags:
@@ -193,6 +249,16 @@ definitions:
   postqualifiers:
     type: "object"
     properties:
+      page:
+        type: "number"
+        example: 1.0
+        description: "The page of the results to display. Valid greater than zero.\
+          \ Optional."
+      page_length:
+        type: "number"
+        example: 1000.0
+        description: "The length of a page in the restuls. Default is 1000, valid\
+          \ 1-1000. Optional."
       columns:
         type: "array"
         items:
