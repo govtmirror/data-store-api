@@ -2,7 +2,9 @@
 
 _EXCLUDED_COLUMNS = ("create_date",
                      "update_date",
-                     "username")
+                     "create_user_id",
+                     "update_user_id"
+                     )
 
 _AVAILABLE_TABLES = ("treasury_appropriation_account",
                      "appropriation_account_balances",

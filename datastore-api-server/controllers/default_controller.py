@@ -71,6 +71,22 @@ class DatastoreDB:
                           join_relations,
                           mappings._FINANCIAL_RESPONSE_MAP)
 
+    # A query on File B
+    def query_financial_activities(self, parameters):
+        tables = [
+                    "financial_accounts_by_program_activity_object_class",
+                    "appropriation_account_balances",
+                    "treasury_appropriation_account"
+                 ]
+        join_relations = [
+                    "financial_accounts_by_program_activity_object_class.appropriation_account_balances_id = appropriation_account_balances.appropriation_account_balances_id",
+                    "appropriation_account_balances.treasury_account_identifier = treasury_appropriation_account.treasury_account_identifier"
+                         ]
+        return self.query(parameters,
+                          tables,
+                          join_relations,
+                          mappings._FINANCIAL_RESPONSE_MAP)
+
     # tables - Array of table names
     #          e.g. ["TABLE_A",
     #               "TABLE_B",
@@ -286,7 +302,7 @@ def financial_accounts_post(body):
 
 def financial_activities_post(body):
     parameters = construct_parameter_object(body)
-    results = DatastoreDB.get_instance().query_financials(parameters)
+    results = DatastoreDB.get_instance().query_financial_activities(parameters)
     query = results[0]
     results = results[1]
     return flask.jsonify({  "query": query,
