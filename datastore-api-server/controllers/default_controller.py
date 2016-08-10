@@ -24,21 +24,16 @@ class DatastoreDB:
         self.engine = create_engine(datastore_string, echo=True)
 
         print("Database connection established, acquiring available columns")
-        sql = text('SELECT column_name FROM information_schema.columns WHERE table_name=\'awards_data\'')
-        result = self.engine.execute(sql)
-        self.award_columns = []
-        for row in result:
-            if row[0] not in dbvars._EXCLUDED_COLUMNS:
-                self.award_columns.append(row[0])
-        self.award_columns_lower = [item.lower() for item in self.award_columns]
+        self.table_columns = {}
+        for table in dbvars._AVAILABLE_TABLES:
+            self.table_columns[table] = []
+            sql = text('SELECT column_name FROM information_schema.columns WHERE table_name=:table;')
+            result = self.engine.execute(sql, {'table': table})
+            for row in result:
+                if row[0] not in dbvars._EXCLUDED_COLUMNS:
+                    self.table_columns[table].append(row[0])
 
-        sql = text('SELECT column_name FROM information_schema.columns WHERE table_name=\'financial_accounts\'')
-        result = self.engine.execute(sql)
-        self.financial_columns = []
-        for row in result:
-            if row[0] not in dbvars._EXCLUDED_COLUMNS:
-                self.financial_columns.append(row[0])
-        self.financial_columns_lower = [item.lower() for item in self.financial_columns]
+        print(self.table_columns)
 
         print("Done")
 
@@ -62,32 +57,77 @@ class DatastoreDB:
                                  mappings._FINANCIAL_RESPONSE_MAP,
                                  "financial_accounts")
 
-    # Parameters is an array of n [[FIELD, OPERATOR, VALUE]]
-    # Operators are guaranteed to go through the global array
-    def query(self, parameters, column_array, column_array_lower, responseMap, table_name):
-        query = parameters
+    # A query on File A
+    def query_financial_accounts(self, parameters):
+        tables = [
+                    "appropriation_account_balances",
+                    "treasury_appropriation_account"
+                 ]
+        join_relations = [
+                    "appropriation_account_balances.treasury_account_identifier = treasury_appropriation_account.treasury_account_identifier"
+                         ]
+        return self.query(parameters,
+                          tables,
+                          join_relations,
+                          mappings._FINANCIAL_RESPONSE_MAP)
+
+    # tables - Array of table names
+    #          e.g. ["TABLE_A",
+    #               "TABLE_B",
+    #               "TABLE_C"]
+    # table_join_relations - Array of how tables join to one another
+    #          e.g. ["TABLE_A.id = TABLE_B.table_a_id",
+    #               "TABLE_C.table_b_id = TABLE_B.id"]
+    def query(self, parameters, tables, table_join_relations, responseMap):
         columns = []
+        available_columns = []
+        # Get list of available columns from all of tables that will be joined
+        for table in tables:
+            available_columns = available_columns + self.table_columns[table]
+        # For every requested column, we need to check if it is a shortcut column
+        # and whether it exists in available_columns
         for col in parameters["columns"]:
+            # If the requested column is a shortcut column
             if col in dbvars._SHORTCUT_COLUMNS:
                 if col == "complete":
+                    # Complete is *, which is not an 'available column', so just append it
                     columns = columns + dbvars._SHORTCUT_COLUMNS[col]
                 else:
-                    # If a field is in the shortcut, we must verify it exists
-                    # in the requested table
-                    intersection = list(set.intersection(set(dbvars._SHORTCUT_COLUMNS[col]), set(column_array)))
+                    # Find the intersection of the shortcuts and available columns
+                    intersection = list(set.intersection(set(dbvars._SHORTCUT_COLUMNS[col]), set(available_columns)))
                     for column in intersection:
-                        columns.append("\"" + column + "\"")
+                        columns.append(column)
+            # If the column is just a regular column
             else:
-                try:
-                    index = column_array_lower.index(col.lower())
-                    columns.append("\"" + column_array[index] + "\"")
-                except ValueError:
+                if col in available_columns:
+                    columns.append(col)
+                else:
+                    # The column isn't a shortcut, and isn't in the available columns
+                    # Throw an error so we return 500. TODO: May want to change this to just
+                    # return a json object with an error parameter
                     raise Exception(col + " was not found in the list of available fields\n" +
-                                    "Current available fields are: " + "\n\t".join(column_array))
-        sql = "SELECT " + ",".join(columns) + " FROM " + table_name
+                                    "Current available fields for this endpoint are: " + "\n\t".join(available_columns))
+
+        # First, we construct the join statement
+        join_statement = ""
+        numjoins = 0
+        # This will create either a string with solely the single queried table,
+        # or a join satement using the provided relations
+        for table in tables:
+            if len(join_statement) == 0:
+                join_statement = join_statement + table
+            else:
+                join_statement = join_statement + " INNER JOIN " + table + " ON " + table_join_relations[numjoins]
+                numjoins = numjoins + 1
+        sql = "SELECT " + ",".join(columns) + " FROM " + join_statement
         sqlparams = []
+
         if len(parameters["filters"]) > 0:
             for parameter in parameters["filters"]:
+                # List is [0] - fieldname, [1] - operator, [2] - value
+                if parameter[0] not in available_columns:
+                    raise Exception(parameter[0] + " was not found in the list of available fields\n" +
+                                    "Current available fields for this endpoint are: \n\t" + "\n\t".join(available_columns))
                 # Construct an array of parameters for tuple construction later
                 operatorExpressions = []
                 sqlparams.append(parameter[2])
@@ -102,7 +142,8 @@ class DatastoreDB:
         # Query
         result = self.engine.execute(sql, tuple(sqlparams))
         dictresponse = [mapResponse(row2dict(row), responseMap) for row in result]
-        return (query, dictresponse)
+        print(dictresponse)
+        return (parameters, dictresponse)
 
 def row2dict(row):
     d = {}
@@ -236,7 +277,7 @@ def financial_activites_main_account_code_get(MainAccountCode):
 
 def financial_accounts_post(body):
     parameters = construct_parameter_object(body)
-    results = DatastoreDB.get_instance().query_financials(parameters)
+    results = DatastoreDB.get_instance().query_financial_accounts(parameters)
     query = results[0]
     results = results[1]
     return flask.jsonify({  "query": query,
