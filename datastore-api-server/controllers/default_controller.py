@@ -43,20 +43,6 @@ class DatastoreDB:
             DatastoreDB._dbinstance = DatastoreDB()
         return DatastoreDB._dbinstance
 
-    def query_awards(self, parameters):
-        return self.query(parameters,
-                         DatastoreDB.get_instance().award_columns,
-                         DatastoreDB.get_instance().award_columns_lower,
-                         mappings._AWARD_RESPONSE_MAP,
-                         "awards_data")
-
-    def query_financials(self, parameters):
-                return self.query(parameters,
-                                 DatastoreDB.get_instance().financial_columns,
-                                 DatastoreDB.get_instance().financial_columns_lower,
-                                 mappings._FINANCIAL_RESPONSE_MAP,
-                                 "financial_accounts")
-
     # A query on File A
     def query_financial_accounts(self, parameters):
         tables = [
@@ -86,6 +72,24 @@ class DatastoreDB:
                           tables,
                           join_relations,
                           mappings._FINANCIAL_RESPONSE_MAP)
+
+    def query_award_financials(self, parameters):
+        tables = [
+                    "financial_accounts_by_awards",
+                    "financial_accounts_by_awards_transaction_obligations",
+                    "appropriation_account_balances",
+                    "treasury_appropriation_account"
+                 ]
+        join_relations = [
+                    "financial_accounts_by_awards.financial_accounts_by_awards_id = financial_accounts_by_awards_transaction_obligations.financial_accounts_by_awards_id",
+                    "financial_accounts_by_awards.appropriation_account_balances_id = appropriation_account_balances.appropriation_account_balances_id",
+                    "appropriation_account_balances.treasury_account_identifier = treasury_appropriation_account.treasury_account_identifier"
+                         ]
+        return self.query(parameters,
+                          tables,
+                          join_relations,
+                          mappings._AWARD_RESPONSE_MAP)
+
 
     # tables - Array of table names
     #          e.g. ["TABLE_A",
@@ -255,7 +259,7 @@ def award_uri_uri_get(URI):
 
 def awards_post(body):
     parameters = construct_parameter_object(body)
-    results = DatastoreDB.get_instance().query_awards(parameters)
+    results = DatastoreDB.get_instance().query_award_financials(parameters)
     query = results[0]
     results = results[1]
     return flask.jsonify({  "query": query,
