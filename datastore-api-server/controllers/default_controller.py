@@ -218,7 +218,7 @@ def construct_parameter_object(body):
 def award_fain_fain_get(FAIN):
     parameters = {
         "columns": ["complete"],
-        "filters": [["FAIN", "=", str(FAIN)]],
+        "filters": [["fain", "=", str(FAIN)]],
         "page": 1,
         "page_length": 1000
     }
@@ -232,7 +232,7 @@ def award_fain_fain_get(FAIN):
 def award_piid_piid_get(PIID):
     parameters = {
         "columns": ["complete"],
-        "filters": [["PIID", "=", str(PIID)]],
+        "filters": [["piid", "=", str(PIID)]],
         "page": 1,
         "page_length": 1000
     }
@@ -246,7 +246,7 @@ def award_piid_piid_get(PIID):
 def award_uri_uri_get(URI):
     parameters = {
         "columns": ["complete"],
-        "filters": [["URI", "=", str(URI)]],
+        "filters": [["uri", "=", str(URI)]],
         "page": 1,
         "page_length": 1000
     }
@@ -269,7 +269,7 @@ def awards_post(body):
 def financial_accounts_object_class_get(ObjectClass):
     parameters = {
         "columns": ["complete"],
-        "filters": [["ObjectClass", "=", str(ObjectClass)]],
+        "filters": [["object_class", "=", str(ObjectClass)]],
         "page": 1,
         "page_length": 1000
     }
@@ -283,7 +283,7 @@ def financial_accounts_object_class_get(ObjectClass):
 def financial_activites_main_account_code_get(MainAccountCode):
     parameters = {
         "columns": ["complete"],
-        "filters": [["MainAccountCode", "=", str(MainAccountCode)]],
+        "filters": [["main_account_code", "=", str(MainAccountCode)]],
         "page": 1,
         "page_length": 1000
     }
