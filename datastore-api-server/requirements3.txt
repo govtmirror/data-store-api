@@ -8,6 +8,7 @@ MarkupSafe==0.23
 psycopg2==2.6.2
 PyYAML==3.11
 requests==2.11.0
+simplejson==3.8.2
 six==1.10.0
 SQLAlchemy==1.0.14
 strict-rfc3339==0.7

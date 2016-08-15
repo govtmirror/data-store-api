@@ -1,10 +1,16 @@
 # This file includes constant dictionaries and lists
 
-_EXCLUDED_COLUMNS = ("create date",
-                     "update date",
-                     "username",
-                     "awards_data_id",
-                     "financial_accounts_id")
+_EXCLUDED_COLUMNS = ("create_date",
+                     "update_date",
+                     "create_user_id",
+                     "update_user_id"
+                     )
+
+_AVAILABLE_TABLES = ("treasury_appropriation_account",
+                     "appropriation_account_balances",
+                     "financial_accounts_by_program_activity_object_class",
+                     "financial_accounts_by_awards",
+                     "financial_accounts_by_awards_transaction_obligations")
 
 _SHORTCUT_COLUMNS = {
     "complete": ["*"],
