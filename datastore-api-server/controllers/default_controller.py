@@ -139,7 +139,7 @@ class DatastoreDB:
             else:
                 join_statement = join_statement + " INNER JOIN " + table + " ON " + table_join_relations[numjoins]
                 numjoins = numjoins + 1
-        sql = "SELECT " + ",".join(columns) + " FROM " + join_statement
+        sql = ",".join(columns) + " FROM " + join_statement
         sqlparams = []
 
         if len(parameters["filters"]) > 0:
@@ -158,12 +158,21 @@ class DatastoreDB:
         limit = parameters["page_length"]
         offset = (parameters["page"] - 1) * limit
         sql = sql + " OFFSET %s LIMIT %s" % (offset, limit)
+        sql_distinct = "SELECT DISTINCT " + sql
+        sql = "SELECT " + sql
 
         # Query
         result = self.engine.execute(sql, tuple(sqlparams))
         dictresponse = [mapResponse(row2dict(row), responseMap) for row in result]
         print(dictresponse)
-        return (parameters, dictresponse)
+
+        # Distinct query
+        distinct_response = {}
+        if parameters["get_unique"] == True:
+            results_distinct = self.engine.execute(sql_distinct, tuple(sqlparams))
+            distinct_response = response2set(results_distinct)
+        print(distinct_response)
+        return (parameters, dictresponse, distinct_response)
 
 def row2dict(row):
     d = {}
@@ -171,6 +180,23 @@ def row2dict(row):
         if item[0] in dbvars._EXCLUDED_COLUMNS: continue
         d[item[0]] = item[1]
     return d
+
+def response2set(result):
+    distinct_values = {}
+    # We use sets here to ensure uniqueness when we have multiple 'distinct' rows
+    # due to the inner join among tables
+    for row in result:
+        for item in row.items():
+            if item[0] in dbvars._EXCLUDED_COLUMNS: continue
+            if item[0] in distinct_values:
+                distinct_values[item[0]].add(item[1])
+            else:
+                distinct_values[item[0]] = set()
+                distinct_values[item[0]].add(item[1])
+    # Now we must convert the sets back to lists so we can jsonify them
+    for key in distinct_values.keys():
+        distinct_values[key] = list(distinct_values[key])
+    return distinct_values
 
 # Dict response should be what is returned as a list element from the query()
 # function, a dictionar of attribute:values. responseMap should be a either
@@ -190,11 +216,28 @@ def mapResponse(dictresponse, responseMap):
             newResponse[key] = dictresponse[key]
     return newResponse
 
+# Constructs the response object using a given response from the query method
+def construct_response_object(results_object):
+    query = results_object[0]
+    results = results_object[1]
+    distinct_results = results_object[2]
+
+    return_object = {  "query": query,
+                       "count": len(results),
+                       "results": results }
+
+    if len(distinct_results) > 0:
+        return_object["unique_values"] = distinct_results
+
+    return return_object
+
+
 def construct_parameter_object(body):
     filters = []
     columns = ["complete"]
     page = 1
     page_length = 1000
+    get_unique = False
 
     if "columns" in body:
         columns = body["columns"]
@@ -207,11 +250,14 @@ def construct_parameter_object(body):
         page = max(1, int(body["page"]))
     if "page_length" in body:
         page_length = min(1000, int(body["page_length"]))
+    if "get_unique" in body:
+        get_unique = bool(body["get_unique"])
     parameters = {
         "columns": columns,
         "filters": filters,
         "page": page,
-        "page_length": page_length
+        "page_length": page_length,
+        "get_unique": get_unique
     }
     return parameters
 
@@ -223,11 +269,7 @@ def award_fain_fain_get(FAIN):
         "page_length": 1000
     }
     results = DatastoreDB.get_instance().query_awards(parameters)
-    query = results[0]
-    results = results[1]
-    return flask.jsonify({  "query": query,
-                            "count": len(results),
-                            "results": results})
+    return flask.jsonify(construct_response_object(results))
 
 def award_piid_piid_get(PIID):
     parameters = {
@@ -237,11 +279,7 @@ def award_piid_piid_get(PIID):
         "page_length": 1000
     }
     results = DatastoreDB.get_instance().query_awards(parameters)
-    query = results[0]
-    results = results[1]
-    return flask.jsonify({  "query": query,
-                            "count": len(results),
-                            "results": results})
+    return flask.jsonify(construct_response_object(results))
 
 def award_uri_uri_get(URI):
     parameters = {
@@ -251,20 +289,12 @@ def award_uri_uri_get(URI):
         "page_length": 1000
     }
     results = DatastoreDB.get_instance().query_awards(parameters)
-    query = results[0]
-    results = results[1]
-    return flask.jsonify({  "query": query,
-                            "count": len(results),
-                            "results": results})
+    return flask.jsonify(construct_response_object(results))
 
 def awards_post(body):
     parameters = construct_parameter_object(body)
     results = DatastoreDB.get_instance().query_award_financials(parameters)
-    query = results[0]
-    results = results[1]
-    return flask.jsonify({  "query": query,
-                            "count": len(results),
-                            "results": results})
+    return flask.jsonify(construct_response_object(results))
 
 def financial_accounts_object_class_get(ObjectClass):
     parameters = {
@@ -274,11 +304,7 @@ def financial_accounts_object_class_get(ObjectClass):
         "page_length": 1000
     }
     results = DatastoreDB.get_instance().query_financials(parameters)
-    query = results[0]
-    results = results[1]
-    return flask.jsonify({  "query": query,
-                            "count": len(results),
-                            "results": results})
+    return flask.jsonify(construct_response_object(results))
 
 def financial_activites_main_account_code_get(MainAccountCode):
     parameters = {
@@ -288,27 +314,15 @@ def financial_activites_main_account_code_get(MainAccountCode):
         "page_length": 1000
     }
     results = DatastoreDB.get_instance().query_financials(parameters)
-    query = results[0]
-    results = results[1]
-    return flask.jsonify({  "query": query,
-                            "count": len(results),
-                            "results": results})
+    return flask.jsonify(construct_response_object(results))
 
 
 def financial_accounts_post(body):
     parameters = construct_parameter_object(body)
     results = DatastoreDB.get_instance().query_financial_accounts(parameters)
-    query = results[0]
-    results = results[1]
-    return flask.jsonify({  "query": query,
-                            "count": len(results),
-                            "results": results})
+    return flask.jsonify(construct_response_object(results))
 
 def financial_activities_post(body):
     parameters = construct_parameter_object(body)
     results = DatastoreDB.get_instance().query_financial_activities(parameters)
-    query = results[0]
-    results = results[1]
-    return flask.jsonify({  "query": query,
-                            "count": len(results),
-                            "results": results})
+    return flask.jsonify(construct_response_object(results))
