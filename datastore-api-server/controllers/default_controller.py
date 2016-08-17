@@ -163,8 +163,7 @@ class DatastoreDB:
 
         # Query
         result = self.engine.execute(sql, tuple(sqlparams))
-        dictresponse = [mapResponse(row2dict(row), responseMap) for row in result]
-        print(dictresponse)
+        dictresponse = [mapResponse(row2dict(row), responseMap, parameters["full_labels"]) for row in result]
 
         # Distinct query
         distinct_response = {}
@@ -201,19 +200,23 @@ def response2set(result):
 # Dict response should be what is returned as a list element from the query()
 # function, a dictionar of attribute:values. responseMap should be a either
 # mappings._AWARD_RESPONSE_MAP or mappings._FINANCIAL_RESPONSE_MAP
-def mapResponse(dictresponse, responseMap):
+def mapResponse(dictresponse, responseMap, full_labels):
     newResponse = {}
     for key in dictresponse:
+        dest_key = key
+        if full_labels:
+            if key in mappings._TERSE_TO_AGENCY_LABELS:
+                dest_key = mappings._TERSE_TO_AGENCY_LABELS[key]
         # If we have that key in our response map, place it in the corresponding
         # grouping
         if key in responseMap:
             if responseMap[key] not in newResponse:
                 # If the grouping dict isn't in our response yet, put it there
                 newResponse[responseMap[key]] = {}
-            newResponse[responseMap[key]][key] = dictresponse[key]
+            newResponse[responseMap[key]][dest_key] = dictresponse[key]
         else:
             # Otherwise, just drop it straight back in the response
-            newResponse[key] = dictresponse[key]
+            newResponse[dest_key] = dictresponse[key]
     return newResponse
 
 # Constructs the response object using a given response from the query method
@@ -238,6 +241,7 @@ def construct_parameter_object(body):
     page = 1
     page_length = 1000
     get_unique = False
+    full_labels = False
 
     if "columns" in body:
         columns = body["columns"]
@@ -252,12 +256,15 @@ def construct_parameter_object(body):
         page_length = min(1000, int(body["page_length"]))
     if "get_unique" in body:
         get_unique = bool(body["get_unique"])
+    if "full_labels" in body:
+        full_labels = bool(body["full_labels"])
     parameters = {
         "columns": columns,
         "filters": filters,
         "page": page,
         "page_length": page_length,
-        "get_unique": get_unique
+        "get_unique": get_unique,
+        "full_labels": full_labels
     }
     return parameters
 
@@ -295,27 +302,6 @@ def awards_post(body):
     parameters = construct_parameter_object(body)
     results = DatastoreDB.get_instance().query_award_financials(parameters)
     return flask.jsonify(construct_response_object(results))
-
-def financial_accounts_object_class_get(ObjectClass):
-    parameters = {
-        "columns": ["complete"],
-        "filters": [["object_class", "=", str(ObjectClass)]],
-        "page": 1,
-        "page_length": 1000
-    }
-    results = DatastoreDB.get_instance().query_financials(parameters)
-    return flask.jsonify(construct_response_object(results))
-
-def financial_activites_main_account_code_get(MainAccountCode):
-    parameters = {
-        "columns": ["complete"],
-        "filters": [["main_account_code", "=", str(MainAccountCode)]],
-        "page": 1,
-        "page_length": 1000
-    }
-    results = DatastoreDB.get_instance().query_financials(parameters)
-    return flask.jsonify(construct_response_object(results))
-
 
 def financial_accounts_post(body):
     parameters = construct_parameter_object(body)
