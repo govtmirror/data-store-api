@@ -603,6 +603,7 @@ definitions:
     description: Represents an appropriation account
     allOf:
     - $ref: "#/definitions/appropriation_account_balance_properties"
+    - $ref: "#/definitions/treasury_account_properties"
   Activity:
     description: Represents a program activity
     allOf:

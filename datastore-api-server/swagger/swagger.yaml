@@ -851,6 +851,7 @@ definitions:
   Account:
     allOf:
     - $ref: "#/definitions/appropriation_account_balance_properties"
+    - $ref: "#/definitions/treasury_account_properties"
     - {}
     description: "Represents an appropriation account"
   Activity:
