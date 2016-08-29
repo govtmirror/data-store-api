@@ -55,7 +55,7 @@ class DatastoreDB:
         return self.query(parameters,
                           tables,
                           join_relations,
-                          mappings._FINANCIAL_RESPONSE_MAP)
+                          mappings._RESPONSE_MAP)
 
     # A query on File B
     def query_financial_activities(self, parameters):
@@ -71,7 +71,7 @@ class DatastoreDB:
         return self.query(parameters,
                           tables,
                           join_relations,
-                          mappings._FINANCIAL_RESPONSE_MAP)
+                          mappings._RESPONSE_MAP)
 
     def query_award_financials(self, parameters):
         tables = [
@@ -88,7 +88,7 @@ class DatastoreDB:
         return self.query(parameters,
                           tables,
                           join_relations,
-                          mappings._AWARD_RESPONSE_MAP)
+                          mappings._RESPONSE_MAP)
 
 
     # tables - Array of table names
@@ -121,6 +121,9 @@ class DatastoreDB:
             else:
                 if col in available_columns:
                     columns.append(col)
+                elif col in mappings._AGENCY_TO_TERSE_LABELS:
+                    # Check if it is a fully qualified label
+                    columns.append(mappings._AGENCY_TO_TERSE_LABELS[col])
                 else:
                     # The column isn't a shortcut, and isn't in the available columns
                     # Throw an error so we return 500. TODO: May want to change this to just
@@ -145,13 +148,16 @@ class DatastoreDB:
         if len(parameters["filters"]) > 0:
             for parameter in parameters["filters"]:
                 # List is [0] - fieldname, [1] - operator, [2] - value
-                if parameter[0] not in available_columns:
-                    raise Exception(parameter[0] + " was not found in the list of available fields\n" +
+                fieldname = parameter[0]
+                if fieldname in mappings._AGENCY_TO_TERSE_LABELS:
+                    fieldname = mappings._AGENCY_TO_TERSE_LABELS[fieldname]
+                if fieldname not in available_columns:
+                    raise Exception(fieldname + " was not found in the list of available fields\n" +
                                     "Current available fields for this endpoint are: \n\t" + "\n\t".join(available_columns))
                 # Construct an array of parameters for tuple construction later
                 operatorExpressions = []
                 sqlparams.append(parameter[2])
-                operatorExpressions.append("\"" + parameter[0] + "\" " + parameter[1] + " %s")
+                operatorExpressions.append("\"" + fieldname + "\" " + parameter[1] + " %s")
             # Create a where clause that we can fill with a tuple
             sql = sql + " WHERE " + " AND ".join(operatorExpressions)
         # Pagination
@@ -163,13 +169,16 @@ class DatastoreDB:
 
         # Query
         result = self.engine.execute(sql, tuple(sqlparams))
-        dictresponse = [mapResponse(row2dict(row), responseMap, parameters["full_labels"]) for row in result]
+        rmap = responseMap
+        if not parameters["group_labels"]:
+            rmap = {}
+        dictresponse = [mapResponse(row2dict(row), rmap, parameters["full_labels"]) for row in result]
 
         # Distinct query
         distinct_response = {}
         if parameters["get_unique"] == True:
             results_distinct = self.engine.execute(sql_distinct, tuple(sqlparams))
-            distinct_response = response2set(results_distinct)
+            distinct_response = response2set(results_distinct, parameters["full_labels"])
         print(distinct_response)
         return (parameters, dictresponse, distinct_response)
 
@@ -180,26 +189,29 @@ def row2dict(row):
         d[item[0]] = item[1]
     return d
 
-def response2set(result):
+def response2set(result, full_labels):
     distinct_values = {}
     # We use sets here to ensure uniqueness when we have multiple 'distinct' rows
     # due to the inner join among tables
     for row in result:
         for item in row.items():
+            label = item[0]
+            if full_labels == True:
+                if item[0] in mappings._TERSE_TO_AGENCY_LABELS:
+                    label = mappings._TERSE_TO_AGENCY_LABELS[item[0]]
             if item[0] in dbvars._EXCLUDED_COLUMNS: continue
             if item[0] in distinct_values:
-                distinct_values[item[0]].add(item[1])
+                distinct_values[label].add(item[1])
             else:
-                distinct_values[item[0]] = set()
-                distinct_values[item[0]].add(item[1])
+                distinct_values[label] = set()
+                distinct_values[label].add(item[1])
     # Now we must convert the sets back to lists so we can jsonify them
     for key in distinct_values.keys():
         distinct_values[key] = list(distinct_values[key])
     return distinct_values
 
 # Dict response should be what is returned as a list element from the query()
-# function, a dictionar of attribute:values. responseMap should be a either
-# mappings._AWARD_RESPONSE_MAP or mappings._FINANCIAL_RESPONSE_MAP
+# function, a dictionar of attribute:values. responseMap should be mappings._RESPONSE_MAP
 def mapResponse(dictresponse, responseMap, full_labels):
     newResponse = {}
     for key in dictresponse:
@@ -241,12 +253,14 @@ def construct_parameter_object(body):
     page = 1
     page_length = 1000
     get_unique = False
-    full_labels = False
+    full_labels = True
+    group_labels = True
 
     if "columns" in body:
         columns = body["columns"]
     if "filters" in body:
         for clause in body["filters"]:
+            print(clause)
             if not clause['operation'] in dbvars._OPERATORS.keys():
                 raise Exception("Operation " + clause['operation'] + " not recognized")
             filters.append([clause['fieldname'], dbvars._OPERATORS[clause['operation']], clause['value']])
@@ -258,24 +272,31 @@ def construct_parameter_object(body):
         get_unique = bool(body["get_unique"])
     if "full_labels" in body:
         full_labels = bool(body["full_labels"])
+    if "group_labels" in body:
+        group_labels = bool(body["group_labels"])
     parameters = {
         "columns": columns,
         "filters": filters,
         "page": page,
         "page_length": page_length,
         "get_unique": get_unique,
-        "full_labels": full_labels
+        "full_labels": full_labels,
+        "group_labels": group_labels
     }
     return parameters
 
 def award_fain_fain_get(FAIN):
     parameters = {
         "columns": ["complete"],
-        "filters": [["fain", "=", str(FAIN)]],
+        "filters": [ {
+            "fieldname": "fain",
+            "operation": "equals",
+            "value": str(FAIN)
+        }],
         "page": 1,
         "page_length": 1000
     }
-    results = DatastoreDB.get_instance().query_awards(parameters)
+    results = DatastoreDB.get_instance().query_award_financials(construct_parameter_object(parameters))
     return flask.jsonify(construct_response_object(results))
 
 def award_piid_piid_get(PIID):
@@ -285,7 +306,7 @@ def award_piid_piid_get(PIID):
         "page": 1,
         "page_length": 1000
     }
-    results = DatastoreDB.get_instance().query_awards(parameters)
+    results = DatastoreDB.get_instance().query_award_financials(construct_parameter_object(parameters))
     return flask.jsonify(construct_response_object(results))
 
 def award_uri_uri_get(URI):
@@ -295,7 +316,7 @@ def award_uri_uri_get(URI):
         "page": 1,
         "page_length": 1000
     }
-    results = DatastoreDB.get_instance().query_awards(parameters)
+    results = DatastoreDB.get_instance().query_award_financials(construct_parameter_object(parameters))
     return flask.jsonify(construct_response_object(results))
 
 def awards_post(body):

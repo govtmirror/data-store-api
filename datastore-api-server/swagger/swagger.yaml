@@ -1,26 +1,41 @@
 ---
 swagger: "2.0"
 info:
-  description: "This is an alpha version of the Data Act Outbound API. Using the following\
-    \ endpoints, you can access published data submitted through the Data Broker.\
-    \ The most flexible endpoints are the POST endpoints, which\n take a structured\
-    \ JSON object as a payload. The JSON request supports numerous features:\n* **columns**:\
-    \ Filter the data to only select the specified columns.\n* **filters**: Filter\
-    \ the data to match a specified clause, such as 'piid equals 1002'\n* **page**\
-    \ and **page_length**: Paginate large results to make parsing data simpler.\n\
-    * **get_unique**: Setting this flag to 'true' will return an additional response\
-    \ of *unique_values* which contains a dictionary of all available values for each\
-    \ column requested.\n\nPlease note all data is currently notional\n"
+  description: "**Last updated**: 8/29/2016\n\n This is an alpha\
+    \ version of the Data Act Outbound API. Using the following endpoints, you can\
+    \ access published data submitted through the Data Broker. The most flexible endpoints\
+    \ are the POST endpoints, which take a structured JSON object as a payload. The\
+    \ JSON request supports numerous features:\n\n* **columns**: Filter the data to\
+    \ only select the specified columns.\n* **filters**: Filter the data to match\
+    \ a specified clause, such as 'piid equals 1002'\n* **page** and **page_length**:\
+    \ Paginate large results to make parsing data simpler.\n* **get_unique**: Setting\
+    \ this flag to 'true' will return an additional response of *unique_values* which\
+    \ contains a dictionary of all available values for each column requested.\n\n\
+    Please note all data is currently notional\n\nAs of publication on September 6,\
+    \ 2016, the draft DATA Act API\n on openbeta.usaspending.gov points to appropriations\
+    \ (File A\n – Appropriations Account), program activity (File B – Object\n Class\
+    \ and Program Activity), and award financial (File C –\n Award Financial) data\
+    \ in the DATA Act data store.\n\n\n The USAspending.gov team is actively working\
+    \ to include\n contract (File D1 – Procurement Award and Awardee Attribute),\n\
+    \ financial assistance (File D2 – Financial Assistance Award\n and Awardee Attribute),\
+    \ additional award (File E – Additional\n Awardee Attributes), and sub-award (File\
+    \ F – Sub-Award Attribute) data.\n\n\n For more information about the sources\
+    \ of the data for the\n outbound API, please see the Information Flow on our GitHub\n\
+    \ site: http://fedspendingtransparency.github.io/data-model/\n\n\n\n As part of\
+    \ this iterative, Agile development process we welcome\n  your feedback. Please\
+    \ visit the OpenBeta.USAspending.gov site\n   to provide feedback on the draft\
+    \ API or contact us at\n   fedspending@treasury.gov.\n"
   version: "0.1.0"
-  title: "Outbound API"
+  title: "Alpha Outbound API"
 basePath: "/v1"
 paths:
   /award/fain/{FAIN}:
     get:
       tags:
       - "awards"
-      summary: "Gets a the detailed award by FAIN"
-      description: "Award data is currently limited, and will be expanded in later releases."
+      summary: "Gets the detailed award by FAIN"
+      description: "Access to contract and financial assistance data through the API\
+        \ is currently unavailable but will be rolled out in future releases."
       operationId: "controllers.default_controller.award_fain_fain_get"
       parameters:
       - name: "FAIN"
@@ -48,7 +63,8 @@ paths:
       tags:
       - "awards"
       summary: "Gets the detailed award for a specific PIID"
-      description: "Award data is currently limited, and will be expanded in later releases."
+      description: "Access to contract and financial assistance data through the API\
+        \ is currently unavailable but will be rolled out in future releases."
       operationId: "controllers.default_controller.award_piid_piid_get"
       parameters:
       - name: "PIID"
@@ -76,7 +92,8 @@ paths:
       tags:
       - "awards"
       summary: "Gets the detailed award for a specific URI"
-      description: "Award data is currently limited, and will be expanded in later releases."
+      description: "Access to contract and financial assistance data through the API\
+        \ is currently unavailable but will be rolled out in future releases."
       operationId: "controllers.default_controller.award_uri_uri_get"
       parameters:
       - name: "URI"
@@ -103,8 +120,9 @@ paths:
     post:
       tags:
       - "awards"
-      summary: "Returns all awards which match specified qualifiers with a high level\
-        \ of detail"
+      summary: "Returns all awards which match specified qualifiers"
+      description: "Access to contract and financial assistance data through the API\
+        \ is currently unavailable but will be rolled out in future releases."
       operationId: "controllers.default_controller.awards_post"
       consumes:
       - "application/json"
@@ -136,8 +154,7 @@ paths:
     post:
       tags:
       - "financial"
-      summary: "Returns all accounts which match specified qualifiers with a high\
-        \ level of detail"
+      summary: "Returns all accounts which match specified qualifiers"
       operationId: "controllers.default_controller.financial_accounts_post"
       consumes:
       - "application/json"
@@ -169,8 +186,7 @@ paths:
     post:
       tags:
       - "financial"
-      summary: "Returns all program activities which match specified qualifiers with\
-        \ a high level of detail"
+      summary: "Returns all program activities which match specified qualifiers"
       operationId: "controllers.default_controller.financial_activities_post"
       consumes:
       - "application/json"
@@ -304,7 +320,7 @@ definitions:
           $ref: "#/definitions/Award"
   account_financial_common_fields:
     properties:
-      program_activity_code:
+      ProgramActivityCode:
         type: "string"
         example: "0002"
         description: "The definition for this element appears in Section 200 of OMB\
@@ -313,7 +329,7 @@ definitions:
           \ schedules of the annual budget of the United States Government. maxLength:\
           \ 4"
         maxLength: 4
-      program_activity_name:
+      ProgramActivityName:
         type: "string"
         example: "Preschool Grants"
         description: "The definition for this element appears in Section 200 of OMB\
@@ -322,7 +338,7 @@ definitions:
           \ schedules of the annual budget of the United States Government. maxLength:\
           \ 164"
         maxLength: 164
-      object_class:
+      ObjectClass:
         type: "string"
         example: "254"
         description: "The definition for this element appears in Section 83 of OMB\
@@ -330,14 +346,14 @@ definitions:
           \ Categories in a classification system that presents obligations by the\
           \ items or services purchased by the Federal Government. maxLength: 4"
         maxLength: 4
-      by_direct_reimbursable_fun:
+      ByDirectReimbursableFundingSource:
         type: "string"
         example: "R"
         description: "Holds an attribute flag which specifies that the funding source\
           \ of the associated data value is either a Direct or Reimbursable Funding\
           \ Source. maxLength: 1"
         maxLength: 1
-      ussgl480100_undelivered_or_fyb:
+      USSGL480100_UndeliveredOrdersObligationsUnpaid_FYB:
         type: "number"
         example: -6500
         description: "The amount of goods and/or services ordered, which have not\
@@ -347,7 +363,7 @@ definitions:
           \ claims, and similar events for which an advance or prepayment has not\
           \ occurred. This account does not close at yearend. (Per USSGL TFM Part\
           \ 2, Section II, Accounts and Definitions.)"
-      ussgl480100_undelivered_or_cpe:
+      USSGL480100_UndeliveredOrdersObligationsUnpaid_CPE:
         type: "number"
         example: -6500
         description: "The amount of goods and/or services ordered, which have not\
@@ -357,7 +373,7 @@ definitions:
           \ claims, and similar events for which an advance or prepayment has not\
           \ occurred. This account does not close at yearend. (Per USSGL TFM Part\
           \ 2, Section II, Accounts and Definitions.)"
-      ussgl483100_undelivered_or_cpe:
+      USSGL483100_UndeliveredOrdersObligationsTransferredUnpaid_CPE:
         type: "number"
         example: -6500
         description: "The amount of goods and/or services ordered and obligated in\
@@ -369,14 +385,14 @@ definitions:
           \ or prepayment has not occurred. Although the normal balance for this account\
           \ is credit, it is acceptable for this account to have a debit balance.\
           \ (Per USSGL TFM Part 2, Section II, Accounts and Definitions.)"
-      ussgl488100_upward_adjustm_cpe:
+      USSGL488100_UpwardAdjustmentsOfPriorYearUndeliveredOrdersObligationsUnpaid_CPE:
         type: "number"
         example: -6500
         description: "The amount of upward adjustments during the current fiscal year\
           \ to obligations that were originally recorded in a prior fiscal year in\
           \ USSGL account 480100,\"Undelivered Orders - Obligations, Unpaid.\" (Per\
           \ USSGL TFM Part 2, Section II, Accounts and Definitions.)"
-      ussgl490100_delivered_orde_fyb:
+      USSGL490100_DeliveredOrdersObligationsUnpaid_FYB:
         type: "number"
         example: -6500
         description: "The amount accrued or due for: (1) services performed by employees,\
@@ -386,7 +402,7 @@ definitions:
           \ claims, benefit payments, loans, etc. (Per USSGL TFM Part 2, Section II,\
           \ Accounts and Definitions.) This account does not close at year-end.  (Per\
           \ USSGL TFM Part 2, Section II, Accounts and Definitions.)"
-      ussgl490100_delivered_order_cpe:
+      USSGL490100_DeliveredOrdersObligationsUnpaid_CPE:
         type: "number"
         example: -6500
         description: "The amount accrued or due for: (1) services performed by employees,\
@@ -396,7 +412,7 @@ definitions:
           \ claims, benefit payments, loans, etc. (Per USSGL TFM Part 2, Section II,\
           \ Accounts and Definitions.) This account does not close at year-end.  (Per\
           \ USSGL TFM Part 2, Section II, Accounts and Definitions.)"
-      ussgl1493100_delivered_orde_cpe:
+      USSGL493100_DeliveredOrdersObligationsTransferredUnpaid_CPE:
         type: "number"
         example: -6500
         description: "The amount in USSGL account 490100, \"Delivered Orders - Obligations,\
@@ -409,7 +425,7 @@ definitions:
           \ the normal balance for this account is credit, it is acceptable in certain\
           \ instances for this account to have a debit balance. (Per USSGL TFM Part\
           \ 2, Section II, Accounts and Definitions.) "
-      ussgl498100_upward_adjustm_cpe:
+      USSGL498100_UpwardAdjustmentsOfPriorYearDeliveredOrdersObligationsUnpaid_CPE:
         type: "number"
         example: -6500
         description: "The amount of upward adjustments during the fiscal year to USSGL\
@@ -417,7 +433,7 @@ definitions:
           \ 490200, \"Delivered Orders - Obligations, Paid,\" that were originally\
           \ recorded in a prior fiscal year. (Per USSGL TFM Part 2, Section II, Accounts\
           \ and Definitions.)"
-      ussgl480200_undelivered_or_fyb:
+      USSGL480200_UndeliveredOrdersObligationsPrepaidAdvanced_FYB:
         type: "number"
         example: -6500
         description: "The amount of cash refunds during the current fiscal year resulting\
@@ -425,7 +441,7 @@ definitions:
           \ in a prior fiscal year in USSGL account 480200, \"Undelivered Orders -\
           \ Obligations, Prepaid/Advanced.\" (Per USSGL TFM Part 2, Section II, Accounts\
           \ and Definitions.)"
-      ussgl480200_undelivered_or_cpe:
+      USSGL480200_UndeliveredOrdersObligationsPrepaidAdvanced_CPE:
         type: "number"
         example: -6500
         description: "The amount of cash refunds during the current fiscal year resulting\
@@ -433,7 +449,7 @@ definitions:
           \ in a prior fiscal year in USSGL account 480200, \"Undelivered Orders -\
           \ Obligations, Prepaid/Advanced.\" (Per USSGL TFM Part 2, Section II, Accounts\
           \ and Definitions.)"
-      ussgl483200_undelivered_or_cpe:
+      USSGL483200_UndeliveredOrdersObligationsTransferredPrepaidAdvanced_CPE:
         type: "number"
         example: -6500
         description: "The amount of goods and/or services ordered and obligated in\
@@ -445,14 +461,14 @@ definitions:
           \ an advance or prepayment has not occurred. Although the normal balance\
           \ for this account is credit, it is acceptable for this account to have\
           \ a debit balance.(Per USSGL TFM Part 2, Section II, Accounts and Definitions.)"
-      ussgl488200_upward_adjustm_cpe:
+      USSGL488200_UpwardAdjustmentsOfPriorYearUndeliveredOrdersObligationsPrepaidAdvanced_CPE:
         type: "number"
         example: -6500
         description: "The amount of upward adjustments during the current fiscal year\
           \ to obligations that were originally recorded in a prior fiscal year in\
           \ USSGL account 480200,\"Undelivered Orders - Obligations, Prepaid/Advanced.\"\
           \ (Per USSGL TFM Part 2, Section II, Accounts and Definitions.)"
-      ussgl490200_delivered_orde_cpe:
+      USSGL490200_DeliveredOrdersObligationsPaid_CPE:
         type: "number"
         example: -6500
         description: "The amount paid/outlayed for: (1) services performed by employees,\
@@ -461,28 +477,28 @@ definitions:
           \ which no current service performance is required such as annuities, insurance\
           \ claims, benefit payments, loans, etc. (Per USSGL TFM Part 2, Section II,\
           \ Accounts and Definitions.)"
-      ussgl490800_authority_outl_fyb:
+      USSGL490800_AuthorityOutlayedNotYetDisbursed_FYB:
         type: "number"
         example: -6500
         description: "The amount of authority outlayed but not yet disbursed. Use\
           \ only in specific circumstances, such as for interest on certain Bureau\
           \ of the Fiscal Service securities. This account does not close at yearend.\
           \ (Per USSGL TFM Part 2, Section II, Accounts and Definitions.)"
-      ussgl490800_authority_outl_cpe:
+      USSGL490800_AuthorityOutlayedNotYetDisbursed_CPE:
         type: "number"
         example: -6500
         description: "The amount of authority outlayed but not yet disbursed. Use\
           \ only in specific circumstances, such as for interest on certain Bureau\
           \ of the Fiscal Service securities. This account does not close at yearend.\
           \ (Per USSGL TFM Part 2, Section II, Accounts and Definitions.)"
-      ussgl498200_upward_adjustm_cpe:
+      USSGL498200_UpwardAdjustmentsOfPriorYearDeliveredOrdersObligationsPaid_CPE:
         type: "number"
         description: "The amount of upward adjustments that were originally recorded\
           \ in a prior fiscal year paid/outlayed during the fiscal year to USSGL account\
           \ 490100, \"Delivered Orders - Obligations, Unpaid,\" or USSGL account 490200,\
           \ \"Delivered Orders - Obligations, Paid.\" (Per USSGL TFM Part 2, Section\
           \ II, Accounts and Definitions.)"
-      obligations_undelivered_or_fyb:
+      ObligationsUndeliveredOrdersUnpaidTotal_FYB:
         type: "number"
         example: -6500
         description: "The definition for this element appears in Section 20 of OMB\
@@ -495,7 +511,7 @@ definitions:
           \ of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears\
           \ below. A legally binding agreement that will result in outlays, immediately\
           \ or in the future"
-      obligations_undelivered_or_cpe:
+      ObligationsUndeliveredOrdersUnpaidTotal_CPE:
         type: "number"
         example: -6500
         description: "The definition for this element appears in Section 20 of OMB\
@@ -508,7 +524,7 @@ definitions:
           \ of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears\
           \ below. A legally binding agreement that will result in outlays, immediately\
           \ or in the future"
-      obligations_delivered_orde_fyb:
+      ObligationsDeliveredOrdersUnpaidTotal_FYB:
         type: "number"
         example: -6500
         description: "The definition for this element appears in Section 20 of OMB\
@@ -521,7 +537,7 @@ definitions:
           \ of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears\
           \ below. A legally binding agreement that will result in outlays, immediately\
           \ or in the future"
-      obligations_delivered_orde_cpe:
+      ObligationsDeliveredOrdersUnpaidTotal_CPE:
         type: "number"
         example: -6500
         description: "The definition for this element appears in Section 20 of OMB\
@@ -534,7 +550,7 @@ definitions:
           \ of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears\
           \ below. A legally binding agreement that will result in outlays, immediately\
           \ or in the future"
-      gross_outlays_undelivered_fyb:
+      GrossOutlaysUndeliveredOrdersPrepaidTotal_FYB:
         type: "number"
         example: -6500
         description: "The definition for this element appears in Section 20 of OMB\
@@ -554,7 +570,7 @@ definitions:
           \ of debentures to pay insurance claims, and in a few cases are recorded\
           \ on an accrual basis such as interest on public issues of the public debt.\
           \ Outlays are the measure of Government spending"
-      gross_outlays_undelivered_cpe:
+      GrossOutlaysUndeliveredOrdersPrepaidTotal_CPE:
         type: "number"
         example: -6500
         description: "The definition for this element appears in Section 20 of OMB\
@@ -574,7 +590,7 @@ definitions:
           \ of debentures to pay insurance claims, and in a few cases are recorded\
           \ on an accrual basis such as interest on public issues of the public debt.\
           \ Outlays are the measure of Government spending"
-      gross_outlays_delivered_or_fyb:
+      GrossOutlaysDeliveredOrdersPaidTotal_FYB:
         type: "number"
         example: -6500
         description: "The definition for this element appears in Section 20 of OMB\
@@ -594,7 +610,7 @@ definitions:
           \ of debentures to pay insurance claims, and in a few cases are recorded\
           \ on an accrual basis such as interest on public issues of the public debt.\
           \ Outlays are the measure of Government spending"
-      gross_outlays_delivered_or_cpe:
+      GrossOutlaysDeliveredOrdersPaidTotal_CPE:
         type: "number"
         example: -6500
         description: "The definition for this element appears in Section 20 of OMB\
@@ -614,21 +630,21 @@ definitions:
           \ of debentures to pay insurance claims, and in a few cases are recorded\
           \ on an accrual basis such as interest on public issues of the public debt.\
           \ Outlays are the measure of Government spending"
-      ussgl487100_downward_adjus_cpe:
+      USSGL487100_DownwardAdjustmentsOfPriorYearUnpaidUndeliveredOrdersObligationsRecoveries_CPE:
         type: "number"
         example: 6500
         description: "The amount of recoveries during the current fiscal year resulting\
           \ from downward adjustments to obligations originally recorded in a prior\
           \ fiscal year in USSGL account 480100, \"Undelivered Orders - Obligations,\
           \ Unpaid.\" (Per USSGL TFM Part 2, Section II, Accounts and Definitions.) "
-      ussgl497100_downward_adjus_cpe:
+      USSGL497100_DownwardAdjustmentsOfPriorYearUnpaidDeliveredOrdersObligationsRecoveries_CPE:
         type: "number"
         example: 6500
         description: "The amount of recoveries that were originally recorded in a\
           \ prior fiscal year during the fiscal year resulting from downward adjustments\
           \ to USSGL account 490100, \"Delivered Orders - Obligations, Unpaid.\" (Per\
           \ USSGL TFM Part 2, Section II, Accounts and Definitions.)"
-      ussgl487200_downward_adjus_cpe:
+      USSGL487200_DownwardAdjustmentsOfPriorYearPrepaidAdvancedUndeliveredOrdersObligationsRefundsCollected_CPE:
         type: "number"
         example: 6500
         description: "The amount of cash refunds during the current fiscal year resulting\
@@ -636,7 +652,7 @@ definitions:
           \ in a prior fiscal year in USSGL account 480200, \"Undelivered Orders -\
           \ Obligations, Prepaid/Advanced.\"  (Per USSGL TFM Part 2, Section II, Accounts\
           \ and Definitions.)"
-      ussgl497200_downward_adjus_cpe:
+      USSGL497200_DownwardAdjustmentsOfPriorYearPaidDeliveredOrdersObligationsRefundsCollected_CPE:
         type: "number"
         example: 6500
         description: "The amount of cash refunds during the fiscal year resulting\
@@ -651,7 +667,7 @@ definitions:
         description: "Timestamp for the end of the reporting period"
   account_financial_activity:
     properties:
-      gross_outlay_amount_by_pro_fyb:
+      GrossOutlayAmountByProgramObjectClass_FYB:
         type: "number"
         example: -6500
         description: "The definition for this element appears in Section 20 of OMB\
@@ -671,7 +687,7 @@ definitions:
           \ of debentures to pay insurance claims, and in a few cases are recorded\
           \ on an accrual basis such as interest on public issues of the public debt.\
           \ Outlays are the measure of Government spending"
-      gross_outlay_amount_by_pro_cpe:
+      GrossOutlayAmountByProgramObjectClass_CPE:
         type: "number"
         example: -6500
         description: "The definition for this element appears in Section 20 of OMB\
@@ -691,7 +707,7 @@ definitions:
           \ of debentures to pay insurance claims, and in a few cases are recorded\
           \ on an accrual basis such as interest on public issues of the public debt.\
           \ Outlays are the measure of Government spending"
-      obligations_incurred_by_pr_cpe:
+      ObligationsIncurredByProgramObjectClass_CPE:
         type: "number"
         example: -3500
         description: "The definition for this element appears in Appendix F of OMB\
@@ -712,7 +728,7 @@ definitions:
           \ of obligations previously incurred. Upward adjustments are limited by\
           \ the amount available for adjustments. No new obligations may be incurred\
           \ against expired or canceled accounts"
-      deobligations_recov_by_pro_cpe:
+      DeobligationsRecoveriesRefundsdOfPriorYearByProgramObjectClass_CPE:
         type: "number"
         example: 3500
         description: "The amount of downward adjustments to obligations and outlays\
@@ -722,25 +738,25 @@ definitions:
     description: "Represents account financials by program activity and object class"
   account_financial_award:
     properties:
-      piid:
+      PIID:
         type: "string"
         description: "The unique identifier of the specific award being reported.\
           \ maxLength: 50"
         maxLength: 50
-      parent_award_id:
+      ParentAwardId:
         type: "string"
         description: "The identifier of the procurement award under which the specific\
           \ award is issued (such as a Federal Supply Schedule). Term currently applies\
           \ to procurement actions only. maxLength: 50"
         maxLength: 50
-      fain:
+      FAIN:
         type: "string"
         example: "12345678"
         description: "The Federal Award Identification Number (FAIN) is the unique\
           \ ID within the Federal agency for each (non-aggregate) financial assistance\
           \ award. maxLength: 30"
         maxLength: 30
-      uri:
+      URI:
         type: "string"
         example: "12-34-56-78-90-AS-DF-AB-XZ-YW"
         description: "Unique Record Identifier. An agency defined identifier that\
@@ -753,7 +769,7 @@ definitions:
           \ with more granularity into the method of delivery of the outcomes. maxLength:\
           \ 30"
         maxLength: 30
-      gross_outlay_amount_by_awa_fyb:
+      GrossOutlayAmountByAward_FYB:
         type: "number"
         example: -6500
         description: "The definition for this element appears in Section 20 of OMB\
@@ -773,7 +789,7 @@ definitions:
           \ of debentures to pay insurance claims, and in a few cases are recorded\
           \ on an accrual basis such as interest on public issues of the public debt.\
           \ Outlays are the measure of Government spending"
-      gross_outlay_amount_by_awa_cpe:
+      GrossOutlayAmountByAward_CPE:
         type: "number"
         example: -6500
         description: "The definition for this element appears in Section 20 of OMB\
@@ -793,7 +809,7 @@ definitions:
           \ of debentures to pay insurance claims, and in a few cases are recorded\
           \ on an accrual basis such as interest on public issues of the public debt.\
           \ Outlays are the measure of Government spending"
-      obligations_incurred_byawa_cpe:
+      ObligationsIncurredTotalByAward_CPE:
         type: "number"
         example: -3500
         description: "The definition for this element appears in Appendix F of OMB\
@@ -814,7 +830,7 @@ definitions:
           \ of obligations previously incurred. Upward adjustments are limited by\
           \ the amount available for adjustments. No new obligations may be incurred\
           \ against expired or canceled accounts"
-      deobligations_recov_by_awa_cpe:
+      DeobligationsRecoveriesRefundsOfPriorYearByAward_CPE:
         type: "number"
         example: 3500
         description: "The amount of downward adjustments to obligations and outlays\
@@ -834,7 +850,8 @@ definitions:
     properties:
       treasury_account_identifier:
         type: "number"
-      budget_authority_unobligat_fyb:
+        description: "A temporary unique identifier for Treasury accounts"
+      BudgetAuthorityUnobligatedBalanceBroughtForward_FYB:
         type: "number"
         example: 3500
         description: "The definition for this element appears in Appendix F of OMB\
@@ -850,7 +867,7 @@ definitions:
           \ available for obligation without new action by Congress. For expired accounts:\
           \ Amount of expired unobligated balances available for upward adjustments\
           \ of obligations"
-      adjustments_to_unobligated_cpe:
+      AdjustmentsToUnobligatedBalanceBroughtForward_CPE:
         type: "number"
         example: -3500
         description: "The definition for this element appears in Appendix F of OMB\
@@ -862,7 +879,7 @@ definitions:
           \ below. Changes to unpaid obligations that occurred in a prior fiscal year\
           \ and that were not recorded in the unpaid obligations as of October 1 of\
           \ the current fiscal year"
-      budget_authority_appropria_cpe:
+      BudgetAuthorityAppropriatedAmount_CPE:
         type: "number"
         example: 3500
         description: "The definition for this element appears in Section 20 of OMB\
@@ -875,7 +892,7 @@ definitions:
           \ of law (not necessarily in an appropriations act) authorizing the expenditure\
           \ of funds for a given purpose. Usually, but not always, an appropriation\
           \ provides budget authority"
-      borrowing_authority_amount_cpe:
+      BorrowingAuthorityAmountTotal_CPE:
         type: "number"
         example: 3500
         description: "The definition for this element appears in Section 20 of OMB\
@@ -885,7 +902,7 @@ definitions:
           \ appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary\
           \ from A-11 appears below. Borrowing authority is a type of budget authority\
           \ that permits obligations and outlays to be financed by borrowing"
-      contract_authority_amount_cpe:
+      ContractAuthorityAmountTotal_CPE:
         type: "number"
         example: 3500
         description: "The definition for this element appears in Section 20 of OMB\
@@ -904,7 +921,7 @@ definitions:
           \ contract authority in an authorizing statute to allow you to incur obligations\
           \ in anticipation of the collection of receipts or offsetting collections\
           \ that will be used to liquidate the obligations"
-      spending_authority_from_of_cpe:
+      SpendingAuthorityfromOffsettingCollectionsAmountTotal_CPE:
         type: "number"
         example: 3500
         description: "The definition for this element appears in Section 20 of OMB\
@@ -934,7 +951,7 @@ definitions:
           \ for damages, and gifts or donations of money to the Government and from\
           \ intragovernmental transactions with other Government accounts. The authority\
           \ to spend offsetting collections is a form of budget authority"
-      other_budgetary_resources_cpe:
+      OtherBudgetaryResourcesAmount_CPE:
         type: "number"
         example: 3500
         description: "The definition for this element appears in Section 20 of OMB\
@@ -943,14 +960,14 @@ definitions:
           \ offsetting collections provided by Congress in an appropriations act or\
           \ other legislation, or unobligated balances of budgetary resources made\
           \ available in previous legislation, to incur obligations and to make outlays"
-      budget_authority_available_cpe:
+      BudgetAuthorityAvailableAmountTotal_CPE:
         type: "number"
         example: 3500
         description: "The total amount of all obligation budget authority including\
           \ unobligated balances carried forward, adjustments to unobligated balances\
           \ carried forward, appropriated amounts, and other budgetary resources,\
           \ as of the reported date"
-      gross_outlay_amount_by_tas_cpe:
+      GrossOutlayAmountByTAS_CPE:
         type: "number"
         example: -3500
         description: "The definition for this element appears in Section 20 of OMB\
@@ -962,7 +979,7 @@ definitions:
           \ pay insurance claims, and in a few cases are recorded on an accrual basis\
           \ such as interest on public issues of the public debt. Outlays are the\
           \ measure of Government spending"
-      obligations_incurred_total_cpe:
+      ObligationsIncurredTotalByTAS_CPE:
         type: "number"
         example: 3500
         description: "The definition for this element appears in Appendix F of OMB\
@@ -974,14 +991,14 @@ definitions:
           \ Amount of upward adjustments of obligations previously incurred. Upward\
           \ adjustments are limited by the amount available for adjustments. No new\
           \ obligations may be incurred against expired or canceled accounts"
-      deobligations_recoveries_r_cpe:
+      DeobligationsRecoveriesRefundsByTAS_CPE:
         type: "number"
         example: 3500
         description: "The amount of downward adjustments to obligations and outlays\
           \ resulting from deobligations, recoveries, or refunds collected, summarized\
           \ at the TAS level. The adjustments are to the obligations and outlays which\
           \ were made in a prior year"
-      unobligated_balance_cpe:
+      UnobligatedBalance_CPE:
         type: "number"
         example: 3500
         description: "The definition for this element appears in Section 20 of OMB\
@@ -990,7 +1007,7 @@ definitions:
           \ remains available for obligation under law in unexpired accounts. The\
           \ term “expired balances available for adjustment only” refers to unobligated\
           \ amounts in expired accounts"
-      status_of_budgetary_resour_cpe:
+      StatusOfBudgetaryResourcesTotal_CPE:
         type: "number"
         example: 3500
         description: "This element addresses the status of budgetary resources and\
@@ -1001,47 +1018,47 @@ definitions:
       \ appropriation account"
   treasury_appropriation_account:
     properties:
-      allocation_transfer_agency_id:
+      AllocationTransferAgencyIdentifier:
         type: "string"
         example: "020"
         description: "The allocation agency identifies the department or agency that\
           \ is receiving funds through an allocation (non-expenditure) transfer. maxLength:\
           \ 3"
         maxLength: 3
-      responsible_agency_id:
+      AgencyIdentifier:
         type: "string"
         example: "097"
         description: "The agency code identifies the department or agency that is\
           \ responsible for the account. maxLength: 3"
         maxLength: 3
-      beginning_period_of_availa:
+      BeginningPeriodOfAvailability:
         type: "string"
         example: "2014"
         description: "In annual and multi-year funds, the beginning period of availability\
           \ identifies the first year of availability under law that an appropriation\
           \ account may incur new obligations. maxLength: 4"
         maxLength: 4
-      ending_period_of_availabil:
+      EndingPeriodOfAvailability:
         type: "string"
         example: "2015"
         description: "In annual and multi-year funds, the end period of availability\
           \ identifies the last year of funds availability under law that an appropriation\
           \ account may incur new obligations. maxLength: 4"
         maxLength: 4
-      availability_type_code:
+      AvailabilityTypeCode:
         type: "string"
         example: "X"
         description: "In appropriations accounts, the availability type code identifies\
           \ an unlimited period to incur new obligations; this is denoted by the letter\
           \ \"X\". maxLength: 1"
         maxLength: 1
-      main_account_code:
+      MainAccountCode:
         type: "string"
         example: "1552"
         description: "The main account code identifies the account in statute. maxLength:\
           \ 4"
         maxLength: 4
-      sub_account_code:
+      SubAccountCode:
         type: "string"
         example: "000"
         description: "This is a component of the TAS. Identifies a Treasury-defined\
