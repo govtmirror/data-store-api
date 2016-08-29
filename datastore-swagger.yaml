@@ -6,11 +6,14 @@ info:
   description: >
                   **Last updated**: 8/29/2016
 
+                  # Alpha Outbound API
+                  This is an alpha version of the Data Act Outbound API. Using
+                  the following endpoints, you can access published data
+                  submitted through the Data Broker. The most flexible endpoints
+                  are the POST endpoints, which take a structured JSON object
+                  as a payload. The JSON request supports numerous features:
 
-                  This is an alpha version of the Data Act Outbound API.
-                  Using the following endpoints, you can access published data submitted
-                  through the Data Broker. The most flexible endpoints are the POST endpoints, which
-                   take a structured JSON object as a payload. The JSON request supports numerous features:
+
                   * **columns**: Filter the data to only select the specified columns.
 
                   * **filters**: Filter the data to match a specified clause, such as 'piid equals 1002'
@@ -22,6 +25,32 @@ info:
 
 
                   Please note all data is currently notional
+
+
+                  As of publication on September 6, 2016, the draft DATA Act API
+                   on openbeta.usaspending.gov points to appropriations (File A
+                   – Appropriations Account), program activity (File B – Object
+                   Class and Program Activity), and award financial (File C –
+                   Award Financial) data in the DATA Act data store.
+
+
+                   The USAspending.gov team is actively working to include
+                   contract (File D1 – Procurement Award and Awardee Attribute),
+                   financial assistance (File D2 – Financial Assistance Award
+                   and Awardee Attribute), additional award (File E – Additional
+                   Awardee Attributes), and sub-award (File F – Sub-Award Attribute) data.
+
+
+                   For more information about the sources of the data for the
+                   outbound API, please see the Information Flow on our GitHub
+                   site: http://fedspendingtransparency.github.io/data-model/
+
+
+
+                   As part of this iterative, Agile development process we welcome
+                    your feedback. Please visit the OpenBeta.USAspending.gov site
+                     to provide feedback on the draft API or contact us at
+                     fedspending@treasury.gov.
 # host: TBD.TBD.com
 basePath: /v1
 paths:
@@ -80,7 +109,7 @@ paths:
       tags:
         - awards
       summary: Returns all awards which match specified qualifiers
-      description: Award data is currently limited, and will be expanded in later releases.
+      description: "Access to contract and financial assistance data through the API is currently unavailable but will be rolled out in future releases."
       consumes:
         - application/json
       produces:
@@ -104,8 +133,8 @@ paths:
     get:
       tags:
         - awards
-      summary: Gets a the detailed award by FAIN
-      description: Award data is currently limited, and will be expanded in later releases.
+      summary: Gets the detailed award by FAIN
+      description: "Access to contract and financial assistance data through the API is currently unavailable but will be rolled out in future releases."
       parameters:
         - $ref: '#/parameters/fain'
       responses:
@@ -122,7 +151,7 @@ paths:
       tags:
         - awards
       summary: Gets the detailed award for a specific URI
-      description: Award data is currently limited, and will be expanded in later releases.
+      description: "Access to contract and financial assistance data through the API is currently unavailable but will be rolled out in future releases."
       parameters:
         - $ref: '#/parameters/uri'
       responses:
@@ -139,7 +168,7 @@ paths:
       tags:
         - awards
       summary: Gets the detailed award for a specific PIID
-      description: Award data is currently limited, and will be expanded in later releases.
+      description: "Access to contract and financial assistance data through the API is currently unavailable but will be rolled out in future releases."
       parameters:
         - $ref: '#/parameters/piid'
       responses:
@@ -321,7 +350,7 @@ definitions:
         maxLength: 21
         description: "The amount accrued or due for: (1) services performed by employees, contractors, vendors, carriers, grantees, lessors, and other government funds; (2) goods and tangible property received; and (3) programs for which no current service performance is required such as annuities, insurance claims, benefit payments, loans, etc. (Per USSGL TFM Part 2, Section II, Accounts and Definitions.) This account does not close at year-end.  (Per USSGL TFM Part 2, Section II, Accounts and Definitions.)"
         example: -6500.00
-      ussgl1493100_delivered_orde_cpe:
+      ussgl493100_delivered_orde_cpe:
         type: number
         maxLength: 21
         description: "The amount in USSGL account 490100, \"Delivered Orders - Obligations, Unpaid,\" transferred during the fiscal year to or from another Treasury Appropriation Fund Symbol. This includes amounts accrued or due for: (1) services performed by employees, contractors, vendors, carriers, grantees, lessors, and other government funds; (2) goods and tangible property received; and (3) programs for which no current service performance is required such as annuities, insurance claims, benefit payments, loans, etc. Although the normal balance for this account is credit, it is acceptable in certain instances for this account to have a debit balance. (Per USSGL TFM Part 2, Section II, Accounts and Definitions.) "
