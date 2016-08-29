@@ -20,7 +20,7 @@ paths:
       tags:
       - "awards"
       summary: "Gets a the detailed award by FAIN"
-      description: "Returns an award object with a high level of detail"
+      description: "Award data is currently limited, and will be expanded in later releases."
       operationId: "controllers.default_controller.award_fain_fain_get"
       parameters:
       - name: "FAIN"
@@ -48,7 +48,7 @@ paths:
       tags:
       - "awards"
       summary: "Gets the detailed award for a specific PIID"
-      description: "Returns an award object with a high level of detail"
+      description: "Award data is currently limited, and will be expanded in later releases."
       operationId: "controllers.default_controller.award_piid_piid_get"
       parameters:
       - name: "PIID"
@@ -76,7 +76,7 @@ paths:
       tags:
       - "awards"
       summary: "Gets the detailed award for a specific URI"
-      description: "Returns an award object with a high level of detail"
+      description: "Award data is currently limited, and will be expanded in later releases."
       operationId: "controllers.default_controller.award_uri_uri_get"
       parameters:
       - name: "URI"
