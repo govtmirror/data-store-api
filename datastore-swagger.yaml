@@ -2,12 +2,18 @@
 swagger: '2.0'
 info:
   version: 0.1.0
-  title: Outbound API
+  title: Alpha Outbound API
   description: >
-                  This is an alpha version of the Data Act Outbound API.
-                  Using the following endpoints, you can access published data submitted
-                  through the Data Broker. The most flexible endpoints are the POST endpoints, which
-                   take a structured JSON object as a payload. The JSON request supports numerous features:
+                  **Last updated**: 8/29/2016
+
+
+                  This is an alpha version of the Data Act Outbound API. Using
+                  the following endpoints, you can access published data
+                  submitted through the Data Broker. The most flexible endpoints
+                  are the POST endpoints, which take a structured JSON object
+                  as a payload. The JSON request supports numerous features:
+
+
                   * **columns**: Filter the data to only select the specified columns.
 
                   * **filters**: Filter the data to match a specified clause, such as 'piid equals 1002'
@@ -19,6 +25,32 @@ info:
 
 
                   Please note all data is currently notional
+
+
+                  As of publication on September 6, 2016, the draft DATA Act API
+                   on openbeta.usaspending.gov points to appropriations (File A
+                   – Appropriations Account), program activity (File B – Object
+                   Class and Program Activity), and award financial (File C –
+                   Award Financial) data in the DATA Act data store.
+
+
+                   The USAspending.gov team is actively working to include
+                   contract (File D1 – Procurement Award and Awardee Attribute),
+                   financial assistance (File D2 – Financial Assistance Award
+                   and Awardee Attribute), additional award (File E – Additional
+                   Awardee Attributes), and sub-award (File F – Sub-Award Attribute) data.
+
+
+                   For more information about the sources of the data for the
+                   outbound API, please see the Information Flow on our GitHub
+                   site: http://fedspendingtransparency.github.io/data-model/
+
+
+
+                   As part of this iterative, Agile development process we welcome
+                    your feedback. Please visit the OpenBeta.USAspending.gov site
+                     to provide feedback on the draft API or contact us at
+                     fedspending@treasury.gov.
 # host: TBD.TBD.com
 basePath: /v1
 paths:
@@ -27,7 +59,7 @@ paths:
     post:
       tags:
         - financial
-      summary: Returns all program activities which match specified qualifiers with a high level of detail
+      summary: Returns all program activities which match specified qualifiers
       consumes:
         - application/json
       produces:
@@ -51,7 +83,7 @@ paths:
     post:
       tags:
         - financial
-      summary: Returns all accounts which match specified qualifiers with a high level of detail
+      summary: Returns all accounts which match specified qualifiers
       consumes:
         - application/json
       produces:
@@ -76,7 +108,8 @@ paths:
     post:
       tags:
         - awards
-      summary: Returns all awards which match specified qualifiers with a high level of detail
+      summary: Returns all awards which match specified qualifiers
+      description: "Access to contract and financial assistance data through the API is currently unavailable but will be rolled out in future releases."
       consumes:
         - application/json
       produces:
@@ -100,8 +133,8 @@ paths:
     get:
       tags:
         - awards
-      summary: Gets a the detailed award by FAIN
-      description: Returns an award object with a high level of detail
+      summary: Gets the detailed award by FAIN
+      description: "Access to contract and financial assistance data through the API is currently unavailable but will be rolled out in future releases."
       parameters:
         - $ref: '#/parameters/fain'
       responses:
@@ -118,7 +151,7 @@ paths:
       tags:
         - awards
       summary: Gets the detailed award for a specific URI
-      description: Returns an award object with a high level of detail
+      description: "Access to contract and financial assistance data through the API is currently unavailable but will be rolled out in future releases."
       parameters:
         - $ref: '#/parameters/uri'
       responses:
@@ -135,7 +168,7 @@ paths:
       tags:
         - awards
       summary: Gets the detailed award for a specific PIID
-      description: Returns an award object with a high level of detail
+      description: "Access to contract and financial assistance data through the API is currently unavailable but will be rolled out in future releases."
       parameters:
         - $ref: '#/parameters/piid'
       responses:
@@ -221,13 +254,35 @@ definitions:
         description: The field name to which the filter applies
         example: "budget_authority_unobligat_fyb"
   Accounts:
-    type: array
-    items:
-      $ref: '#/definitions/Account'
+    properties:
+      count:
+        type: number
+        description: "The number of rows in the results"
+      query:
+        type: object
+        description: "The APIs interpretation of your query"
+      unique_values:
+        type: object
+        description: "A dictionary contianing key-array pairs for each column queried, listing all distinct values for that column"
+      results:
+        type: array
+        items:
+          $ref: '#/definitions/Account'
   Activities:
-    type: array
-    items:
-      $ref: '#/definitions/Activity'
+    properties:
+      count:
+        type: number
+        description: "The number of rows in the results"
+      query:
+        type: object
+        description: "The APIs interpretation of your query"
+      unique_values:
+        type: object
+        description: "A dictionary contianing key-array pairs for each column queried, listing all distinct values for that column"
+      results:
+        type: array
+        items:
+          $ref: '#/definitions/Activity'
   Awards:
     properties:
       count:
@@ -242,164 +297,164 @@ definitions:
       results:
         type: array
         items:
-          $ref: '#/definitions/account_financial_award'
-  account_common_fields:
+          $ref: '#/definitions/Award'
+  account_financial_common_fields:
     properties:
-      program_activity_code:
+      ProgramActivityCode:
         type: string
         maxLength: 4
-        description: "The definition for this element appears in Section 200 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Code of a specific activity or project as listed in the program and financing schedules of the annual budget of the United States Government."
+        description: "The definition for this element appears in Section 200 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Code of a specific activity or project as listed in the program and financing schedules of the annual budget of the United States Government. maxLength: 4"
         example: "0002"
-      program_activity_name:
+      ProgramActivityName:
         type: string
         maxLength: 164
-        description: "The definition for this element appears in Section 200 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Name of a specific activity or project as listed in the program and financing schedules of the annual budget of the United States Government."
+        description: "The definition for this element appears in Section 200 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Name of a specific activity or project as listed in the program and financing schedules of the annual budget of the United States Government. maxLength: 164"
         example: "Preschool Grants"
-      object_class:
+      ObjectClass:
         type: string
         maxLength: 4
-        description: "The definition for this element appears in Section 83 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Categories in a classification system that presents obligations by the items or services purchased by the Federal Government."
+        description: "The definition for this element appears in Section 83 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Categories in a classification system that presents obligations by the items or services purchased by the Federal Government. maxLength: 4"
         example: "254"
-      by_direct_reimbursable_fun:
+      ByDirectReimbursableFundingSource:
         type: string
         maxLength: 1
-        description: "Holds an attribute flag which specifies that the funding source of the associated data value is either a Direct or Reimbursable Funding Source."
+        description: "Holds an attribute flag which specifies that the funding source of the associated data value is either a Direct or Reimbursable Funding Source. maxLength: 1"
         example: "R"
-      ussgl480100_undelivered_or_fyb:
+      USSGL480100_UndeliveredOrdersObligationsUnpaid_FYB:
         type: number
         maxLength: 21
         description: "The amount of goods and/or services ordered, which have not been actually or constructively received and for which amounts have not been prepaid or advanced. This includes amounts specified in other contracts or agreements such as grants, program subsidies, undisbursed loans and claims, and similar events for which an advance or prepayment has not occurred. This account does not close at yearend. (Per USSGL TFM Part 2, Section II, Accounts and Definitions.)"
         example: -6500.00
-      ussgl480100_undelivered_or_cpe:
+      USSGL480100_UndeliveredOrdersObligationsUnpaid_CPE:
         type: number
         maxLength: 21
         description: "The amount of goods and/or services ordered, which have not been actually or constructively received and for which amounts have not been prepaid or advanced. This includes amounts specified in other contracts or agreements such as grants, program subsidies, undisbursed loans and claims, and similar events for which an advance or prepayment has not occurred. This account does not close at yearend. (Per USSGL TFM Part 2, Section II, Accounts and Definitions.)"
         example: -6500.00
-      ussgl483100_undelivered_or_cpe:
+      USSGL483100_UndeliveredOrdersObligationsTransferredUnpaid_CPE:
         type: number
         maxLength: 21
         description: "The amount of goods and/or services ordered and obligated in one Treasury Appropriation Fund Symbol (TAFS) and transferred to or from another TAFS, which have not been actually or constructively received and not prepaid or advanced at the time of transfer. This includes amounts specified in other contracts or agreements such as grants, program subsidies, undisbursed loans and claims, and similar events for which an advance or prepayment has not occurred. Although the normal balance for this account is credit, it is acceptable for this account to have a debit balance. (Per USSGL TFM Part 2, Section II, Accounts and Definitions.)"
         example: -6500.00
-      ussgl488100_upward_adjustm_cpe:
+      USSGL488100_UpwardAdjustmentsOfPriorYearUndeliveredOrdersObligationsUnpaid_CPE:
         type: number
         maxLength: 21
         description: "The amount of upward adjustments during the current fiscal year to obligations that were originally recorded in a prior fiscal year in USSGL account 480100,\"Undelivered Orders - Obligations, Unpaid.\" (Per USSGL TFM Part 2, Section II, Accounts and Definitions.)"
         example: -6500.00
-      ussgl490100_delivered_orde_fyb:
+      USSGL490100_DeliveredOrdersObligationsUnpaid_FYB:
         type: number
         maxLength: 21
         description: "The amount accrued or due for: (1) services performed by employees, contractors, vendors, carriers, grantees, lessors, and other government funds; (2) goods and tangible property received; and (3) programs for which no current service performance is required such as annuities, insurance claims, benefit payments, loans, etc. (Per USSGL TFM Part 2, Section II, Accounts and Definitions.) This account does not close at year-end.  (Per USSGL TFM Part 2, Section II, Accounts and Definitions.)"
         example: -6500.00
-      ussgl490100_delivered_order_cpe:
+      USSGL490100_DeliveredOrdersObligationsUnpaid_CPE:
         type: number
         maxLength: 21
         description: "The amount accrued or due for: (1) services performed by employees, contractors, vendors, carriers, grantees, lessors, and other government funds; (2) goods and tangible property received; and (3) programs for which no current service performance is required such as annuities, insurance claims, benefit payments, loans, etc. (Per USSGL TFM Part 2, Section II, Accounts and Definitions.) This account does not close at year-end.  (Per USSGL TFM Part 2, Section II, Accounts and Definitions.)"
         example: -6500.00
-      ussgl1493100_delivered_orde_cpe:
+      USSGL493100_DeliveredOrdersObligationsTransferredUnpaid_CPE:
         type: number
         maxLength: 21
         description: "The amount in USSGL account 490100, \"Delivered Orders - Obligations, Unpaid,\" transferred during the fiscal year to or from another Treasury Appropriation Fund Symbol. This includes amounts accrued or due for: (1) services performed by employees, contractors, vendors, carriers, grantees, lessors, and other government funds; (2) goods and tangible property received; and (3) programs for which no current service performance is required such as annuities, insurance claims, benefit payments, loans, etc. Although the normal balance for this account is credit, it is acceptable in certain instances for this account to have a debit balance. (Per USSGL TFM Part 2, Section II, Accounts and Definitions.) "
         example: -6500.00
-      ussgl498100_upward_adjustm_cpe:
+      USSGL498100_UpwardAdjustmentsOfPriorYearDeliveredOrdersObligationsUnpaid_CPE:
         type: number
         maxLength: 21
         description: "The amount of upward adjustments during the fiscal year to USSGL account 490100, \"Delivered Orders - Obligations, Unpaid,\" or USSGL account 490200, \"Delivered Orders - Obligations, Paid,\" that were originally recorded in a prior fiscal year. (Per USSGL TFM Part 2, Section II, Accounts and Definitions.)"
         example: -6500.00
-      ussgl480200_undelivered_or_fyb:
+      USSGL480200_UndeliveredOrdersObligationsPrepaidAdvanced_FYB:
         type: number
         maxLength: 21
         description: "The amount of cash refunds during the current fiscal year resulting from downward adjustments to obligations that were originally recorded in a prior fiscal year in USSGL account 480200, \"Undelivered Orders - Obligations, Prepaid/Advanced.\" (Per USSGL TFM Part 2, Section II, Accounts and Definitions.)"
         example: -6500.00
-      ussgl480200_undelivered_or_cpe:
+      USSGL480200_UndeliveredOrdersObligationsPrepaidAdvanced_CPE:
         type: number
         maxLength: 21
         description: "The amount of cash refunds during the current fiscal year resulting from downward adjustments to obligations that were originally recorded in a prior fiscal year in USSGL account 480200, \"Undelivered Orders - Obligations, Prepaid/Advanced.\" (Per USSGL TFM Part 2, Section II, Accounts and Definitions.)"
         example: -6500.00
-      ussgl483200_undelivered_or_cpe:
+      USSGL483200_UndeliveredOrdersObligationsTransferredPrepaidAdvanced_CPE:
         type: number
         maxLength: 21
         description: "The amount of goods and/or services ordered and obligated in one Treasury Appropriation Fund Symbol (TAFS) and transferred to or from another TAFS, which have not been actually or constructively received but have been prepaid or advanced at the time of transfer. This includes amounts specified in other contracts or agreements such as grants, program subsidies, undisbursed loans and claims, and similar events for which an advance or prepayment has not occurred. Although the normal balance for this account is credit, it is acceptable for this account to have a debit balance.(Per USSGL TFM Part 2, Section II, Accounts and Definitions.)"
         example: -6500.00
-      ussgl488200_upward_adjustm_cpe:
+      USSGL488200_UpwardAdjustmentsOfPriorYearUndeliveredOrdersObligationsPrepaidAdvanced_CPE:
         type: number
         maxLength: 21
         description: "The amount of upward adjustments during the current fiscal year to obligations that were originally recorded in a prior fiscal year in USSGL account 480200,\"Undelivered Orders - Obligations, Prepaid/Advanced.\" (Per USSGL TFM Part 2, Section II, Accounts and Definitions.)"
         example: -6500.00
-      ussgl490200_delivered_orde_cpe:
+      USSGL490200_DeliveredOrdersObligationsPaid_CPE:
         type: number
         maxLength: 21
         description: "The amount paid/outlayed for: (1) services performed by employees, contractors, vendors, carriers, grantees, lessors, and other government funds; (2) goods and tangible property received; and (3) programs for which no current service performance is required such as annuities, insurance claims, benefit payments, loans, etc. (Per USSGL TFM Part 2, Section II, Accounts and Definitions.)"
         example: -6500.00
-      ussgl490800_authority_outl_fyb:
+      USSGL490800_AuthorityOutlayedNotYetDisbursed_FYB:
         type: number
         maxLength: 21
         description: "The amount of authority outlayed but not yet disbursed. Use only in specific circumstances, such as for interest on certain Bureau of the Fiscal Service securities. This account does not close at yearend. (Per USSGL TFM Part 2, Section II, Accounts and Definitions.)"
         example: -6500.00
-      ussgl490800_authority_outl_cpe:
+      USSGL490800_AuthorityOutlayedNotYetDisbursed_CPE:
         type: number
         maxLength: 21
         description: "The amount of authority outlayed but not yet disbursed. Use only in specific circumstances, such as for interest on certain Bureau of the Fiscal Service securities. This account does not close at yearend. (Per USSGL TFM Part 2, Section II, Accounts and Definitions.)"
         example: -6500.00
-      ussgl498200_upward_adjustm_cpe:
+      USSGL498200_UpwardAdjustmentsOfPriorYearDeliveredOrdersObligationsPaid_CPE:
         type: number
         maxLength: 21
         description: "The amount of upward adjustments that were originally recorded in a prior fiscal year paid/outlayed during the fiscal year to USSGL account 490100, \"Delivered Orders - Obligations, Unpaid,\" or USSGL account 490200, \"Delivered Orders - Obligations, Paid.\" (Per USSGL TFM Part 2, Section II, Accounts and Definitions.)"
-      obligations_undelivered_or_fyb:
+      ObligationsUndeliveredOrdersUnpaidTotal_FYB:
         type: number
         maxLength: 21
-        description: "The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. A legally binding agreement that will result in outlays, immediately or in the future. The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. A legally binding agreement that will result in outlays, immediately or in the future. The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. A legally binding agreement that will result in outlays, immediately or in the future."
+        description: "The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. A legally binding agreement that will result in outlays, immediately or in the future. The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. A legally binding agreement that will result in outlays, immediately or in the future. The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. A legally binding agreement that will result in outlays, immediately or in the future"
         example: -6500.00
-      obligations_undelivered_or_cpe:
+      ObligationsUndeliveredOrdersUnpaidTotal_CPE:
         type: number
         maxLength: 21
-        description: "The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. A legally binding agreement that will result in outlays, immediately or in the future. The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. A legally binding agreement that will result in outlays, immediately or in the future. The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. A legally binding agreement that will result in outlays, immediately or in the future."
+        description: "The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. A legally binding agreement that will result in outlays, immediately or in the future. The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. A legally binding agreement that will result in outlays, immediately or in the future. The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. A legally binding agreement that will result in outlays, immediately or in the future"
         example: -6500.00
-      obligations_delivered_orde_fyb:
+      ObligationsDeliveredOrdersUnpaidTotal_FYB:
         type: number
         maxLength: 21
-        description: "The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. A legally binding agreement that will result in outlays, immediately or in the future. The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. A legally binding agreement that will result in outlays, immediately or in the future. The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. A legally binding agreement that will result in outlays, immediately or in the future. "
+        description: "The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. A legally binding agreement that will result in outlays, immediately or in the future. The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. A legally binding agreement that will result in outlays, immediately or in the future. The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. A legally binding agreement that will result in outlays, immediately or in the future"
         example: -6500.00
-      obligations_delivered_orde_cpe:
+      ObligationsDeliveredOrdersUnpaidTotal_CPE:
         type: number
         maxLength: 21
-        description: "The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. A legally binding agreement that will result in outlays, immediately or in the future. The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. A legally binding agreement that will result in outlays, immediately or in the future. The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. A legally binding agreement that will result in outlays, immediately or in the future. "
+        description: "The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. A legally binding agreement that will result in outlays, immediately or in the future. The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. A legally binding agreement that will result in outlays, immediately or in the future. The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. A legally binding agreement that will result in outlays, immediately or in the future"
         example: -6500.00
-      gross_outlays_undelivered_fyb:
+      GrossOutlaysUndeliveredOrdersPrepaidTotal_FYB:
         type: number
         maxLength: 21
-        description: "The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Payments made to liquidate an obligation (other than the repayment of debt principal or other disbursements that are “means of financing” transactions). Outlays generally are equal to cash disbursements but also are recorded for cash-equivalent transactions, such as the issuance of debentures to pay insurance claims, and in a few cases are recorded on an accrual basis such as interest on public issues of the public debt. Outlays are the measure of Government spending. The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Payments made to liquidate an obligation (other than the repayment of debt principal or other disbursements that are “means of financing” transactions). Outlays generally are equal to cash disbursements but also are recorded for cash-equivalent transactions, such as the issuance of debentures to pay insurance claims, and in a few cases are recorded on an accrual basis such as interest on public issues of the public debt. Outlays are the measure of Government spending. "
+        description: "The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Payments made to liquidate an obligation (other than the repayment of debt principal or other disbursements that are “means of financing” transactions). Outlays generally are equal to cash disbursements but also are recorded for cash-equivalent transactions, such as the issuance of debentures to pay insurance claims, and in a few cases are recorded on an accrual basis such as interest on public issues of the public debt. Outlays are the measure of Government spending. The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Payments made to liquidate an obligation (other than the repayment of debt principal or other disbursements that are “means of financing” transactions). Outlays generally are equal to cash disbursements but also are recorded for cash-equivalent transactions, such as the issuance of debentures to pay insurance claims, and in a few cases are recorded on an accrual basis such as interest on public issues of the public debt. Outlays are the measure of Government spending"
         example: -6500.00
-      gross_outlays_undelivered_cpe:
+      GrossOutlaysUndeliveredOrdersPrepaidTotal_CPE:
         type: number
         maxLength: 21
-        description: "The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Payments made to liquidate an obligation (other than the repayment of debt principal or other disbursements that are “means of financing” transactions). Outlays generally are equal to cash disbursements but also are recorded for cash-equivalent transactions, such as the issuance of debentures to pay insurance claims, and in a few cases are recorded on an accrual basis such as interest on public issues of the public debt. Outlays are the measure of Government spending. The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Payments made to liquidate an obligation (other than the repayment of debt principal or other disbursements that are “means of financing” transactions). Outlays generally are equal to cash disbursements but also are recorded for cash-equivalent transactions, such as the issuance of debentures to pay insurance claims, and in a few cases are recorded on an accrual basis such as interest on public issues of the public debt. Outlays are the measure of Government spending. "
+        description: "The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Payments made to liquidate an obligation (other than the repayment of debt principal or other disbursements that are “means of financing” transactions). Outlays generally are equal to cash disbursements but also are recorded for cash-equivalent transactions, such as the issuance of debentures to pay insurance claims, and in a few cases are recorded on an accrual basis such as interest on public issues of the public debt. Outlays are the measure of Government spending. The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Payments made to liquidate an obligation (other than the repayment of debt principal or other disbursements that are “means of financing” transactions). Outlays generally are equal to cash disbursements but also are recorded for cash-equivalent transactions, such as the issuance of debentures to pay insurance claims, and in a few cases are recorded on an accrual basis such as interest on public issues of the public debt. Outlays are the measure of Government spending"
         example: -6500.00
-      gross_outlays_delivered_or_fyb:
+      GrossOutlaysDeliveredOrdersPaidTotal_FYB:
         type: number
         maxLength: 21
-        description: "The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Payments made to liquidate an obligation (other than the repayment of debt principal or other disbursements that are “means of financing” transactions). Outlays generally are equal to cash disbursements but also are recorded for cash-equivalent transactions, such as the issuance of debentures to pay insurance claims, and in a few cases are recorded on an accrual basis such as interest on public issues of the public debt. Outlays are the measure of Government spending. The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Payments made to liquidate an obligation (other than the repayment of debt principal or other disbursements that are “means of financing” transactions). Outlays generally are equal to cash disbursements but also are recorded for cash-equivalent transactions, such as the issuance of debentures to pay insurance claims, and in a few cases are recorded on an accrual basis such as interest on public issues of the public debt. Outlays are the measure of Government spending. "
+        description: "The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Payments made to liquidate an obligation (other than the repayment of debt principal or other disbursements that are “means of financing” transactions). Outlays generally are equal to cash disbursements but also are recorded for cash-equivalent transactions, such as the issuance of debentures to pay insurance claims, and in a few cases are recorded on an accrual basis such as interest on public issues of the public debt. Outlays are the measure of Government spending. The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Payments made to liquidate an obligation (other than the repayment of debt principal or other disbursements that are “means of financing” transactions). Outlays generally are equal to cash disbursements but also are recorded for cash-equivalent transactions, such as the issuance of debentures to pay insurance claims, and in a few cases are recorded on an accrual basis such as interest on public issues of the public debt. Outlays are the measure of Government spending"
         example: -6500.00
-      gross_outlays_delivered_or_cpe:
+      GrossOutlaysDeliveredOrdersPaidTotal_CPE:
         type: number
         maxLength: 21
-        description: "The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Payments made to liquidate an obligation (other than the repayment of debt principal or other disbursements that are “means of financing” transactions). Outlays generally are equal to cash disbursements but also are recorded for cash-equivalent transactions, such as the issuance of debentures to pay insurance claims, and in a few cases are recorded on an accrual basis such as interest on public issues of the public debt. Outlays are the measure of Government spending. The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Payments made to liquidate an obligation (other than the repayment of debt principal or other disbursements that are “means of financing” transactions). Outlays generally are equal to cash disbursements but also are recorded for cash-equivalent transactions, such as the issuance of debentures to pay insurance claims, and in a few cases are recorded on an accrual basis such as interest on public issues of the public debt. Outlays are the measure of Government spending. "
+        description: "The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Payments made to liquidate an obligation (other than the repayment of debt principal or other disbursements that are “means of financing” transactions). Outlays generally are equal to cash disbursements but also are recorded for cash-equivalent transactions, such as the issuance of debentures to pay insurance claims, and in a few cases are recorded on an accrual basis such as interest on public issues of the public debt. Outlays are the measure of Government spending. The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Payments made to liquidate an obligation (other than the repayment of debt principal or other disbursements that are “means of financing” transactions). Outlays generally are equal to cash disbursements but also are recorded for cash-equivalent transactions, such as the issuance of debentures to pay insurance claims, and in a few cases are recorded on an accrual basis such as interest on public issues of the public debt. Outlays are the measure of Government spending"
         example: -6500.00
-      ussgl487100_downward_adjus_cpe:
+      USSGL487100_DownwardAdjustmentsOfPriorYearUnpaidUndeliveredOrdersObligationsRecoveries_CPE:
         type: number
         maxLength: 21
         description: "The amount of recoveries during the current fiscal year resulting from downward adjustments to obligations originally recorded in a prior fiscal year in USSGL account 480100, \"Undelivered Orders - Obligations, Unpaid.\" (Per USSGL TFM Part 2, Section II, Accounts and Definitions.) "
         example: 6500.00
-      ussgl497100_downward_adjus_cpe:
+      USSGL497100_DownwardAdjustmentsOfPriorYearUnpaidDeliveredOrdersObligationsRecoveries_CPE:
         type: number
         maxLength: 21
         description: "The amount of recoveries that were originally recorded in a prior fiscal year during the fiscal year resulting from downward adjustments to USSGL account 490100, \"Delivered Orders - Obligations, Unpaid.\" (Per USSGL TFM Part 2, Section II, Accounts and Definitions.)"
         example: 6500.00
-      ussgl487200_downward_adjus_cpe:
+      USSGL487200_DownwardAdjustmentsOfPriorYearPrepaidAdvancedUndeliveredOrdersObligationsRefundsCollected_CPE:
         type: number
         maxLength: 21
         description: "The amount of cash refunds during the current fiscal year resulting from downward adjustments to obligations that were originally recorded in a prior fiscal year in USSGL account 480200, \"Undelivered Orders - Obligations, Prepaid/Advanced.\"  (Per USSGL TFM Part 2, Section II, Accounts and Definitions.)"
         example: 6500.00
-      ussgl497200_downward_adjus_cpe:
+      USSGL497200_DownwardAdjustmentsOfPriorYearPaidDeliveredOrdersObligationsRefundsCollected_CPE:
         type: number
         maxLength: 21
         description: "The amount of cash refunds during the fiscal year resulting from downward adjustments to USSGL account 490200, \"Delivered Orders - Obligations, Paid,\" that were originally recorded in a prior fiscal year. (Per USSGL TFM Part 2, Section II, Accounts and Definitions.)"
@@ -412,202 +467,462 @@ definitions:
         description: "Timestamp for the end of the reporting period"
   account_financial_activity:
     description: Represents account financials by program activity and object class
-    allOf:
-    - $ref: '#/definitions/treasury_account_properties'
-    - $ref: '#/definitions/appropriation_account_balance_properties'
-    - $ref: '#/definitions/account_common_fields'
     properties:
-      gross_outlay_amount_by_pro_fyb:
+      GrossOutlayAmountByProgramObjectClass_FYB:
         type: number
         maxLength: 21
-        description: "The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Payments made to liquidate an obligation (other than the repayment of debt principal or other disbursements that are “means of financing” transactions). Outlays generally are equal to cash disbursements but also are recorded for cash-equivalent transactions, such as the issuance of debentures to pay insurance claims, and in a few cases are recorded on an accrual basis such as interest on public issues of the public debt. Outlays are the measure of Government spending. The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Payments made to liquidate an obligation (other than the repayment of debt principal or other disbursements that are “means of financing” transactions). Outlays generally are equal to cash disbursements but also are recorded for cash-equivalent transactions, such as the issuance of debentures to pay insurance claims, and in a few cases are recorded on an accrual basis such as interest on public issues of the public debt. Outlays are the measure of Government spending. "
+        description: "The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Payments made to liquidate an obligation (other than the repayment of debt principal or other disbursements that are “means of financing” transactions). Outlays generally are equal to cash disbursements but also are recorded for cash-equivalent transactions, such as the issuance of debentures to pay insurance claims, and in a few cases are recorded on an accrual basis such as interest on public issues of the public debt. Outlays are the measure of Government spending. The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Payments made to liquidate an obligation (other than the repayment of debt principal or other disbursements that are “means of financing” transactions). Outlays generally are equal to cash disbursements but also are recorded for cash-equivalent transactions, such as the issuance of debentures to pay insurance claims, and in a few cases are recorded on an accrual basis such as interest on public issues of the public debt. Outlays are the measure of Government spending"
         example: -6500.00
-      gross_outlay_amount_by_pro_cpe:
+      GrossOutlayAmountByProgramObjectClass_CPE:
         type: number
         maxLength: 21
-        description: "The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Payments made to liquidate an obligation (other than the repayment of debt principal or other disbursements that are “means of financing” transactions). Outlays generally are equal to cash disbursements but also are recorded for cash-equivalent transactions, such as the issuance of debentures to pay insurance claims, and in a few cases are recorded on an accrual basis such as interest on public issues of the public debt. Outlays are the measure of Government spending. The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Payments made to liquidate an obligation (other than the repayment of debt principal or other disbursements that are “means of financing” transactions). Outlays generally are equal to cash disbursements but also are recorded for cash-equivalent transactions, such as the issuance of debentures to pay insurance claims, and in a few cases are recorded on an accrual basis such as interest on public issues of the public debt. Outlays are the measure of Government spending. "
+        description: "The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Payments made to liquidate an obligation (other than the repayment of debt principal or other disbursements that are “means of financing” transactions). Outlays generally are equal to cash disbursements but also are recorded for cash-equivalent transactions, such as the issuance of debentures to pay insurance claims, and in a few cases are recorded on an accrual basis such as interest on public issues of the public debt. Outlays are the measure of Government spending. The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Payments made to liquidate an obligation (other than the repayment of debt principal or other disbursements that are “means of financing” transactions). Outlays generally are equal to cash disbursements but also are recorded for cash-equivalent transactions, such as the issuance of debentures to pay insurance claims, and in a few cases are recorded on an accrual basis such as interest on public issues of the public debt. Outlays are the measure of Government spending"
         example: -6500.00
-      obligations_incurred_by_pr_cpe:
+      ObligationsIncurredByProgramObjectClass_CPE:
         type: number
         maxLength: 21
-        description: "The definition for this element appears in Appendix F of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. For unexpired accounts: Amount of obligations incurred from the beginning of the current fiscal year to the end of the reporting period, net of refunds received that pertain to obligations incurred in the current year. Include upward adjustments of prior obligations. For expired accounts: Amount of upward adjustments of obligations previously incurred. Upward adjustments are limited by the amount available for adjustments. No new obligations may be incurred against expired or canceled accounts.The definition for this element appears in Appendix F of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. For unexpired accounts: Amount of obligations incurred from the beginning of the current fiscal year to the end of the reporting period, net of refunds received that pertain to obligations incurred in the current year. Include upward adjustments of prior obligations. For expired accounts: Amount of upward adjustments of obligations previously incurred. Upward adjustments are limited by the amount available for adjustments. No new obligations may be incurred against expired or canceled accounts. "
+        description: "The definition for this element appears in Appendix F of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. For unexpired accounts: Amount of obligations incurred from the beginning of the current fiscal year to the end of the reporting period, net of refunds received that pertain to obligations incurred in the current year. Include upward adjustments of prior obligations. For expired accounts: Amount of upward adjustments of obligations previously incurred. Upward adjustments are limited by the amount available for adjustments. No new obligations may be incurred against expired or canceled accounts.The definition for this element appears in Appendix F of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. For unexpired accounts: Amount of obligations incurred from the beginning of the current fiscal year to the end of the reporting period, net of refunds received that pertain to obligations incurred in the current year. Include upward adjustments of prior obligations. For expired accounts: Amount of upward adjustments of obligations previously incurred. Upward adjustments are limited by the amount available for adjustments. No new obligations may be incurred against expired or canceled accounts"
         example: -3500.00
-      deobligations_recov_by_pro_cpe:
+      DeobligationsRecoveriesRefundsdOfPriorYearByProgramObjectClass_CPE:
         type: number
         maxLength: 21
-        description: "The amount of downward adjustments to obligations and outlays incurred resulting from deobligations, recoveries, or refunds collected, at the Award level. The adjustments are to the obligations and outlays which were made in a prior year."
+        description: "The amount of downward adjustments to obligations and outlays incurred resulting from deobligations, recoveries, or refunds collected, at the Award level. The adjustments are to the obligations and outlays which were made in a prior year"
         example: 3500.00
   account_financial_award:
     description: Represents an account financials by award
-    allOf:
-    - $ref: '#/definitions/treasury_account_properties'
-    - $ref: '#/definitions/appropriation_account_balance_properties'
-    - $ref: '#/definitions/account_common_fields'
     properties:
-      piid:
+      PIID:
         type: string
         maxLength: 50
-        description: "The unique identifier of the specific award being reported."
-      parent_award_id:
+        description: "The unique identifier of the specific award being reported. maxLength: 50"
+      ParentAwardId:
         type: string
         maxLength: 50
-        description: "The identifier of the procurement award under which the specific award is issued (such as a Federal Supply Schedule). Term currently applies to procurement actions only"
-      fain:
+        description: "The identifier of the procurement award under which the specific award is issued (such as a Federal Supply Schedule). Term currently applies to procurement actions only. maxLength: 50"
+      FAIN:
         type: string
         maxLength: 30
-        description: "The Federal Award Identification Number (FAIN) is the unique ID within the Federal agency for each (non-aggregate) financial assistance award."
+        description: "The Federal Award Identification Number (FAIN) is the unique ID within the Federal agency for each (non-aggregate) financial assistance award. maxLength: 30"
         example: "12345678"
-      uri:
+      URI:
         type: string
         maxLength: 70
-        description: "Unique Record Identifier. An agency defined identifier that (when provided) is unique for every reported action."
+        description: "Unique Record Identifier. An agency defined identifier that (when provided) is unique for every reported action. maxLength: 70"
         example: "12-34-56-78-90-AS-DF-AB-XZ-YW"
       award_type:
         type: string
         maxLength: 30
-        description: "Description (and corresponding code) that provides information to distinguish type of contract, grant, or loan and provides the user with more granularity into the method of delivery of the outcomes."
-      gross_outlay_amount_by_awa_fyb:
+        description: "Description (and corresponding code) that provides information to distinguish type of contract, grant, or loan and provides the user with more granularity into the method of delivery of the outcomes. maxLength: 30"
+      GrossOutlayAmountByAward_FYB:
         type: number
         maxLength: 21
-        description: "The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Payments made to liquidate an obligation (other than the repayment of debt principal or other disbursements that are “means of financing” transactions). Outlays generally are equal to cash disbursements but also are recorded for cash-equivalent transactions, such as the issuance of debentures to pay insurance claims, and in a few cases are recorded on an accrual basis such as interest on public issues of the public debt. Outlays are the measure of Government spending. The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Payments made to liquidate an obligation (other than the repayment of debt principal or other disbursements that are “means of financing” transactions). Outlays generally are equal to cash disbursements but also are recorded for cash-equivalent transactions, such as the issuance of debentures to pay insurance claims, and in a few cases are recorded on an accrual basis such as interest on public issues of the public debt. Outlays are the measure of Government spending. "
+        description: "The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Payments made to liquidate an obligation (other than the repayment of debt principal or other disbursements that are “means of financing” transactions). Outlays generally are equal to cash disbursements but also are recorded for cash-equivalent transactions, such as the issuance of debentures to pay insurance claims, and in a few cases are recorded on an accrual basis such as interest on public issues of the public debt. Outlays are the measure of Government spending. The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Payments made to liquidate an obligation (other than the repayment of debt principal or other disbursements that are “means of financing” transactions). Outlays generally are equal to cash disbursements but also are recorded for cash-equivalent transactions, such as the issuance of debentures to pay insurance claims, and in a few cases are recorded on an accrual basis such as interest on public issues of the public debt. Outlays are the measure of Government spending"
         example: -6500.00
-      gross_outlay_amount_by_awa_cpe:
+      GrossOutlayAmountByAward_CPE:
         type: number
         maxLength: 21
-        description: "The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Payments made to liquidate an obligation (other than the repayment of debt principal or other disbursements that are “means of financing” transactions). Outlays generally are equal to cash disbursements but also are recorded for cash-equivalent transactions, such as the issuance of debentures to pay insurance claims, and in a few cases are recorded on an accrual basis such as interest on public issues of the public debt. Outlays are the measure of Government spending. The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Payments made to liquidate an obligation (other than the repayment of debt principal or other disbursements that are “means of financing” transactions). Outlays generally are equal to cash disbursements but also are recorded for cash-equivalent transactions, such as the issuance of debentures to pay insurance claims, and in a few cases are recorded on an accrual basis such as interest on public issues of the public debt. Outlays are the measure of Government spending. "
+        description: "The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Payments made to liquidate an obligation (other than the repayment of debt principal or other disbursements that are “means of financing” transactions). Outlays generally are equal to cash disbursements but also are recorded for cash-equivalent transactions, such as the issuance of debentures to pay insurance claims, and in a few cases are recorded on an accrual basis such as interest on public issues of the public debt. Outlays are the measure of Government spending. The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Payments made to liquidate an obligation (other than the repayment of debt principal or other disbursements that are “means of financing” transactions). Outlays generally are equal to cash disbursements but also are recorded for cash-equivalent transactions, such as the issuance of debentures to pay insurance claims, and in a few cases are recorded on an accrual basis such as interest on public issues of the public debt. Outlays are the measure of Government spending"
         example: -6500.00
-      obligations_incurred_byawa_cpe:
+      ObligationsIncurredTotalByAward_CPE:
         type: number
         maxLength: 21
-        description: "The definition for this element appears in Appendix F of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. For unexpired accounts: Amount of obligations incurred from the beginning of the current fiscal year to the end of the reporting period, net of refunds received that pertain to obligations incurred in the current year. Include upward adjustments of prior obligations. For expired accounts: Amount of upward adjustments of obligations previously incurred. Upward adjustments are limited by the amount available for adjustments. No new obligations may be incurred against expired or canceled accounts.The definition for this element appears in Appendix F of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. For unexpired accounts: Amount of obligations incurred from the beginning of the current fiscal year to the end of the reporting period, net of refunds received that pertain to obligations incurred in the current year. Include upward adjustments of prior obligations. For expired accounts: Amount of upward adjustments of obligations previously incurred. Upward adjustments are limited by the amount available for adjustments. No new obligations may be incurred against expired or canceled accounts. "
+        description: "The definition for this element appears in Appendix F of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. For unexpired accounts: Amount of obligations incurred from the beginning of the current fiscal year to the end of the reporting period, net of refunds received that pertain to obligations incurred in the current year. Include upward adjustments of prior obligations. For expired accounts: Amount of upward adjustments of obligations previously incurred. Upward adjustments are limited by the amount available for adjustments. No new obligations may be incurred against expired or canceled accounts.The definition for this element appears in Appendix F of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. For unexpired accounts: Amount of obligations incurred from the beginning of the current fiscal year to the end of the reporting period, net of refunds received that pertain to obligations incurred in the current year. Include upward adjustments of prior obligations. For expired accounts: Amount of upward adjustments of obligations previously incurred. Upward adjustments are limited by the amount available for adjustments. No new obligations may be incurred against expired or canceled accounts"
         example: -3500.00
-      deobligations_recov_by_awa_cpe:
+      DeobligationsRecoveriesRefundsOfPriorYearByAward_CPE:
         type: number
         maxLength: 21
-        description: "The amount of downward adjustments to obligations and outlays incurred resulting from deobligations, recoveries, or refunds collected, at the Award level. The adjustments are to the obligations and outlays which were made in a prior year."
+        description: "The amount of downward adjustments to obligations and outlays incurred resulting from deobligations, recoveries, or refunds collected, at the Award level. The adjustments are to the obligations and outlays which were made in a prior year"
         example: 3500.00
       transaction_obligated_amou:
         type: number
         maxLength: 21
-        description: "The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Obligation means a binding agreement that will result in outlays, immediately or in the future. Budgetary resources must be available before obligations can be incurred legally."
+        description: "The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Obligation means a binding agreement that will result in outlays, immediately or in the future. Budgetary resources must be available before obligations can be incurred legally"
         example: 3500.00
-  appropriation_account_balance_properties:
+  appropriation_account_balances:
     description: 'Properties relating to the account balances for the assosciated appropriation account'
     properties:
       treasury_account_identifier:
+        description: A temporary unique identifier for Treasury accounts
         type: number
-      budget_authority_unobligat_fyb:
+      BudgetAuthorityUnobligatedBalanceBroughtForward_FYB:
         type: number
         maxLength: 21
-        description: "The definition for this element appears in Appendix F of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. For unexpired accounts: Amount of unobligated balance of appropriations or other budgetary resources carried forward from the preceding year and available for obligation without new action by Congress. For expired accounts: Amount of expired unobligated balances available for upward adjustments of obligations. The definition for this element appears in Appendix F of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. For unexpired accounts: Amount of unobligated balance of appropriations or other budgetary resources carried forward from the preceding year and available for obligation without new action by Congress. For expired accounts: Amount of expired unobligated balances available for upward adjustments of obligations. "
+        description: "The definition for this element appears in Appendix F of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. For unexpired accounts: Amount of unobligated balance of appropriations or other budgetary resources carried forward from the preceding year and available for obligation without new action by Congress. For expired accounts: Amount of expired unobligated balances available for upward adjustments of obligations. The definition for this element appears in Appendix F of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. For unexpired accounts: Amount of unobligated balance of appropriations or other budgetary resources carried forward from the preceding year and available for obligation without new action by Congress. For expired accounts: Amount of expired unobligated balances available for upward adjustments of obligations"
         example: 3500.00
-      adjustments_to_unobligated_cpe:
+      AdjustmentsToUnobligatedBalanceBroughtForward_CPE:
         type: number
         maxLength: 21
-        description: "The definition for this element appears in Appendix F of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Changes to unpaid obligations that occurred in a prior fiscal year and that were not recorded in the unpaid obligations as of October 1 of the current fiscal year. The definition for this element appears in Appendix F of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Changes to unpaid obligations that occurred in a prior fiscal year and that were not recorded in the unpaid obligations as of October 1 of the current fiscal year. "
+        description: "The definition for this element appears in Appendix F of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Changes to unpaid obligations that occurred in a prior fiscal year and that were not recorded in the unpaid obligations as of October 1 of the current fiscal year. The definition for this element appears in Appendix F of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Changes to unpaid obligations that occurred in a prior fiscal year and that were not recorded in the unpaid obligations as of October 1 of the current fiscal year"
         example: -3500.00
-      budget_authority_appropria_cpe:
+      BudgetAuthorityAppropriatedAmount_CPE:
         type: number
         maxLength: 21
-        description: "The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Appropriation means a provision of law (not necessarily in an appropriations act) authorizing the expenditure of funds for a given purpose. Usually, but not always, an appropriation provides budget authority.The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Appropriation means a provision of law (not necessarily in an appropriations act) authorizing the expenditure of funds for a given purpose. Usually, but not always, an appropriation provides budget authority. "
+        description: "The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Appropriation means a provision of law (not necessarily in an appropriations act) authorizing the expenditure of funds for a given purpose. Usually, but not always, an appropriation provides budget authority.The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Appropriation means a provision of law (not necessarily in an appropriations act) authorizing the expenditure of funds for a given purpose. Usually, but not always, an appropriation provides budget authority"
         example: 3500.00
-      borrowing_authority_amount_cpe:
+      BorrowingAuthorityAmountTotal_CPE:
         type: number
         maxLength: 21
-        description: "The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Borrowing authority is a type of budget authority that permits obligations and outlays to be financed by borrowing. The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Borrowing authority is a type of budget authority that permits obligations and outlays to be financed by borrowing. "
+        description: "The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Borrowing authority is a type of budget authority that permits obligations and outlays to be financed by borrowing. The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Borrowing authority is a type of budget authority that permits obligations and outlays to be financed by borrowing"
         example: 3500.00
-      contract_authority_amount_cpe:
+      ContractAuthorityAmountTotal_CPE:
         type: number
         maxLength: 21
-        description: "The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Contract authority is a type of budget authority that permits you to incur obligations in advance of an appropriation, offsetting collections, or receipts to make outlays to liquidate the obligations. Typically, the Congress provides contract authority in an authorizing statute to allow you to incur obligations in anticipation of the collection of receipts or offsetting collections that will be used to liquidate the obligations. The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Contract authority is a type of budget authority that permits you to incur obligations in advance of an appropriation, offsetting collections, or receipts to make outlays to liquidate the obligations. Typically, the Congress provides contract authority in an authorizing statute to allow you to incur obligations in anticipation of the collection of receipts or offsetting collections that will be used to liquidate the obligations. "
+        description: "The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Contract authority is a type of budget authority that permits you to incur obligations in advance of an appropriation, offsetting collections, or receipts to make outlays to liquidate the obligations. Typically, the Congress provides contract authority in an authorizing statute to allow you to incur obligations in anticipation of the collection of receipts or offsetting collections that will be used to liquidate the obligations. The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Contract authority is a type of budget authority that permits you to incur obligations in advance of an appropriation, offsetting collections, or receipts to make outlays to liquidate the obligations. Typically, the Congress provides contract authority in an authorizing statute to allow you to incur obligations in anticipation of the collection of receipts or offsetting collections that will be used to liquidate the obligations"
         example: 3500.00
-      spending_authority_from_of_cpe:
+      SpendingAuthorityfromOffsettingCollectionsAmountTotal_CPE:
         type: number
         maxLength: 21
-        description: "The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Spending authority from offsetting collections is a type of budget authority that permits obligations and outlays to be financed by offsetting collections. Offsetting collections mean payments to the Government that, by law, are credited directly to expenditure accounts and deducted from gross budget authority and outlays of the expenditure account, rather than added to receipts. Usually, they are authorized to be spent for the purposes of the account without further action by Congress. They usually result from business-like transactions with the public, including payments from the public in exchange for goods and services, reimbursements for damages, and gifts or donations of money to the Government and from intragovernmental transactions with other Government accounts. The authority to spend offsetting collections is a form of budget authority. The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Spending authority from offsetting collections is a type of budget authority that permits obligations and outlays to be financed by offsetting collections. Offsetting collections mean payments to the Government that, by law, are credited directly to expenditure accounts and deducted from gross budget authority and outlays of the expenditure account, rather than added to receipts. Usually, they are authorized to be spent for the purposes of the account without further action by Congress. They usually result from business-like transactions with the public, including payments from the public in exchange for goods and services, reimbursements for damages, and gifts or donations of money to the Government and from intragovernmental transactions with other Government accounts. The authority to spend offsetting collections is a form of budget authority. "
+        description: "The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Spending authority from offsetting collections is a type of budget authority that permits obligations and outlays to be financed by offsetting collections. Offsetting collections mean payments to the Government that, by law, are credited directly to expenditure accounts and deducted from gross budget authority and outlays of the expenditure account, rather than added to receipts. Usually, they are authorized to be spent for the purposes of the account without further action by Congress. They usually result from business-like transactions with the public, including payments from the public in exchange for goods and services, reimbursements for damages, and gifts or donations of money to the Government and from intragovernmental transactions with other Government accounts. The authority to spend offsetting collections is a form of budget authority. The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Spending authority from offsetting collections is a type of budget authority that permits obligations and outlays to be financed by offsetting collections. Offsetting collections mean payments to the Government that, by law, are credited directly to expenditure accounts and deducted from gross budget authority and outlays of the expenditure account, rather than added to receipts. Usually, they are authorized to be spent for the purposes of the account without further action by Congress. They usually result from business-like transactions with the public, including payments from the public in exchange for goods and services, reimbursements for damages, and gifts or donations of money to the Government and from intragovernmental transactions with other Government accounts. The authority to spend offsetting collections is a form of budget authority"
         example: 3500.00
-      other_budgetary_resources_cpe:
+      OtherBudgetaryResourcesAmount_CPE:
         type: number
         maxLength: 21
-        description: "The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. New borrowing authority, contract authority, and spending authority from offsetting collections provided by Congress in an appropriations act or other legislation, or unobligated balances of budgetary resources made available in previous legislation, to incur obligations and to make outlays. "
+        description: "The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. New borrowing authority, contract authority, and spending authority from offsetting collections provided by Congress in an appropriations act or other legislation, or unobligated balances of budgetary resources made available in previous legislation, to incur obligations and to make outlays"
         example: 3500.00
-      budget_authority_available_cpe:
+      BudgetAuthorityAvailableAmountTotal_CPE:
         type: number
         maxLength: 21
-        description: "The total amount of all obligation budget authority including unobligated balances carried forward, adjustments to unobligated balances carried forward, appropriated amounts, and other budgetary resources, as of the reported date. "
+        description: "The total amount of all obligation budget authority including unobligated balances carried forward, adjustments to unobligated balances carried forward, appropriated amounts, and other budgetary resources, as of the reported date"
         example: 3500.00
-      gross_outlay_amount_by_tas_cpe:
+      GrossOutlayAmountByTAS_CPE:
         type: number
         maxLength: 21
-        description: "The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Payments made to liquidate an obligation (other than the repayment of debt principal or other disbursements that are “means of financing” transactions). Outlays generally are equal to cash disbursements but also are recorded for cash-equivalent transactions, such as the issuance of debentures to pay insurance claims, and in a few cases are recorded on an accrual basis such as interest on public issues of the public debt. Outlays are the measure of Government spending. "
+        description: "The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Payments made to liquidate an obligation (other than the repayment of debt principal or other disbursements that are “means of financing” transactions). Outlays generally are equal to cash disbursements but also are recorded for cash-equivalent transactions, such as the issuance of debentures to pay insurance claims, and in a few cases are recorded on an accrual basis such as interest on public issues of the public debt. Outlays are the measure of Government spending"
         example: -3500.00
-      obligations_incurred_total_cpe:
+      ObligationsIncurredTotalByTAS_CPE:
         type: number
         maxLength: 21
-        description: "The definition for this element appears in Appendix F of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. For unexpired accounts: Amount of obligations incurred from the beginning of the current fiscal year to the end of the reporting period, net of refunds received that pertain to obligations incurred in the current year. Include upward adjustments of prior obligations. For expired accounts: Amount of upward adjustments of obligations previously incurred. Upward adjustments are limited by the amount available for adjustments. No new obligations may be incurred against expired or canceled accounts. "
+        description: "The definition for this element appears in Appendix F of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. For unexpired accounts: Amount of obligations incurred from the beginning of the current fiscal year to the end of the reporting period, net of refunds received that pertain to obligations incurred in the current year. Include upward adjustments of prior obligations. For expired accounts: Amount of upward adjustments of obligations previously incurred. Upward adjustments are limited by the amount available for adjustments. No new obligations may be incurred against expired or canceled accounts"
         example: 3500.00
-      deobligations_recoveries_r_cpe:
+      DeobligationsRecoveriesRefundsByTAS_CPE:
         type: number
         maxLength: 21
-        description: "The amount of downward adjustments to obligations and outlays resulting from deobligations, recoveries, or refunds collected, summarized at the TAS level. The adjustments are to the obligations and outlays which were made in a prior year. "
+        description: "The amount of downward adjustments to obligations and outlays resulting from deobligations, recoveries, or refunds collected, summarized at the TAS level. The adjustments are to the obligations and outlays which were made in a prior year"
         example: 3500.00
-      unobligated_balance_cpe:
+      UnobligatedBalance_CPE:
         type: number
         maxLength: 21
-        description: "The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Unobligated balance means the cumulative amount of budget authority that remains available for obligation under law in unexpired accounts. The term “expired balances available for adjustment only” refers to unobligated amounts in expired accounts. "
+        description: "The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Unobligated balance means the cumulative amount of budget authority that remains available for obligation under law in unexpired accounts. The term “expired balances available for adjustment only” refers to unobligated amounts in expired accounts"
         example: 3500.00
-      status_of_budgetary_resour_cpe:
+      StatusOfBudgetaryResourcesTotal_CPE:
         type: number
         maxLength: 21
-        description: "This element addresses the status of budgetary resources and includes the total of obligated and unobligated balances, at the reported date. The value should equal the Budget Authority Available Amount Total for the TAS at Current Period End. "
+        description: "This element addresses the status of budgetary resources and includes the total of obligated and unobligated balances, at the reported date. The value should equal the Budget Authority Available Amount Total for the TAS at Current Period End"
         example: 3500.00
-  treasury_account_properties:
+  treasury_appropriation_account:
     description: 'Properties relating to the assosciated treasury account'
     properties:
-      allocation_transfer_agency_id:
+      AllocationTransferAgencyIdentifier:
         type: string
         maxLength: 3
-        description: "The allocation agency identifies the department or agency that is receiving funds through an allocation (non-expenditure) transfer."
+        description: "The allocation agency identifies the department or agency that is receiving funds through an allocation (non-expenditure) transfer. maxLength: 3"
         example: "020"
-      responsible_agency_id:
+      AgencyIdentifier:
         type: string
         maxLength: 3
-        description: "The agency code identifies the department or agency that is responsible for the account."
+        description: "The agency code identifies the department or agency that is responsible for the account. maxLength: 3"
         example: "097"
-      beginning_period_of_availa:
+      BeginningPeriodOfAvailability:
         type: string
         maxLength: 4
-        description: "In annual and multi-year funds, the beginning period of availability identifies the first year of availability under law that an appropriation account may incur new obligations."
+        description: "In annual and multi-year funds, the beginning period of availability identifies the first year of availability under law that an appropriation account may incur new obligations. maxLength: 4"
         example: "2014"
-      ending_period_of_availabil:
+      EndingPeriodOfAvailability:
         type: string
         maxLength: 4
-        description: "In annual and multi-year funds, the end period of availability identifies the last year of funds availability under law that an appropriation account may incur new obligations."
+        description: "In annual and multi-year funds, the end period of availability identifies the last year of funds availability under law that an appropriation account may incur new obligations. maxLength: 4"
         example: "2015"
-      availability_type_code:
+      AvailabilityTypeCode:
         type: string
         maxLength: 1
-        description: "In appropriations accounts, the availability type code identifies an unlimited period to incur new obligations; this is denoted by the letter \"X\"."
+        description: "In appropriations accounts, the availability type code identifies an unlimited period to incur new obligations; this is denoted by the letter \"X\". maxLength: 1"
         example: "X"
-      main_account_code:
+      MainAccountCode:
         type: string
         maxLength: 4
-        description: "The main account code identifies the account in statute."
+        description: "The main account code identifies the account in statute. maxLength: 4"
         example: "1552"
-      sub_account_code:
+      SubAccountCode:
         type: string
         maxLength: 3
-        description: "This is a component of the TAS. Identifies a Treasury-defined subdivision of the main account. This field cannot be blank. Subaccount 000 indicates the Parent account."
+        description: "This is a component of the TAS. Identifies a Treasury-defined subdivision of the main account. This field cannot be blank. Subaccount 000 indicates the Parent account. maxLength: 3"
         example: "000"
+  procurement:
+    description: 'Properties relating to procurment (D1) data'
+    properties:
+        piid:
+          type: string
+          maxLength: 50
+          description: "The unique identifier of the specific award being reported. maxLength: 50"
+        parent_award_id:
+          type: string
+          maxLength: 50
+          description: "The identifier of the procurement award under which the specific award is issued (such as a Federal Supply Schedule). Term currently applies to procurement actions only. maxLength: 50"
+        cost_or_pricing_data:
+          type: string
+          maxLength: 1
+          description: 'Coming Soon'
+        type_of_contract_pricing:
+          type: string
+          maxLength: 2
+          description: 'Coming Soon'
+        contract_award_type:
+          type: string
+          maxLength: 1
+          description: 'Coming Soon'
+        naics:
+          type: string
+          maxLength: 6
+          description: 'Coming Soon'
+        naics_description:
+          type: string
+          maxLength: 150
+          description: 'Coming Soon'
+        period_of_perf_potential_e:
+          type: string
+          maxLength: 1
+          description: 'Coming Soon'
+        current_total_value_award:
+          type: number
+          maxLength: 20
+          description: 'Coming Soon'
+        potential_total_value_awar:
+          type: number
+          maxLength: 20
+          description: 'Coming Soon'
+        ordering_period_end_date:
+          type: string
+          maxLength: 8
+          description: 'Coming Soon'
+        referenced_idv_agency_iden:
+          type: string
+          maxLength: 4
+          description: 'Coming Soon'
+        idv_type:
+          type: string
+          maxLength: 1
+          description: 'Coming Soon'
+        multiple_or_single_award_i:
+          type: string
+          maxLength: 1
+          description: 'Coming Soon'
+        type_of_idc:
+          type: string
+          maxLength: 1
+          description: 'Coming Soon'
+        a_76_fair_act_action:
+          type: string
+          maxLength: 1
+          description: 'Coming Soon'
+        dod_claimant_program_code:
+          type: string
+          maxLength: 3
+          description: 'Coming Soon'
+        clinger_cohen_act_planning:
+          type: string
+          maxLength: 1
+          description: 'Coming Soon'
+        commercial_item_acquisitio:
+          type: string
+          maxLength: 1
+          description: 'Coming Soon'
+        commercial_item_test_progr:
+          type: string
+          maxLength: 1
+          description: 'Coming Soon'
+        consolidated_contract:
+          type: string
+          maxLength: 1
+          description: 'Coming Soon'
+        contingency_humanitarian_o:
+          type: string
+          maxLength: 1
+          description: 'Coming Soon'
+        contract_bundling:
+          type: string
+          maxLength: 1
+          description: 'Coming Soon'
+        contract_financing:
+          type: string
+          maxLength: 1
+          description: 'Coming Soon'
+        contracting_officers_deter:
+          type: string
+          maxLength: 1
+          description: 'Coming Soon'
+        country_of_product_or_serv:
+          type: string
+          maxLength: 3
+          description: 'Coming Soon'
+        davis_bacon_act:
+          type: string
+          maxLength: 1
+          description: 'Coming Soon'
+        evaluated_preference:
+          type: string
+          maxLength: 6
+          description: 'Coming Soon'
+        extent_competed:
+          type: string
+          maxLength: 3
+          description: 'Coming Soon'
+        fed_biz_opps:
+          type: string
+          maxLength: 1
+          description: 'Coming Soon'
+        foreign_funding:
+          type: string
+          maxLength: 1
+          description: 'Coming Soon'
+        government_furnished_equip:
+          type: string
+          maxLength: 1
+          description: 'Coming Soon'
+        information_technology_com:
+          type: string
+          maxLength: 1
+          description: 'Coming Soon'
+        interagency_contracting_au:
+          type: string
+          maxLength: 1
+          description: 'Coming Soon'
+        local_area_set_aside:
+          type: string
+          maxLength: 1
+          description: 'Coming Soon'
+        major_program:
+          type: string
+          maxLength: 100
+          description: 'Coming Soon'
+        purchase_card_as_payment_m:
+          type: string
+          maxLength: 1
+          description: 'Coming Soon'
+        national_interest_action:
+          type: string
+          maxLength: 4
+          description: 'Coming Soon'
+        number_of_actions:
+          type: string
+          maxLength: 3
+          description: 'Coming Soon'
+        number_of_offers_received:
+          type: string
+          maxLength: 3
+          description: 'Coming Soon'
+        other_statutory_authority:
+          type: string
+          maxLength: 1
+          description: 'Coming Soon'
+        performance_based_service:
+          type: string
+          maxLength: 1
+          description: 'Coming Soon'
+        place_of_manufacture:
+          type: string
+          maxLength: 1
+          description: 'Coming Soon'
+        price_evaluation_adjustmen:
+          type: string
+          maxLength: 2
+          description: 'Coming Soon'
+        product_or_service_code:
+          type: string
+          maxLength: 4
+          description: 'Coming Soon'
+        program_acronym:
+          type: string
+          maxLength: 25
+          description: 'Coming Soon'
+        other_than_full_and_open_c:
+          type: string
+          maxLength: 3
+          description: 'Coming Soon'
+        recovered_materials_sustai:
+          type: string
+          maxLength: 1
+          description: 'Coming Soon'
+        research:
+          type: string
+          maxLength: 3
+          description: 'Coming Soon'
+        sea_transportation:
+          type: string
+          maxLength: 1
+          description: 'Coming Soon'
+        service_contract_act:
+          type: string
+          maxLength: 1
+          description: 'Coming Soon'
+        small_business_competitive:
+          type: string
+          maxLength: 1
+          description: 'Coming Soon'
+        solicitation_identifier:
+          type: string
+          maxLength: 25
+          description: 'Coming Soon'
+        solicitation_procedures:
+          type: string
+          maxLength: 5
+          description: 'Coming Soon'
+        fair_opportunity_limited_s:
+          type: string
+          maxLength: 50
+          description: 'Coming Soon'
+        subcontracting_plan:
+          type: string
+          maxLength: 1
+          description: 'Coming Soon'
+        program_system_or_equipmen:
+          type: string
+          maxLength: 4
+          description: 'Coming Soon'
+        type_set_aside:
+          type: string
+          maxLength: 10
+          description: 'Coming Soon'
+        epa_designated_product:
+          type: string
+          maxLength: 1
+          description: 'Coming Soon'
+        walsh_healey_act:
+          type: string
+          maxLength: 1
+          description: 'Coming Soon'
+        transaction_number:
+          type: string
+          maxLength: 6
+          description: 'Coming Soon'
+        referenced_idv_modificatio:
+          type: string
+          maxLength: 1
+          description: 'Coming Soon'
+        reporting_period_start:
+          type: string
+          description: "Timestamp for the start of the reporting period"
+        reporting_period_end:
+          type: string
+          description: "Timestamp for the start of the reporting period"
   Account:
     description: Represents an appropriation account
     allOf:
-    - $ref: "#/definitions/appropriation_account_balance_properties"
-    - $ref: "#/definitions/treasury_account_properties"
+    - $ref: "#/definitions/appropriation_account_balances"
+    - $ref: "#/definitions/treasury_appropriation_account"
   Activity:
     description: Represents a program activity
     allOf:
+    - $ref: "#/definitions/appropriation_account_balances"
+    - $ref: "#/definitions/treasury_appropriation_account"
+    - $ref: "#/definitions/account_financial_common_fields"
     - $ref: "#/definitions/account_financial_activity"
+  Award:
+    description: Represents an award and award financials
+    allOf:
+    - $ref: "#/definitions/appropriation_account_balances"
+    - $ref: "#/definitions/treasury_appropriation_account"
+    - $ref: "#/definitions/account_financial_common_fields"
+    - $ref: "#/definitions/account_financial_award"
   Error:
     properties:
       code:
