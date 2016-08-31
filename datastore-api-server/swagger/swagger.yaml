@@ -1,30 +1,31 @@
 ---
 swagger: "2.0"
 info:
-  description: "**Last updated**: 8/29/2016\n\n This is an alpha\
-    \ version of the Data Act Outbound API. Using the following endpoints, you can\
-    \ access published data submitted through the Data Broker. The most flexible endpoints\
-    \ are the POST endpoints, which take a structured JSON object as a payload. The\
-    \ JSON request supports numerous features:\n\n* **columns**: Filter the data to\
-    \ only select the specified columns.\n* **filters**: Filter the data to match\
-    \ a specified clause, such as 'piid equals 1002'\n* **page** and **page_length**:\
-    \ Paginate large results to make parsing data simpler.\n* **get_unique**: Setting\
-    \ this flag to 'true' will return an additional response of *unique_values* which\
-    \ contains a dictionary of all available values for each column requested.\n\n\
-    Please note all data is currently notional\n\nAs of publication on September 6,\
-    \ 2016, the draft DATA Act API\n on openbeta.usaspending.gov points to appropriations\
-    \ (File A\n – Appropriations Account), program activity (File B – Object\n Class\
-    \ and Program Activity), and award financial (File C –\n Award Financial) data\
-    \ in the DATA Act data store.\n\n\n The USAspending.gov team is actively working\
-    \ to include\n contract (File D1 – Procurement Award and Awardee Attribute),\n\
-    \ financial assistance (File D2 – Financial Assistance Award\n and Awardee Attribute),\
-    \ additional award (File E – Additional\n Awardee Attributes), and sub-award (File\
-    \ F – Sub-Award Attribute) data.\n\n\n For more information about the sources\
-    \ of the data for the\n outbound API, please see the Information Flow on our GitHub\n\
-    \ site: http://fedspendingtransparency.github.io/data-model/\n\n\n\n As part of\
-    \ this iterative, Agile development process we welcome\n  your feedback. Please\
-    \ visit the OpenBeta.USAspending.gov site\n   to provide feedback on the draft\
-    \ API or contact us at\n   fedspending@treasury.gov.\n"
+  description: "**Last updated**: 8/29/2016\n\nThis is an alpha version of the Data\
+    \ Act Outbound API. Using the following endpoints, you can access published data\
+    \ submitted through the Data Broker. The most flexible endpoints are the POST\
+    \ endpoints, which take a structured JSON object as a payload. The JSON request\
+    \ supports numerous features:\n\n* **columns**: Filter the data to only select\
+    \ the specified columns.\n* **filters**: Filter the data to match a specified\
+    \ clause, such as 'piid equals 1002'\n* **page** and **page_length**: Paginate\
+    \ large results to make parsing data simpler.\n* **get_unique**: Setting this\
+    \ flag to 'true' will return an additional response of *unique_values* which contains\
+    \ a dictionary of all available values for each column requested.\n\nAs of publication\
+    \ on September 6, 2016, all data is test data and does not represent any agency’\
+    s submission.\n\nThe DATA Act data elements include content used to:\n*\tTrack\
+    \ the spending of agency budgets (appropriation level)\n*\tShow how federal agencies\
+    \ compartmentalize the management of their budget (object class and program activity\
+    \ level)\n*\tProvide context for and demonstrate the relationship between agency\
+    \ financial transactions and the contract or financial assistance awards made\
+    \ by those agencies\n\nAdditional updates will include data elements for agency\
+    \ contract award and financial assistance award data (including data on award\
+    \ and prime awardees).  Future available data elements will also describe the\
+    \ executive compensation of awardees and details about subaward recipients.\n\n\
+    For more information about the sources of the data for the outbound API, please\
+    \ see the Information Flow on our GitHub site: http://fedspendingtransparency.github.io/data-model/\n\
+    \nAs part of this iterative, Agile development process we welcome your feedback.\
+    \ Please visit the OpenBeta.USAspending.gov site to provide feedback on the draft\
+    \ API or contact us at [fedspending@treasury.gov](mailto:fedspending@treasury.gov).\n"
   version: "0.1.0"
   title: "Alpha Outbound API"
 basePath: "/v1"
@@ -272,12 +273,10 @@ definitions:
       query:
         type: "object"
         description: "The APIs interpretation of your query"
-        properties: {}
       unique_values:
         type: "object"
         description: "A dictionary contianing key-array pairs for each column queried,\
           \ listing all distinct values for that column"
-        properties: {}
       results:
         type: "array"
         items:
@@ -290,12 +289,10 @@ definitions:
       query:
         type: "object"
         description: "The APIs interpretation of your query"
-        properties: {}
       unique_values:
         type: "object"
         description: "A dictionary contianing key-array pairs for each column queried,\
           \ listing all distinct values for that column"
-        properties: {}
       results:
         type: "array"
         items:
@@ -308,12 +305,10 @@ definitions:
       query:
         type: "object"
         description: "The APIs interpretation of your query"
-        properties: {}
       unique_values:
         type: "object"
         description: "A dictionary contianing key-array pairs for each column queried,\
           \ listing all distinct values for that column"
-        properties: {}
       results:
         type: "array"
         items:
@@ -837,7 +832,7 @@ definitions:
           \ incurred resulting from deobligations, recoveries, or refunds collected,\
           \ at the Award level. The adjustments are to the obligations and outlays\
           \ which were made in a prior year"
-      transaction_obligated_amou:
+      TransactionObligatedAmount:
         type: "number"
         example: 3500
         description: "The definition for this element appears in Section 20 of OMB\
@@ -850,7 +845,7 @@ definitions:
     properties:
       treasury_account_identifier:
         type: "number"
-        description: "A temporary unique identifier for Treasury accounts"
+        description: "A unique identifier for Treasury accounts"
       BudgetAuthorityUnobligatedBalanceBroughtForward_FYB:
         type: "number"
         example: 3500
