@@ -8,10 +8,10 @@ info:
 
 
                   This is an alpha version of the Data Act Outbound API. Using
-                  the following endpoints, you can access published data
-                  submitted through the Data Broker. The most flexible endpoints
-                  are the POST endpoints, which take a structured JSON object
-                  as a payload. The JSON request supports numerous features:
+                  the following endpoints, you can access test data. The most
+                  flexible endpoints are the POST endpoints, which take a
+                  structured JSON object as a payload. The JSON request supports
+                  numerous features:
 
 
                   * **columns**: Filter the data to only select the specified columns.
@@ -32,8 +32,9 @@ info:
 
                   *	Track the spending of agency budgets (appropriation level)
 
-                  *	Show how federal agencies compartmentalize the management of
+                  *	Show how federal agencies structure the management of
                   their budget (object class and program activity level)
+
 
                   *	Provide context for and demonstrate the relationship between
                   agency financial transactions and the contract or financial
@@ -53,7 +54,7 @@ info:
 
 
                   As part of this iterative, Agile development process we
-                  welcome your feedback. Please visit the OpenBeta.USAspending.gov
+                  welcome your feedback. Please visit the [OpenBeta.USAspending.gov](http://OpenBeta.USAspending.gov)
                   site to provide feedback on the draft API or contact us at
                   [fedspending@treasury.gov](mailto:fedspending@treasury.gov).
 
