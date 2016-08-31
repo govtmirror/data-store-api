@@ -200,7 +200,7 @@ def response2set(result, full_labels):
                 if item[0] in mappings._TERSE_TO_AGENCY_LABELS:
                     label = mappings._TERSE_TO_AGENCY_LABELS[item[0]]
             if item[0] in dbvars._EXCLUDED_COLUMNS: continue
-            if item[0] in distinct_values:
+            if label in distinct_values:
                 distinct_values[label].add(item[1])
             else:
                 distinct_values[label] = set()
@@ -302,7 +302,11 @@ def award_fain_fain_get(FAIN):
 def award_piid_piid_get(PIID):
     parameters = {
         "columns": ["complete"],
-        "filters": [["piid", "=", str(PIID)]],
+        "filters": [ {
+            "fieldname": "piid",
+            "operation": "equals",
+            "value": str(PIID)
+        }],
         "page": 1,
         "page_length": 1000
     }
@@ -312,7 +316,11 @@ def award_piid_piid_get(PIID):
 def award_uri_uri_get(URI):
     parameters = {
         "columns": ["complete"],
-        "filters": [["uri", "=", str(URI)]],
+        "filters": [ {
+            "fieldname": "URI",
+            "operation": "equals",
+            "value": str(URI)
+        }],
         "page": 1,
         "page_length": 1000
     }
