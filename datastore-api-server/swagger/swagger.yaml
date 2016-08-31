@@ -1,7 +1,7 @@
 ---
 swagger: "2.0"
 info:
-  description: "**Last updated**: 8/29/2016\n\nThis is an alpha version of the Data\
+  description: "**Last updated**: 9/1/2016\n\nThis is an alpha version of the Data\
     \ Act Outbound API. Using the following endpoints, you can access published data\
     \ submitted through the Data Broker. The most flexible endpoints are the POST\
     \ endpoints, which take a structured JSON object as a payload. The JSON request\
