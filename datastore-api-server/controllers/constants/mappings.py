@@ -1,6 +1,7 @@
 # This file contains various mappings used by the API
 
 _TERSE_TO_AGENCY_LABELS = {
+    "transaction_obligated_amou": "TransactionObligatedAmount",
     "allocation_transfer_agency": "AllocationTransferAgencyIdentifier",
     "responsible_agency_id": "AgencyIdentifier",
     "beginning_period_of_availa": "BeginningPeriodOfAvailability",
@@ -70,6 +71,7 @@ _TERSE_TO_AGENCY_LABELS = {
 }
 
 _AGENCY_TO_TERSE_LABELS = {
+    "TransactionObligatedAmount": "transaction_obligated_amou",
     "AllocationTransferAgencyIdentifier": "allocation_transfer_agency",
     "AdjustmentsToUnobligatedBalanceBroughtForward_CPE": "adjustments_to_unobligated_cpe",
     "AgencyIdentifier": "responsible_agency_id",
