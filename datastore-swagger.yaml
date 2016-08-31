@@ -24,33 +24,39 @@ info:
                   contains a dictionary of all available values for each column requested.
 
 
-                  Please note all data is currently notional
+                  As of publication on September 6, 2016, all data is test data
+                  and does not represent any agency’s submission.
 
 
-                  As of publication on September 6, 2016, the draft DATA Act API
-                   on openbeta.usaspending.gov points to appropriations (File A
-                   – Appropriations Account), program activity (File B – Object
-                   Class and Program Activity), and award financial (File C –
-                   Award Financial) data in the DATA Act data store.
+                  The DATA Act data elements include content used to:
+
+                  *	Track the spending of agency budgets (appropriation level)
+
+                  *	Show how federal agencies compartmentalize the management of
+                  their budget (object class and program activity level)
+
+                  *	Provide context for and demonstrate the relationship between
+                  agency financial transactions and the contract or financial
+                  assistance awards made by those agencies
 
 
-                   The USAspending.gov team is actively working to include
-                   contract (File D1 – Procurement Award and Awardee Attribute),
-                   financial assistance (File D2 – Financial Assistance Award
-                   and Awardee Attribute), additional award (File E – Additional
-                   Awardee Attributes), and sub-award (File F – Sub-Award Attribute) data.
+                  Additional updates will include data elements for agency
+                  contract award and financial assistance award data (including
+                  data on award and prime awardees).  Future available data
+                  elements will also describe the executive compensation of
+                  awardees and details about subaward recipients.
 
 
-                   For more information about the sources of the data for the
-                   outbound API, please see the Information Flow on our GitHub
-                   site: http://fedspendingtransparency.github.io/data-model/
+                  For more information about the sources of the data for the
+                  outbound API, please see the Information Flow on our GitHub
+                  site: http://fedspendingtransparency.github.io/data-model/
 
 
+                  As part of this iterative, Agile development process we
+                  welcome your feedback. Please visit the OpenBeta.USAspending.gov
+                  site to provide feedback on the draft API or contact us at
+                  [fedspending@treasury.gov](mailto:fedspending@treasury.gov).
 
-                   As part of this iterative, Agile development process we welcome
-                    your feedback. Please visit the OpenBeta.USAspending.gov site
-                     to provide feedback on the draft API or contact us at
-                     fedspending@treasury.gov.
 # host: TBD.TBD.com
 basePath: /v1
 paths:
@@ -533,7 +539,7 @@ definitions:
         maxLength: 21
         description: "The amount of downward adjustments to obligations and outlays incurred resulting from deobligations, recoveries, or refunds collected, at the Award level. The adjustments are to the obligations and outlays which were made in a prior year"
         example: 3500.00
-      transaction_obligated_amou:
+      TransactionObligatedAmount:
         type: number
         maxLength: 21
         description: "The definition for this element appears in Section 20 of OMB Circular A-11 issued June 2015; a brief summary from A-11 appears below. Obligation means a binding agreement that will result in outlays, immediately or in the future. Budgetary resources must be available before obligations can be incurred legally"
@@ -542,7 +548,7 @@ definitions:
     description: 'Properties relating to the account balances for the assosciated appropriation account'
     properties:
       treasury_account_identifier:
-        description: A temporary unique identifier for Treasury accounts
+        description: A unique identifier for Treasury accounts
         type: number
       BudgetAuthorityUnobligatedBalanceBroughtForward_FYB:
         type: number
